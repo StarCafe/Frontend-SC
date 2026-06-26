@@ -28,9 +28,9 @@ export function TablesManagement() {
           <Card key={table.id} className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm text-[var(--color-muted)]">Mesa {table.tableNumber}</p>
-                <h3 className="text-2xl font-semibold text-[var(--color-ink)]">{table.occupancyLabel}</h3>
-                <p className="mt-1 text-sm text-[var(--color-muted)]">{table.minutesLabel}</p>
+                <p className="text-sm text-[var(--color-muted)]">Mesa</p>
+                <h3 className="text-3xl font-semibold text-[var(--color-ink)]">{table.tableNumber}</h3>
+                <p className="mt-1 text-sm text-[var(--color-muted)]">{table.active ? "Mesa operativa" : "Mesa desactivada"}</p>
               </div>
               <StatusBadge status={table.active ? "ACTIVE" : "INACTIVE"} label={table.active ? "Activa" : "Inactiva"} />
             </div>

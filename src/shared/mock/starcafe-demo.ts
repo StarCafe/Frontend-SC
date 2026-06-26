@@ -15,12 +15,9 @@ export interface DemoProduct {
 export interface DemoTable {
   id: number;
   tableNumber: number;
-  seats: number;
   qrToken: string;
   qrUrl: string;
   active: boolean;
-  occupancyLabel: string;
-  minutesLabel: string;
 }
 
 export interface DemoOrderItem {
@@ -136,12 +133,12 @@ export const demoProducts: DemoProduct[] = [
 ];
 
 export const demoTables: DemoTable[] = [
-  { id: 1, tableNumber: 1, seats: 4, qrToken: "mesa-1-demo", qrUrl: "https://starcafe.app/mesa/mesa-1-demo", active: true, occupancyLabel: "4 asientos", minutesLabel: "18 min" },
-  { id: 2, tableNumber: 2, seats: 2, qrToken: "mesa-2-demo", qrUrl: "https://starcafe.app/mesa/mesa-2-demo", active: true, occupancyLabel: "2 asientos", minutesLabel: "Disponible" },
-  { id: 3, tableNumber: 3, seats: 4, qrToken: "mesa-3-demo", qrUrl: "https://starcafe.app/mesa/mesa-3-demo", active: true, occupancyLabel: "4 asientos", minutesLabel: "22 min" },
-  { id: 4, tableNumber: 4, seats: 2, qrToken: "mesa-4-demo", qrUrl: "https://starcafe.app/mesa/mesa-4-demo", active: false, occupancyLabel: "2 asientos", minutesLabel: "Disponible" },
-  { id: 5, tableNumber: 5, seats: 6, qrToken: "mesa-5-demo", qrUrl: "https://starcafe.app/mesa/mesa-5-demo", active: true, occupancyLabel: "6 asientos", minutesLabel: "35 min" },
-  { id: 6, tableNumber: 6, seats: 4, qrToken: "mesa-6-demo", qrUrl: "https://starcafe.app/mesa/mesa-6-demo", active: true, occupancyLabel: "4 asientos", minutesLabel: "Disponible" },
+  { id: 1, tableNumber: 1, qrToken: "mesa-1-demo", qrUrl: "https://starcafe.app/mesa/mesa-1-demo", active: true },
+  { id: 2, tableNumber: 2, qrToken: "mesa-2-demo", qrUrl: "https://starcafe.app/mesa/mesa-2-demo", active: true },
+  { id: 3, tableNumber: 3, qrToken: "mesa-3-demo", qrUrl: "https://starcafe.app/mesa/mesa-3-demo", active: true },
+  { id: 4, tableNumber: 4, qrToken: "mesa-4-demo", qrUrl: "https://starcafe.app/mesa/mesa-4-demo", active: false },
+  { id: 5, tableNumber: 5, qrToken: "mesa-5-demo", qrUrl: "https://starcafe.app/mesa/mesa-5-demo", active: true },
+  { id: 6, tableNumber: 6, qrToken: "mesa-6-demo", qrUrl: "https://starcafe.app/mesa/mesa-6-demo", active: true },
 ];
 
 export const demoOrders: DemoOrder[] = [
