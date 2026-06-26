@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ChefHat, Coffee, QrCode, ShieldCheck } from "lucide-react";
-import { Button } from "@/shared/components/ui/button";
+import { buttonClasses } from "@/shared/components/ui/button-styles";
 import { Card } from "@/shared/components/ui/card";
 import { demoExperiencePillars, demoPalette, demoProducts } from "@/shared/mock/starcafe-demo";
 import { ProductVisual } from "@/shared/components/ui/product-visual";
@@ -86,15 +86,13 @@ export default function HomePage() {
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href="/admin/login">
-                  Entrar al panel
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary">
-                <Link href="/mesa/demo-qr-token">Ver experiencia QR</Link>
-              </Button>
+              <Link href="/admin/login" className={buttonClasses({ size: "lg" })}>
+                Entrar al panel
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/mesa/demo-qr-token" className={buttonClasses({ size: "lg", variant: "secondary" })}>
+                Ver experiencia QR
+              </Link>
               </div>
 
               <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
@@ -108,9 +106,9 @@ export default function HomePage() {
                         <h2 className="text-xl font-semibold text-[var(--color-ink)]">{title}</h2>
                         <p className="text-sm leading-6 text-[var(--color-muted)]">{description}</p>
                       </div>
-                      <Button asChild variant="ghost" className="justify-start px-0">
-                        <Link href={href}>Abrir módulo</Link>
-                      </Button>
+                      <Link href={href} className={buttonClasses({ variant: "ghost", className: "justify-start px-0" })}>
+                        Abrir módulo
+                      </Link>
                     </Card>
                   ))}
                 </div>

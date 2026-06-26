@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Coffee, CupSoda, LayoutDashboard, LogOut, Package, Receipt, Settings, Users, UtensilsCrossed } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { Button } from "@/shared/components/ui/button";
+import { buttonClasses } from "@/shared/components/ui/button-styles";
 import { demoAdminUser, demoKitchenUser } from "@/shared/mock/starcafe-demo";
 import { cn } from "@/shared/utils/cn";
 
@@ -79,12 +79,16 @@ export function RoleShell({
               <p className="text-sm leading-6 text-white/70">
                 Demo visual con datos hardcodeados para deploy y revisión UI/UX.
               </p>
-              <Button asChild variant="ghost" className="mt-4 w-full justify-start border border-white/10 text-white hover:bg-white/10">
-                <Link href={role === "ADMIN" ? "/admin/login" : "/kitchen/login"}>
-                  <LogOut className="h-4 w-4" />
-                  Cerrar sesión
-                </Link>
-              </Button>
+              <Link
+                href={role === "ADMIN" ? "/admin/login" : "/kitchen/login"}
+                className={buttonClasses({
+                  variant: "ghost",
+                  className: "mt-4 w-full justify-start border border-white/10 text-white hover:bg-white/10",
+                })}
+              >
+                <LogOut className="h-4 w-4" />
+                Cerrar sesión
+              </Link>
             </div>
           </div>
         </aside>
