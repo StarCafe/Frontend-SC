@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cancelOrderUseCase, listAdminOrdersUseCase, listOrderHistoryUseCase } from "@/modules/orders/application/orders.use-cases";
 import { ordersRepository } from "@/modules/orders/infrastructure/orders.repository.impl";
@@ -19,7 +19,7 @@ export function AdminOrdersBoard({ history = false }: { history?: boolean }) {
   const [orders, setOrders] = useState<OrderEntity[]>([]);
   const [loading, setLoading] = useState(true);
 
-  async function loadOrders() {
+  const loadOrders = useCallback(async () => {
     if (!token) {
       return;
     }
@@ -34,11 +34,17 @@ export function AdminOrdersBoard({ history = false }: { history?: boolean }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [history, token]);
 
   useEffect(() => {
-    void loadOrders();
-  }, [token]);
+    const timer = window.setTimeout(() => {
+      void loadOrders();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [loadOrders]);
 
   usePolling(() => loadOrders(), history ? 5000 : 3000, Boolean(token));
 

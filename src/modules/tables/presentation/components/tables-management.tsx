@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -30,7 +30,7 @@ export function TablesManagement() {
     defaultValues: { tableNumber: 1 },
   });
 
-  async function loadTables() {
+  const loadTables = useCallback(async () => {
     if (!token) {
       return;
     }
@@ -44,11 +44,17 @@ export function TablesManagement() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [token]);
 
   useEffect(() => {
-    void loadTables();
-  }, [token]);
+    const timer = window.setTimeout(() => {
+      void loadTables();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [loadTables]);
 
   const handleCreate = form.handleSubmit(async (values) => {
     if (!token) {
@@ -113,7 +119,7 @@ export function TablesManagement() {
           </div>
           <label className="section-grid gap-2">
             <span className="text-sm font-medium">Numero de mesa</span>
-            <Input type="number" min={1} {...form.register("tableNumber")} />
+            <Input type="number" min={1} {...form.register("tableNumber", { valueAsNumber: true })} />
             {form.formState.errors.tableNumber ? (
               <span className="text-sm text-[var(--color-danger)]">
                 {form.formState.errors.tableNumber.message}

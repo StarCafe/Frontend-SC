@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -44,7 +44,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
     [cart],
   );
 
-  async function loadSession(showLoading = false) {
+  const loadSession = useCallback(async (showLoading = false) => {
     try {
       if (showLoading) {
         setLoading(true);
@@ -59,20 +59,26 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [qrToken]);
 
-  async function loadMenu() {
+  const loadMenu = useCallback(async () => {
     try {
       const nextMenu = await getPublicMenuUseCase(publicOrderingRepository);
       setMenu(nextMenu);
     } catch (loadError) {
       toast.error(loadError instanceof Error ? loadError.message : "No se pudo cargar el menu");
     }
-  }
+  }, []);
 
   useEffect(() => {
-    void Promise.all([loadSession(true), loadMenu()]);
-  }, [qrToken]);
+    const timer = window.setTimeout(() => {
+      void Promise.all([loadSession(true), loadMenu()]);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [loadMenu, loadSession]);
 
   usePolling(() => loadSession(), 3000, true);
 

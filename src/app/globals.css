@@ -19,8 +19,8 @@
 @theme inline {
   --color-background: var(--color-background);
   --color-foreground: var(--color-ink);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+  --font-sans: "Aptos", "Trebuchet MS", "Segoe UI", sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", monospace;
 }
 
 * {
@@ -39,7 +39,7 @@ body {
     radial-gradient(circle at top right, rgba(85, 133, 114, 0.12), transparent 28%),
     linear-gradient(180deg, #f7efe7 0%, #f3ede5 100%);
   color: var(--color-ink);
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
 }
 
 a {
