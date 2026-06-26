@@ -1,19 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --color-background: #f3ede5;
-  --color-surface: #fffaf5;
-  --color-surface-strong: #fff3e4;
-  --color-panel: rgba(255, 250, 245, 0.8);
-  --color-border: rgba(102, 71, 50, 0.14);
-  --color-border-strong: rgba(102, 71, 50, 0.24);
-  --color-ink: #25170f;
-  --color-muted: #6d584b;
-  --color-primary: #9f4f24;
-  --color-primary-strong: #7f3813;
-  --color-secondary: #20493a;
-  --color-danger: #b83c3c;
-  --shadow-soft: 0 20px 60px rgba(77, 44, 24, 0.12);
+  --color-background: #041914;
+  --color-background-soft: #0b231d;
+  --color-surface: #f7f3ed;
+  --color-surface-strong: #efe6d8;
+  --color-surface-muted: #e6e0d6;
+  --color-panel: rgba(247, 243, 237, 0.9);
+  --color-panel-dark: rgba(5, 24, 19, 0.76);
+  --color-border: rgba(19, 37, 31, 0.12);
+  --color-border-strong: rgba(19, 37, 31, 0.24);
+  --color-ink: #1f221d;
+  --color-muted: #76817b;
+  --color-primary: #006241;
+  --color-primary-strong: #0b4a33;
+  --color-secondary: #13251f;
+  --color-accent: #c89a58;
+  --color-danger: #e85d5d;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+  --color-success: #2e7d32;
+  --shadow-soft: 0 24px 80px rgba(3, 15, 12, 0.18);
+  --shadow-card: 0 12px 30px rgba(19, 37, 31, 0.08);
+  --radius-panel: 32px;
 }
 
 @theme inline {
@@ -35,10 +44,10 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(255, 210, 167, 0.35), transparent 30%),
-    radial-gradient(circle at top right, rgba(85, 133, 114, 0.12), transparent 28%),
-    linear-gradient(180deg, #f7efe7 0%, #f3ede5 100%);
-  color: var(--color-ink);
+    radial-gradient(circle at top left, rgba(8, 83, 55, 0.4), transparent 30%),
+    radial-gradient(circle at 80% 10%, rgba(200, 154, 88, 0.18), transparent 18%),
+    linear-gradient(180deg, #041914 0%, #061d17 100%);
+  color: var(--color-surface);
   font-family: var(--font-sans);
 }
 
@@ -63,6 +72,11 @@ select {
   backdrop-filter: blur(14px);
 }
 
+.dark-panel {
+  background: linear-gradient(180deg, rgba(8, 41, 31, 0.94), rgba(4, 24, 19, 0.94));
+  box-shadow: var(--shadow-soft);
+}
+
 .page-shell {
   width: min(1280px, calc(100% - 2rem));
   margin-inline: auto;
@@ -74,8 +88,12 @@ select {
 }
 
 .app-gradient-text {
-  background: linear-gradient(120deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  background: linear-gradient(120deg, var(--color-accent) 0%, #fff3d0 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.soft-ring {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
 }
