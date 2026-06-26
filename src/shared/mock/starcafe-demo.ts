@@ -234,7 +234,7 @@ export const demoCashierResults = [
   { id: 56787, table: "Mesa 5", customer: "María", status: "PAID" as const, total: "$42.00" },
 ];
 
-export const demoMenuTabs = ["Todos", "Calientes", "Fríos", "Refrescos", "Frappuccino", "Postres"];
+export const demoMenuTabs = ["Todos", "Caliente", "Frío", "Refresco", "Frappuccino", "Postres"];
 
 export const demoCategoryBreakdown = [
   { label: "Bebidas", value: "62%", color: "#006241" },

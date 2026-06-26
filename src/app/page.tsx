@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, ChefHat, QrCode, ShieldCheck } from "lucide-react";
+import { ArrowRight, ChefHat, Coffee, QrCode, ShieldCheck } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
+import { demoExperiencePillars, demoPalette, demoProducts } from "@/shared/mock/starcafe-demo";
+import { ProductVisual } from "@/shared/components/ui/product-visual";
 
 const quickLinks = [
   {
@@ -26,23 +28,64 @@ const quickLinks = [
 
 export default function HomePage() {
   return (
-    <main className="relative overflow-hidden py-10">
-      <div className="page-shell section-grid gap-8">
-        <section className="glass-panel rounded-[32px] border border-[var(--color-border)] px-6 py-10 shadow-[var(--shadow-soft)] md:px-10">
-          <div className="max-w-3xl section-grid gap-5">
-            <span className="w-fit rounded-full border border-[var(--color-border)] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">
-              Frontend DDD listo para crecer
-            </span>
-            <div className="section-grid gap-4">
-              <h1 className="max-w-2xl text-4xl font-semibold tracking-tight md:text-6xl">
-                StarCafe <span className="app-gradient-text">Control Center</span>
-              </h1>
-              <p className="max-w-2xl text-base leading-7 text-[var(--color-muted)] md:text-lg">
-                Base moderna con Next.js App Router, TypeScript y arquitectura por dominios para
-                admin, cocina y pedidos publicos por QR.
+    <main className="relative overflow-hidden py-6">
+      <div className="page-shell section-grid gap-6">
+        <section className="grid gap-5 xl:grid-cols-[320px_minmax(0,1fr)]">
+          <Card className="dark-panel rounded-[40px] border border-white/10 p-6 text-white shadow-[var(--shadow-soft)]">
+            <div className="section-grid gap-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-accent)]/15 text-[var(--color-accent)]">
+                  <Coffee className="h-8 w-8" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-semibold">StarCafe</h1>
+                  <p className="text-white/70">Modern. Warm. Fast.</p>
+                </div>
+              </div>
+              <p className="text-base leading-7 text-white/70">
+                Demo visual para administración, cocina y cliente QR inspirado en Starbucks y POS premium de cafetería.
               </p>
+              <div className="grid gap-3">
+                {demoPalette.map((color) => (
+                  <div key={color.hex} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+                    <span className="h-10 w-10 rounded-2xl border border-white/10" style={{ backgroundColor: color.hex }} />
+                    <div>
+                      <p className="font-medium">{color.name}</p>
+                      <p className="text-xs text-white/50">{color.hex}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
+          </Card>
+
+          <section className="glass-panel rounded-[40px] border border-[var(--color-border)] px-6 py-8 shadow-[var(--shadow-soft)] md:px-8">
+            <div className="section-grid gap-6">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="section-grid gap-3">
+                  <span className="w-fit rounded-full border border-[var(--color-border)] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">
+                    Hardcoded deploy demo
+                  </span>
+                  <div className="section-grid gap-3">
+                    <h2 className="max-w-3xl text-4xl font-semibold tracking-tight text-[var(--color-ink)] md:text-6xl">
+                      StarCafe <span className="app-gradient-text">Control Center</span>
+                    </h2>
+                    <p className="max-w-3xl text-base leading-7 text-[var(--color-muted)] md:text-lg">
+                      Todas las pantallas ya están diseñadas con datos mock: admin, kitchen y cliente QR listos para deploy visual.
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-[28px] bg-[var(--color-surface)] p-4">
+                  <p className="text-sm font-semibold text-[var(--color-ink)]">Principios</p>
+                  <div className="mt-3 grid gap-2">
+                    {demoExperiencePillars.slice(0, 3).map((item) => (
+                      <p key={item} className="text-sm text-[var(--color-muted)]">{item}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
                 <Link href="/admin/login">
                   Entrar al panel
@@ -52,25 +95,42 @@ export default function HomePage() {
               <Button asChild size="lg" variant="secondary">
                 <Link href="/mesa/demo-qr-token">Ver experiencia QR</Link>
               </Button>
-            </div>
-          </div>
-        </section>
+              </div>
 
-        <section className="grid gap-4 md:grid-cols-3">
-          {quickLinks.map(({ href, icon: Icon, title, description }) => (
-            <Card key={href} className="section-grid gap-4 p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--color-surface-strong)] text-[var(--color-primary)]">
-                <Icon className="h-6 w-6" />
+              <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+                <div className="grid gap-4 md:grid-cols-3">
+                  {quickLinks.map(({ href, icon: Icon, title, description }) => (
+                    <Card key={href} className="section-grid gap-4 rounded-[30px] bg-white p-6 shadow-[var(--shadow-card)]">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--color-surface-strong)] text-[var(--color-primary)]">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <div className="section-grid gap-2">
+                        <h2 className="text-xl font-semibold text-[var(--color-ink)]">{title}</h2>
+                        <p className="text-sm leading-6 text-[var(--color-muted)]">{description}</p>
+                      </div>
+                      <Button asChild variant="ghost" className="justify-start px-0">
+                        <Link href={href}>Abrir módulo</Link>
+                      </Button>
+                    </Card>
+                  ))}
+                </div>
+                <Card className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
+                  <h3 className="text-xl font-semibold text-[var(--color-ink)]">Productos destacados</h3>
+                  <div className="mt-4 grid gap-4">
+                    {demoProducts.slice(0, 3).map((product) => (
+                      <div key={product.id} className="grid gap-3 sm:grid-cols-[120px_minmax(0,1fr)]">
+                        <ProductVisual accent={product.accent} category={product.category} className="min-h-[120px]" />
+                        <div className="py-2">
+                          <p className="text-lg font-semibold text-[var(--color-ink)]">{product.name}</p>
+                          <p className="mt-1 text-sm text-[var(--color-muted)]">{product.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
               </div>
-              <div className="section-grid gap-2">
-                <h2 className="text-xl font-semibold">{title}</h2>
-                <p className="text-sm leading-6 text-[var(--color-muted)]">{description}</p>
-              </div>
-              <Button asChild variant="ghost" className="justify-start px-0">
-                <Link href={href}>Abrir modulo</Link>
-              </Button>
-            </Card>
-          ))}
+            </div>
+          </section>
         </section>
       </div>
     </main>

@@ -1,11 +1,5 @@
-import { PlaceholderPage } from "@/shared/components/ui/placeholder-page";
+import { ProductsScreen } from "@/modules/products/presentation/products-screen";
 
 export default function AdminProductsPage() {
-  return (
-    <PlaceholderPage
-      title="Productos"
-      domain="products"
-      description="Base preparada para CRUD, activacion, disponibilidad e imagenes."
-    />
-  );
+  return <ProductsScreen />;
 }

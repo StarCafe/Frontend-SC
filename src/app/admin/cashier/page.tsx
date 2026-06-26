@@ -1,11 +1,5 @@
-import { PlaceholderPage } from "@/shared/components/ui/placeholder-page";
+import { CashierScreen } from "@/modules/cashier/presentation/cashier-screen";
 
 export default function AdminCashierPage() {
-  return (
-    <PlaceholderPage
-      title="Caja"
-      domain="cashier"
-      description="Listo para integrar busqueda de pedidos y flujo de cobro."
-    />
-  );
+  return <CashierScreen />;
 }

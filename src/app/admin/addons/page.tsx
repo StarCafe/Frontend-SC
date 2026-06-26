@@ -1,11 +1,5 @@
-import { PlaceholderPage } from "@/shared/components/ui/placeholder-page";
+import { AddonsScreen } from "@/modules/addons/presentation/addons-screen";
 
 export default function AdminAddonsPage() {
-  return (
-    <PlaceholderPage
-      title="Addons"
-      domain="addons"
-      description="Espacio reservado para extras y asignaciones por producto."
-    />
-  );
+  return <AddonsScreen />;
 }
