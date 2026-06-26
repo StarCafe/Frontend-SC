@@ -8,9 +8,9 @@ import {
   markKitchenItemReadyUseCase,
   markKitchenOrderPreparingUseCase,
   markKitchenOrderReadyUseCase,
-} from "@/modules/kitchen/application/kitchen.use-cases";
-import { kitchenRepository } from "@/modules/kitchen/infrastructure/kitchen.repository.impl";
-import type { OrderEntity } from "@/modules/orders/domain/order.types";
+} from "@/modules/kitchen/application/use-cases/kitchen.use-cases";
+import { kitchenRepository } from "@/modules/kitchen/infrastructure/repositories/kitchen-http.repository";
+import type { OrderEntity } from "@/modules/orders/domain/order.entity";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";

@@ -1,6 +1,4 @@
-import { apiClient } from "@/shared/lib/api/http-client";
-import type { OrdersRepository } from "@/modules/orders/domain/orders.repository";
-import type { OrderEntity, OrderItemEntity } from "@/modules/orders/domain/order.types";
+import type { OrderEntity, OrderItemEntity } from "@/modules/orders/domain/order.entity";
 
 function mapOrderItem(item: Record<string, unknown>): OrderItemEntity {
   return {
@@ -32,7 +30,7 @@ export function mapOrder(order: Record<string, unknown>): OrderEntity {
   };
 }
 
-function extractOrders(payload: unknown) {
+export function extractOrders(payload: unknown) {
   const raw = Array.isArray(payload)
     ? payload
     : ((payload as { orders?: unknown[]; items?: unknown[] })?.orders ??
@@ -43,24 +41,3 @@ function extractOrders(payload: unknown) {
     .filter((order): order is Record<string, unknown> => typeof order === "object" && order !== null)
     .map(mapOrder);
 }
-
-export class HttpOrdersRepository implements OrdersRepository {
-  async listActive(token: string) {
-    const payload = await apiClient<unknown>("/api/v1/admin/orders", { token });
-    return extractOrders(payload);
-  }
-
-  async listHistory(token: string) {
-    const payload = await apiClient<unknown>("/api/v1/admin/orders/history", { token });
-    return extractOrders(payload);
-  }
-
-  async cancel(token: string, orderId: number) {
-    await apiClient(`/api/v1/admin/orders/${orderId}/cancel`, {
-      method: "PATCH",
-      token,
-    });
-  }
-}
-
-export const ordersRepository = new HttpOrdersRepository();

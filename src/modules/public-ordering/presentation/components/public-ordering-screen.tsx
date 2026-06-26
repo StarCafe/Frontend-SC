@@ -9,10 +9,10 @@ import {
   createPublicOrderUseCase,
   getPublicMenuUseCase,
   getPublicTableSessionUseCase,
-} from "@/modules/public-ordering/application/public-ordering.use-cases";
-import { publicOrderSchema, type PublicOrderFormValues } from "@/modules/public-ordering/application/public-order.schema";
-import { publicOrderingRepository } from "@/modules/public-ordering/infrastructure/public-ordering.repository.impl";
-import type { PublicMenuCategory, PublicMenuProduct, PublicTableSession } from "@/modules/public-ordering/domain/public-ordering.types";
+} from "@/modules/public-ordering/application/use-cases/public-ordering.use-cases";
+import { publicOrderSchema, type PublicOrderFormValues } from "@/modules/public-ordering/application/schemas/public-order.schema";
+import { publicOrderingRepository } from "@/modules/public-ordering/infrastructure/repositories/public-ordering-http.repository";
+import type { PublicMenuCategory, PublicMenuProduct, PublicTableSession } from "@/modules/public-ordering/domain/public-ordering.entity";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";

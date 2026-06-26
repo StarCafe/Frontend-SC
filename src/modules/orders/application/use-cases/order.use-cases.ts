@@ -1,4 +1,4 @@
-import type { OrdersRepository } from "@/modules/orders/domain/orders.repository";
+import type { OrdersRepository } from "@/modules/orders/domain/order.repository";
 
 export function listAdminOrdersUseCase(repository: OrdersRepository, token: string) {
   return repository.listActive(token);

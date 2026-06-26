@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
-import type { TableEntity } from "@/modules/tables/domain/table.types";
+import type { TableEntity } from "@/modules/tables/domain/table.entity";
 
 function downloadSvg(table: TableEntity) {
   const svg = document.getElementById(`table-qr-${table.id}`)?.querySelector("svg");

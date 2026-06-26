@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/shared/store/auth-store";
-import type { Role } from "@/modules/auth/domain/auth.types";
+import type { Role } from "@/modules/auth/domain/auth.entity";
 
 export function useAuthGuard(expectedRole: Role) {
   const router = useRouter();

@@ -9,10 +9,10 @@ import {
   deactivateTableUseCase,
   listTablesUseCase,
   regenerateTableQrUseCase,
-} from "@/modules/tables/application/tables.use-cases";
-import { createTableSchema, type CreateTableFormValues } from "@/modules/tables/application/table.schema";
-import { tablesRepository } from "@/modules/tables/infrastructure/tables.repository.impl";
-import type { TableEntity } from "@/modules/tables/domain/table.types";
+} from "@/modules/tables/application/use-cases/table.use-cases";
+import { createTableSchema, type CreateTableFormValues } from "@/modules/tables/application/schemas/create-table.schema";
+import { tablesRepository } from "@/modules/tables/infrastructure/repositories/table-http.repository";
+import type { TableEntity } from "@/modules/tables/domain/table.entity";
 import { useAuthStore } from "@/shared/store/auth-store";
 import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";

@@ -1,14 +1,11 @@
-import { apiClient } from "@/shared/lib/api/http-client";
-import { mapOrder } from "@/modules/orders/infrastructure/orders.repository.impl";
-import type { PublicOrderingRepository } from "@/modules/public-ordering/domain/public-ordering.repository";
+import { mapOrder } from "@/modules/orders/infrastructure/mappers/order.mapper";
 import type {
-  PublicCreateOrderPayload,
   PublicMenuCategory,
   PublicMenuProduct,
   PublicTableSession,
-} from "@/modules/public-ordering/domain/public-ordering.types";
+} from "@/modules/public-ordering/domain/public-ordering.entity";
 
-function mapMenuProduct(product: Record<string, unknown>): PublicMenuProduct {
+export function mapMenuProduct(product: Record<string, unknown>): PublicMenuProduct {
   return {
     id: Number(product.id ?? 0),
     categoryId: Number(product.categoryId ?? 0),
@@ -25,7 +22,7 @@ function mapMenuProduct(product: Record<string, unknown>): PublicMenuProduct {
   };
 }
 
-function groupMenu(payload: unknown): PublicMenuCategory[] {
+export function groupMenu(payload: unknown): PublicMenuCategory[] {
   const rawProducts = Array.isArray(payload)
     ? payload
     : ((payload as { products?: unknown[]; items?: unknown[] })?.products ??
@@ -53,7 +50,7 @@ function groupMenu(payload: unknown): PublicMenuCategory[] {
   return Array.from(categoriesMap.values());
 }
 
-function mapSession(payload: Record<string, unknown>): PublicTableSession {
+export function mapPublicTableSession(payload: Record<string, unknown>): PublicTableSession {
   const activeOrders = Array.isArray(payload.activeOrders) ? payload.activeOrders : [];
 
   return {
@@ -69,30 +66,3 @@ function mapSession(payload: Record<string, unknown>): PublicTableSession {
     canCreateMoreOrders: Boolean(payload.canCreateMoreOrders ?? false),
   };
 }
-
-export class HttpPublicOrderingRepository implements PublicOrderingRepository {
-  async getSession(qrToken: string) {
-    const payload = await apiClient<Record<string, unknown>>(`/api/v1/public/tables/${qrToken}/session`);
-    return mapSession(payload);
-  }
-
-  async getMenu() {
-    const payload = await apiClient<unknown>("/api/v1/public/menu");
-    return groupMenu(payload);
-  }
-
-  async createOrder(qrToken: string, input: PublicCreateOrderPayload) {
-    const payload = await apiClient<Record<string, unknown>>(`/api/v1/public/tables/${qrToken}/orders`, {
-      method: "POST",
-      body: JSON.stringify(input),
-    });
-    return mapOrder(payload);
-  }
-
-  async getOrderStatus(orderId: number) {
-    const payload = await apiClient<Record<string, unknown>>(`/api/v1/public/orders/${orderId}/status`);
-    return mapOrder(payload);
-  }
-}
-
-export const publicOrderingRepository = new HttpPublicOrderingRepository();

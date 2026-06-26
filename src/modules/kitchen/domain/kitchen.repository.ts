@@ -1,4 +1,4 @@
-import type { OrderEntity } from "@/modules/orders/domain/order.types";
+import type { OrderEntity } from "@/modules/orders/domain/order.entity";
 
 export interface KitchenRepository {
   listActive(token: string): Promise<OrderEntity[]>;

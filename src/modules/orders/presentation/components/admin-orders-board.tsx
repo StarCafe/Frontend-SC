@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { cancelOrderUseCase, listAdminOrdersUseCase, listOrderHistoryUseCase } from "@/modules/orders/application/orders.use-cases";
-import { ordersRepository } from "@/modules/orders/infrastructure/orders.repository.impl";
-import type { OrderEntity } from "@/modules/orders/domain/order.types";
+import { cancelOrderUseCase, listAdminOrdersUseCase, listOrderHistoryUseCase } from "@/modules/orders/application/use-cases/order.use-cases";
+import { ordersRepository } from "@/modules/orders/infrastructure/repositories/order-http.repository";
+import type { OrderEntity } from "@/modules/orders/domain/order.entity";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";

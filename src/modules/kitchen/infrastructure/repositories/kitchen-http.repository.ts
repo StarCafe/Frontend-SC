@@ -1,18 +1,6 @@
 import { apiClient } from "@/shared/lib/api/http-client";
-import { mapOrder } from "@/modules/orders/infrastructure/orders.repository.impl";
+import { extractOrders } from "@/modules/orders/infrastructure/mappers/order.mapper";
 import type { KitchenRepository } from "@/modules/kitchen/domain/kitchen.repository";
-
-function extractOrders(payload: unknown) {
-  const raw = Array.isArray(payload)
-    ? payload
-    : ((payload as { orders?: unknown[]; items?: unknown[] })?.orders ??
-      (payload as { orders?: unknown[]; items?: unknown[] })?.items ??
-      []);
-
-  return raw
-    .filter((order): order is Record<string, unknown> => typeof order === "object" && order !== null)
-    .map(mapOrder);
-}
 
 export class HttpKitchenRepository implements KitchenRepository {
   async listActive(token: string) {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { loadAuthenticatedUserUseCase } from "@/modules/auth/application/auth.use-cases";
-import { authRepository } from "@/modules/auth/infrastructure/auth.repository.impl";
+import { loadAuthenticatedUserUseCase } from "@/modules/auth/application/use-cases/auth.use-cases";
+import { authRepository } from "@/modules/auth/infrastructure/repositories/auth-http.repository";
 import { useAuthStore } from "@/shared/store/auth-store";
 
 export function SessionBootstrap() {

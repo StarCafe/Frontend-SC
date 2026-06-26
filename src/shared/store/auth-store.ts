@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { clearAuthCookies, writeAuthCookies } from "@/shared/lib/api/auth-cookie";
-import type { AuthSession, AuthUser } from "@/modules/auth/domain/auth.types";
+import type { AuthSession, AuthUser } from "@/modules/auth/domain/auth.entity";
 
 interface AuthState {
   token: string | null;

@@ -1,4 +1,4 @@
-import type { TablesRepository } from "@/modules/tables/domain/tables.repository";
+import type { TablesRepository } from "@/modules/tables/domain/table.repository";
 import type { CreateTablePayload } from "@/modules/tables/domain/table.types";
 
 export function listTablesUseCase(repository: TablesRepository, token: string) {
