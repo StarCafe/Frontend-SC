@@ -1,128 +1,80 @@
-"use client";
-
-import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
-import { cancelOrderUseCase, listAdminOrdersUseCase, listOrderHistoryUseCase } from "@/modules/orders/application/use-cases/order.use-cases";
-import { ordersRepository } from "@/modules/orders/infrastructure/repositories/order-http.repository";
-import type { OrderEntity } from "@/modules/orders/domain/order.entity";
-import { Badge } from "@/shared/components/ui/badge";
-import { Button } from "@/shared/components/ui/button";
+import { demoHistoryOrders, demoOrders } from "@/shared/mock/starcafe-demo";
 import { Card } from "@/shared/components/ui/card";
-import { EmptyState } from "@/shared/components/ui/empty-state";
+import { DemoTable } from "@/shared/components/ui/demo-table";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
-import { usePolling } from "@/shared/hooks/use-polling";
-import { useAuthStore } from "@/shared/store/auth-store";
+import { StatusBadge } from "@/shared/components/ui/status-badge";
 import { formatCurrency, formatDateTime } from "@/shared/utils/format";
+import { Button } from "@/shared/components/ui/button";
 
 export function AdminOrdersBoard({ history = false }: { history?: boolean }) {
-  const token = useAuthStore((state) => state.token);
-  const [orders, setOrders] = useState<OrderEntity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const orders = history ? demoHistoryOrders : demoOrders;
 
-  const loadOrders = useCallback(async () => {
-    if (!token) {
-      return;
-    }
-
-    try {
-      const nextOrders = history
-        ? await listOrderHistoryUseCase(ordersRepository, token)
-        : await listAdminOrdersUseCase(ordersRepository, token);
-      setOrders(nextOrders);
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudieron cargar los pedidos");
-    } finally {
-      setLoading(false);
-    }
-  }, [history, token]);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      void loadOrders();
-    }, 0);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [loadOrders]);
-
-  usePolling(() => loadOrders(), history ? 5000 : 3000, Boolean(token));
+  if (history) {
+    return (
+      <div className="section-grid gap-5">
+        <SectionHeading
+          eyebrow="Order history"
+          title="Historial de pedidos"
+          description="Versión demo para mostrar trazabilidad, filtros y lectura rápida del ciclo completo."
+        />
+        <DemoTable
+          headers={["Pedido", "Mesa", "Cliente", "Estado", "Fecha", "Total"]}
+          rows={orders.map((order) => [
+            <span key={`${order.id}-id`} className="font-semibold">#{order.id}</span>,
+            order.table,
+            order.customerName,
+            <StatusBadge key={`${order.id}-status`} status={order.status} label={order.shortStatus} />,
+            formatDateTime(order.createdAt),
+            formatCurrency(order.total),
+          ])}
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="section-grid gap-6">
+    <div className="section-grid gap-5">
       <SectionHeading
-        eyebrow="Orders bounded context"
-        title={history ? "Historial de pedidos" : "Pedidos activos"}
-        description={
-          history
-            ? "Consulta pedidos finalizados o cerrados para trazabilidad."
-            : "Vista operativa con polling cada 3 segundos para detectar cambios sin recargar la pagina."
-        }
+        eyebrow="Live monitoring"
+        title="Pedidos en curso"
+        description="Monitoreo visual estilo POS con estados claros y acciones rápidas pensadas para operación real."
       />
-
-      {loading ? (
-        <EmptyState title="Cargando pedidos" description="Sincronizando datos del backend." />
-      ) : orders.length === 0 ? (
-        <EmptyState
-          title={history ? "No hay historial disponible" : "No hay pedidos activos"}
-          description="Cuando el backend reporte pedidos los veras aqui."
-        />
-      ) : (
-        <div className="grid gap-4 xl:grid-cols-2">
-          {orders.map((order) => (
-            <Card key={order.id} className="section-grid gap-4 p-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <h3 className="text-xl font-semibold">Pedido #{order.id}</h3>
-                  <p className="text-sm text-[var(--color-muted)]">
-                    Mesa {order.tableNumber} · {order.customerName}
-                  </p>
-                </div>
-                <Badge tone={order.status === "READY" ? "success" : order.status === "CANCELLED" ? "danger" : "warning"}>
-                  {order.status}
-                </Badge>
+      <div className="grid gap-5 xl:grid-cols-2">
+        {orders.map((order) => (
+          <Card key={order.id} className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="text-sm text-[var(--color-muted)]">#{order.id} · {order.table}</p>
+                <h3 className="text-2xl font-semibold text-[var(--color-ink)]">{order.customerName}</h3>
+                <p className="text-sm text-[var(--color-muted)]">{formatDateTime(order.createdAt)}</p>
               </div>
-
-              <div className="grid gap-2 text-sm text-[var(--color-muted)] md:grid-cols-2">
-                <p>Total: <span className="font-semibold text-[var(--color-ink)]">{formatCurrency(order.total)}</span></p>
-                <p>Creado: <span className="font-semibold text-[var(--color-ink)]">{formatDateTime(order.createdAt)}</span></p>
-              </div>
-
-              <div className="section-grid gap-2">
-                {order.items.map((item) => (
-                  <div key={item.id} className="rounded-2xl bg-white/80 p-3 text-sm">
-                    <p className="font-semibold">
-                      {item.quantity} x {item.productName}
-                    </p>
-                    <p className="text-[var(--color-muted)]">{item.status}</p>
+              <StatusBadge status={order.status} label={order.shortStatus} />
+            </div>
+            <div className="mt-4 grid gap-3">
+              {order.items.map((item) => (
+                <div key={item.id} className="rounded-[22px] bg-[var(--color-surface)] p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-[var(--color-ink)]">
+                        {item.quantity} x {item.productName}
+                      </p>
+                      {item.notes ? <p className="text-sm text-[var(--color-muted)]">{item.notes}</p> : null}
+                    </div>
+                    <StatusBadge status={item.status} />
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <span className="text-lg font-semibold text-[var(--color-ink)]">{formatCurrency(order.total)}</span>
+              <div className="flex gap-2">
+                <Button variant="ghost">Ver detalle</Button>
+                <Button variant="danger">Cancelar pedido</Button>
               </div>
-
-              {!history && order.status !== "CANCELLED" ? (
-                <Button
-                  variant="danger"
-                  onClick={async () => {
-                    if (!token) {
-                      return;
-                    }
-
-                    try {
-                      await cancelOrderUseCase(ordersRepository, token, order.id);
-                      toast.success(`Pedido #${order.id} cancelado`);
-                      await loadOrders();
-                    } catch (error) {
-                      toast.error(error instanceof Error ? error.message : "No se pudo cancelar el pedido");
-                    }
-                  }}
-                >
-                  Cancelar pedido
-                </Button>
-              ) : null}
-            </Card>
-          ))}
-        </div>
-      )}
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

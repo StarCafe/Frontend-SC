@@ -1,297 +1,211 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useMemo, useState } from "react";
+import { ArrowLeft, Clock3, Plus, ShoppingBag, Star } from "lucide-react";
 import {
-  createPublicOrderUseCase,
-  getPublicMenuUseCase,
-  getPublicTableSessionUseCase,
-} from "@/modules/public-ordering/application/use-cases/public-ordering.use-cases";
-import { publicOrderSchema, type PublicOrderFormValues } from "@/modules/public-ordering/application/schemas/public-order.schema";
-import { publicOrderingRepository } from "@/modules/public-ordering/infrastructure/repositories/public-ordering-http.repository";
-import type { PublicMenuCategory, PublicMenuProduct, PublicTableSession } from "@/modules/public-ordering/domain/public-ordering.entity";
-import { Badge } from "@/shared/components/ui/badge";
+  demoMenuTabs,
+  demoOrders,
+  demoProducts,
+  demoTables,
+} from "@/shared/mock/starcafe-demo";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
-import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Input } from "@/shared/components/ui/input";
-import { SectionHeading } from "@/shared/components/ui/section-heading";
-import { usePolling } from "@/shared/hooks/use-polling";
-import { formatCurrency, formatDateTime } from "@/shared/utils/format";
-
-interface CartItem {
-  product: PublicMenuProduct;
-  quantity: number;
-}
+import { ProductVisual } from "@/shared/components/ui/product-visual";
+import { StatusBadge } from "@/shared/components/ui/status-badge";
+import { formatCurrency } from "@/shared/utils/format";
 
 export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
-  const [session, setSession] = useState<PublicTableSession | null>(null);
-  const [menu, setMenu] = useState<PublicMenuCategory[]>([]);
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("Todos");
+  const [selectedId, setSelectedId] = useState(demoProducts[0]?.id ?? 1);
+  const [cart, setCart] = useState<Record<number, number>>({ 1: 2, 2: 1 });
+  const table = demoTables.find((item) => item.qrToken === qrToken) ?? demoTables[0];
+  const selectedProduct = demoProducts.find((item) => item.id === selectedId) ?? demoProducts[0];
+  const filteredProducts = activeTab === "Todos"
+    ? demoProducts
+    : demoProducts.filter((product) => product.category === activeTab);
 
-  const form = useForm<PublicOrderFormValues>({
-    resolver: zodResolver(publicOrderSchema),
-    defaultValues: { customerName: "" },
-  });
-
-  const cartTotal = useMemo(
-    () => cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0),
+  const cartItems = useMemo(
+    () => demoProducts.filter((product) => cart[product.id]).map((product) => ({ product, quantity: cart[product.id] })),
     [cart],
   );
-
-  const loadSession = useCallback(async (showLoading = false) => {
-    try {
-      if (showLoading) {
-        setLoading(true);
-      }
-
-      const nextSession = await getPublicTableSessionUseCase(publicOrderingRepository, qrToken);
-      setSession(nextSession);
-      setError(nextSession.isActive ? null : "Esta mesa ya no esta disponible");
-    } catch (loadError) {
-      const message = loadError instanceof Error ? loadError.message : "No se pudo abrir la sesion de mesa";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  }, [qrToken]);
-
-  const loadMenu = useCallback(async () => {
-    try {
-      const nextMenu = await getPublicMenuUseCase(publicOrderingRepository);
-      setMenu(nextMenu);
-    } catch (loadError) {
-      toast.error(loadError instanceof Error ? loadError.message : "No se pudo cargar el menu");
-    }
-  }, []);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      void Promise.all([loadSession(true), loadMenu()]);
-    }, 0);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [loadMenu, loadSession]);
-
-  usePolling(() => loadSession(), 3000, true);
-
-  function addToCart(product: PublicMenuProduct) {
-    setCart((current) => {
-      const found = current.find((item) => item.product.id === product.id);
-
-      if (found) {
-        return current.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
-        );
-      }
-
-      return [...current, { product, quantity: 1 }];
-    });
-  }
-
-  const onSubmit = form.handleSubmit(async (values) => {
-    if (!session) {
-      return;
-    }
-
-    if (cart.length === 0) {
-      toast.error("Agrega al menos un producto");
-      return;
-    }
-
-    if (!session.canCreateMoreOrders) {
-      toast.error("Esta mesa ya no puede crear mas pedidos por ahora");
-      return;
-    }
-
-    try {
-      await createPublicOrderUseCase(publicOrderingRepository, qrToken, {
-        customerName: values.customerName,
-        items: cart.map((item) => ({
-          productId: item.product.id,
-          quantity: item.quantity,
-        })),
-      });
-      toast.success("Pedido enviado");
-      setCart([]);
-      form.reset();
-      await loadSession();
-    } catch (submitError) {
-      toast.error(submitError instanceof Error ? submitError.message : "No se pudo crear el pedido");
-    }
-  });
-
-  if (loading) {
-    return (
-      <main className="page-shell py-8">
-        <EmptyState title="Cargando mesa" description="Preparando el menu y la sesion de pedidos." />
-      </main>
-    );
-  }
-
-  if (error || !session || !session.isActive) {
-    return (
-      <main className="page-shell py-8">
-        <EmptyState
-          title="Mesa no disponible"
-          description={error ?? "Este QR ya no tiene una mesa activa asociada."}
-        />
-      </main>
-    );
-  }
+  const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   return (
-    <main className="page-shell py-6 section-grid gap-6">
-      <SectionHeading
-        eyebrow="Public ordering bounded context"
-        title={`Mesa ${session.tableNumber}`}
-        description="Experiencia publica, mobile-first y sin autenticacion. El QR solo representa a la mesa."
-      />
-
-      <Card className="section-grid gap-4 p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="text-xl font-semibold">Estado de la sesion</h2>
-            <p className="text-sm text-[var(--color-muted)]">
-              Pedidos activos: {session.activeOrderCount} · Cupos restantes: {session.remainingSlots}
-            </p>
-          </div>
-          <Badge tone={session.canCreateMoreOrders ? "success" : "warning"}>
-            {session.canCreateMoreOrders ? "Puede pedir" : "Sin cupo"}
-          </Badge>
-        </div>
-
-        {session.activeOrders.length > 0 ? (
-          <div className="grid gap-3">
-            {session.activeOrders.map((order) => (
-              <div key={order.id} className="rounded-[22px] bg-white/80 p-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <p className="text-lg font-semibold">Pedido #{order.id}</p>
-                    <p className="text-sm text-[var(--color-muted)]">{formatDateTime(order.createdAt)}</p>
-                  </div>
-                  <Badge tone={order.status === "READY" ? "success" : "warning"}>{order.status}</Badge>
-                </div>
-                <div className="mt-3 grid gap-2">
-                  {order.items.map((item) => (
-                    <div key={item.id} className="rounded-2xl bg-[var(--color-surface-strong)] p-3 text-sm">
-                      <p className="font-semibold">
-                        {item.quantity} x {item.productName}
-                      </p>
-                      <p className="text-[var(--color-muted)]">{item.status}</p>
-                    </div>
-                  ))}
+    <main className="min-h-screen bg-[var(--color-background)] px-4 py-5 text-white">
+      <div className="mx-auto grid w-full max-w-7xl gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
+        <section className="section-grid gap-5">
+          <div className="dark-panel rounded-[34px] border border-white/10 p-5">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <button className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                  <ArrowLeft className="h-4 w-4" />
+                </button>
+                <div>
+                  <p className="text-sm text-white/60">Mesa {table.tableNumber}</p>
+                  <h1 className="text-3xl font-semibold">Bienvenido a StarCafe</h1>
                 </div>
               </div>
+              <div className="flex items-center gap-2 rounded-2xl bg-white/8 px-4 py-3 text-sm text-white/70">
+                <Clock3 className="h-4 w-4" />
+                Cupos restantes: 2
+              </div>
+            </div>
+
+            <div className="mt-5 flex gap-3 overflow-x-auto pb-1">
+              {demoMenuTabs.map((tab) => (
+                <button
+                  key={tab}
+                  className={`rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap ${activeTab === tab ? "bg-[var(--color-primary)] text-white" : "bg-white/8 text-white/70"}`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-4">
+              <Input className="border-white/10 bg-white/8 text-white placeholder:text-white/45" placeholder="Buscar producto..." />
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {filteredProducts.map((product) => (
+              <Card key={product.id} className="rounded-[30px] border border-white/8 bg-white/[0.03] p-4 text-white shadow-none">
+                <ProductVisual accent={product.accent} category={product.category} />
+                <div className="mt-4 grid gap-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xl font-semibold">{product.name}</p>
+                      <p className="text-sm text-white/60">{product.description}</p>
+                    </div>
+                    <StatusBadge status={product.available ? "AVAILABLE" : "UNAVAILABLE"} label={product.available ? "Disponible" : "Agotado"} />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold">{formatCurrency(product.price)}</p>
+                      <p className="text-xs text-white/45">{product.category}</p>
+                    </div>
+                    <Button
+                      disabled={!product.available}
+                      onClick={() => {
+                        setSelectedId(product.id);
+                        setCart((current) => ({ ...current, [product.id]: (current[product.id] ?? 0) + 1 }));
+                      }}
+                    >
+                      <Plus className="h-4 w-4" />
+                      Agregar
+                    </Button>
+                  </div>
+                </div>
+              </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-sm text-[var(--color-muted)]">Todavia no hay pedidos activos en esta mesa.</p>
-        )}
-      </Card>
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="section-grid gap-4">
-          {menu.length === 0 ? (
-            <EmptyState title="Menu vacio" description="El backend todavia no devolvio productos publicos." />
-          ) : (
-            menu.map((category) => (
-              <section key={category.id} className="section-grid gap-3">
-                <h2 className="text-xl font-semibold">{category.name}</h2>
-                <div className="grid gap-4 md:grid-cols-2">
-                  {category.products.map((product) => (
-                    <Card key={product.id} className="overflow-hidden">
-                      <div className="relative h-48 bg-[var(--color-surface-strong)]">
-                        {product.imageUrl ? (
-                          <Image src={product.imageUrl} alt={product.name} fill className="object-cover" unoptimized />
-                        ) : (
-                          <div className="flex h-full items-center justify-center text-sm text-[var(--color-muted)]">
-                            Imagen no disponible
-                          </div>
-                        )}
-                      </div>
-                      <div className="section-grid gap-3 p-5">
-                        <div>
-                          <div className="flex items-start justify-between gap-3">
-                            <h3 className="text-lg font-semibold">{product.name}</h3>
-                            <Badge tone={product.isAvailable ? "success" : "danger"}>
-                              {product.isAvailable ? "Disponible" : "Agotado"}
-                            </Badge>
-                          </div>
-                          <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{product.description}</p>
-                        </div>
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-lg font-semibold">{formatCurrency(product.price)}</span>
-                          <Button disabled={!product.isAvailable} onClick={() => addToCart(product)}>
-                            Agregar
-                          </Button>
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </section>
-            ))
-          )}
-        </div>
-
-        <Card className="h-fit p-5">
-          <form className="section-grid gap-4" onSubmit={onSubmit}>
-            <div className="section-grid gap-1">
-              <h2 className="text-xl font-semibold">Tu pedido</h2>
-              <p className="text-sm text-[var(--color-muted)]">
-                Proceso rapido para cliente QR sin cuenta ni login.
-              </p>
-            </div>
-            <label className="section-grid gap-2">
-              <span className="text-sm font-medium">Tu nombre</span>
-              <Input placeholder="Ej. Andrea" {...form.register("customerName")} />
-              {form.formState.errors.customerName ? (
-                <span className="text-sm text-[var(--color-danger)]">
-                  {form.formState.errors.customerName.message}
-                </span>
-              ) : null}
-            </label>
-
-            <div className="section-grid gap-2">
-              {cart.length === 0 ? (
-                <div className="rounded-2xl bg-white/80 p-4 text-sm text-[var(--color-muted)]">
-                  Aun no agregaste productos.
-                </div>
-              ) : (
-                cart.map((item) => (
-                  <div key={item.product.id} className="rounded-2xl bg-white/80 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="font-semibold">{item.product.name}</p>
-                        <p className="text-sm text-[var(--color-muted)]">Cantidad: {item.quantity}</p>
-                      </div>
-                      <span className="font-semibold">
-                        {formatCurrency(item.product.price * item.quantity)}
-                      </span>
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <Card className="rounded-[32px] border border-white/8 bg-white/[0.03] p-5 text-white shadow-none">
+              <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
+                <ProductVisual accent={selectedProduct.accent} category={selectedProduct.category} className="min-h-[320px]" />
+                <div className="grid gap-4">
+                  <div className="flex items-center gap-2 text-[var(--color-accent)]">
+                    <Star className="h-4 w-4 fill-current" />
+                    <span className="text-sm font-medium">Favorito del día</span>
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-semibold">{selectedProduct.name}</h2>
+                    <p className="mt-2 max-w-xl text-sm leading-7 text-white/65">{selectedProduct.description}</p>
+                  </div>
+                  <div className="grid gap-2 text-sm text-white/70 sm:grid-cols-3">
+                    {["Grande · +S/1.50", "Mediano · base", "Pequeño · -S/1.50"].map((size) => (
+                      <div key={size} className="rounded-2xl bg-white/6 px-4 py-3">{size}</div>
+                    ))}
+                  </div>
+                  <div className="grid gap-2 text-sm text-white/70">
+                    <p>Complementos sugeridos:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {["Shot extra", "Leche vegetal", "Jarabe vainilla"].map((addon) => (
+                        <span key={addon} className="rounded-full border border-white/10 px-3 py-2">{addon}</span>
+                      ))}
                     </div>
                   </div>
-                ))
-              )}
-            </div>
+                  <div className="flex items-center justify-between rounded-[24px] bg-white/8 px-4 py-4">
+                    <div>
+                      <p className="text-sm text-white/60">Precio final</p>
+                      <p className="text-2xl font-semibold">{formatCurrency(selectedProduct.price)}</p>
+                    </div>
+                    <Button>Agregar al pedido</Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
 
-            <div className="flex items-center justify-between text-sm font-semibold">
-              <span>Total</span>
-              <span>{formatCurrency(cartTotal)}</span>
-            </div>
+            <Card className="rounded-[32px] border border-white/8 bg-white/[0.03] p-5 text-white shadow-none">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--color-primary)]">
+                  <ShoppingBag className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Estado de tus pedidos</h3>
+                  <p className="text-sm text-white/60">Recibido, preparando y listo sin preguntar.</p>
+                </div>
+              </div>
+              <div className="mt-4 grid gap-3">
+                {demoOrders.slice(0, 2).map((order) => (
+                  <div key={order.id} className="rounded-[22px] bg-white/6 p-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <div>
+                        <p className="font-semibold">#{order.id}</p>
+                        <p className="text-sm text-white/60">{order.items[0]?.productName}</p>
+                      </div>
+                      <StatusBadge status={order.status} label={order.shortStatus} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </section>
 
-            <Button disabled={form.formState.isSubmitting || cart.length === 0 || !session.canCreateMoreOrders} type="submit">
-              Enviar pedido
-            </Button>
-          </form>
-        </Card>
+        <aside className="dark-panel h-fit rounded-[34px] border border-white/10 p-5">
+          <div className="grid gap-4">
+            <div>
+              <p className="text-sm text-white/60">Tu pedido</p>
+              <h2 className="text-2xl font-semibold">Resumen rápido</h2>
+            </div>
+            <label className="grid gap-2">
+              <span className="text-sm text-white/70">Nombre del cliente</span>
+              <Input className="border-white/10 bg-white/8 text-white placeholder:text-white/45" placeholder="Ej. Andrea" />
+            </label>
+            <div className="grid gap-3">
+              {cartItems.map(({ product, quantity }) => (
+                <div key={product.id} className="rounded-[22px] bg-white/6 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-semibold">{product.name}</p>
+                      <p className="text-sm text-white/60">Cantidad: {quantity}</p>
+                    </div>
+                    <span className="font-semibold">{formatCurrency(product.price * quantity)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="rounded-[24px] bg-white/6 p-4">
+              <div className="flex items-center justify-between text-sm text-white/70">
+                <span>Subtotal</span>
+                <span>{formatCurrency(total)}</span>
+              </div>
+              <div className="mt-2 flex items-center justify-between text-sm text-white/70">
+                <span>Servicio</span>
+                <span>{formatCurrency(total * 0.1)}</span>
+              </div>
+              <div className="mt-4 flex items-center justify-between text-xl font-semibold">
+                <span>Total</span>
+                <span>{formatCurrency(total * 1.1)}</span>
+              </div>
+            </div>
+            <Button className="w-full">Enviar pedido</Button>
+          </div>
+        </aside>
       </div>
     </main>
   );
