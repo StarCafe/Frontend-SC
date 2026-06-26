@@ -1,15 +1,37 @@
 "use client";
 
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Coffee, QrCode, ShieldCheck, UtensilsCrossed } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import Link from "next/link";
-import { Coffee, ShieldCheck } from "lucide-react";
 import { loginSchema, type LoginFormValues } from "@/modules/auth/application/schemas/login.schema";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
-import { useRouter } from "next/navigation";
+import { cn } from "@/shared/utils/cn";
+
+const accessOptions = [
+  {
+    key: "ADMIN",
+    label: "ADMIN",
+    href: "/admin/login",
+    icon: ShieldCheck,
+  },
+  {
+    key: "KITCHEN",
+    label: "KITCHEN",
+    href: "/kitchen/login",
+    icon: UtensilsCrossed,
+  },
+  {
+    key: "CLIENT",
+    label: "CLIENTE",
+    href: "/mesa/demo-qr-token",
+    icon: QrCode,
+  },
+] as const;
 
 export function LoginForm({
   role,
@@ -45,18 +67,39 @@ export function LoginForm({
             </div>
             <div>
               <h2 className="text-4xl font-semibold">StarCafe</h2>
-              <p className="text-white/70">Modern. Warm. Fast.</p>
+              <p className="text-white/70">Selecciona tu vista</p>
             </div>
           </div>
+
           <p className="max-w-lg text-lg leading-8 text-white/72">
-            Sistema premium para cafeterías con experiencia cálida para clientes, visibilidad total para administración y velocidad real en cocina.
+            Entra a la vista que quieras revisar para el deploy visual.
           </p>
+
           <div className="grid gap-4 sm:grid-cols-3">
-            {["Cálido", "Rápido", "Premium"].map((item) => (
-              <div key={item} className="rounded-[28px] border border-white/10 bg-white/5 p-4 text-center">
-                <p className="text-sm uppercase tracking-[0.16em] text-white/60">{item}</p>
-              </div>
-            ))}
+            {accessOptions.map((option) => {
+              const Icon = option.icon;
+              const active =
+                (role === "ADMIN" && option.key === "ADMIN") ||
+                (role === "KITCHEN" && option.key === "KITCHEN");
+
+              return (
+                <Link
+                  key={option.key}
+                  href={option.href}
+                  className={cn(
+                    "rounded-[28px] border p-4 text-center transition",
+                    active
+                      ? "border-[var(--color-accent)] bg-[var(--color-accent)]/18 text-white"
+                      : "border-white/10 bg-white/5 text-white/75 hover:bg-white/10",
+                  )}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Icon className="h-4 w-4" />
+                    <p className="text-sm uppercase tracking-[0.16em]">{option.label}</p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -80,7 +123,11 @@ export function LoginForm({
 
           <label className="section-grid gap-2">
             <span className="text-sm font-medium text-[var(--color-ink)]">Correo</span>
-            <Input type="email" placeholder={role === "ADMIN" ? "admin@starcafe.com" : "kitchen@starcafe.com"} {...form.register("email")} />
+            <Input
+              type="email"
+              placeholder={role === "ADMIN" ? "admin@starcafe.com" : "kitchen@starcafe.com"}
+              {...form.register("email")}
+            />
             {form.formState.errors.email ? (
               <span className="text-sm text-[var(--color-danger)]">{form.formState.errors.email.message}</span>
             ) : null}
@@ -94,20 +141,9 @@ export function LoginForm({
             ) : null}
           </label>
 
-          <div className="rounded-[24px] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-muted)]">
-            Esta versión es totalmente hardcodeada para deploy visual. El botón solo navega entre pantallas demo.
-          </div>
-
           <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
             Ingresar al demo
           </Button>
-
-          <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--color-muted)]">
-            <span>Cliente QR</span>
-            <Link className="font-semibold text-[var(--color-primary)]" href="/mesa/demo-qr-token">
-              Ver experiencia pública
-            </Link>
-          </div>
         </form>
       </Card>
     </div>

@@ -1,4 +1,11 @@
-export type DemoStatus = "PENDING" | "PREPARING" | "READY" | "PAID" | "CANCELLED" | "ACTIVE" | "INACTIVE";
+export type DemoStatus =
+  | "PENDING"
+  | "PREPARING"
+  | "READY"
+  | "PAID"
+  | "CANCELLED"
+  | "ACTIVE"
+  | "INACTIVE";
 
 export interface DemoProduct {
   id: number;
@@ -40,209 +47,319 @@ export interface DemoOrder {
   items: DemoOrderItem[];
 }
 
+export interface DemoPublicTableSession {
+  table: DemoTable;
+  activeOrdersCount: number;
+  remainingSlots: number;
+  canCreateMoreOrders: boolean;
+  activeOrders: DemoOrder[];
+}
+
 export const demoPalette = [
   { name: "Verde principal", hex: "#006241" },
-  { name: "Verde oscuro", hex: "#13251F" },
   { name: "Crema", hex: "#F7F3ED" },
-  { name: "Caramelo", hex: "#C89A58" },
   { name: "Carbón", hex: "#1E1E1E" },
+  { name: "Caramelo", hex: "#C89A58" },
   { name: "Verde suave", hex: "#E3E9E1" },
 ];
 
 export const demoAdminUser = {
-  name: "Admin",
-  roleLabel: "Administrador",
+  name: "Admin Principal",
+  roleLabel: "ADMIN",
   avatar: "A",
 };
 
 export const demoKitchenUser = {
-  name: "Camila",
-  roleLabel: "Kitchen lead",
-  avatar: "C",
+  name: "Cocina 1",
+  roleLabel: "KITCHEN",
+  avatar: "K",
 };
 
 export const demoStats = [
-  { label: "Ventas Totales", value: "$1,248.50", change: "+12.5% vs ayer" },
-  { label: "Pedidos", value: "48", change: "+8.3% vs ayer" },
-  { label: "Clientes", value: "76", change: "+5.2% vs ayer" },
-  { label: "Mesas Activas", value: "8", change: "de 20 mesas" },
+  { label: "Mesas activas", value: "2", change: "1 fuera de servicio" },
+  { label: "Pedidos activos", value: "3", change: "2 en mesa 1, 1 en mesa 2" },
+  { label: "Productos", value: "6", change: "1 no disponible" },
+  { label: "Usuarios", value: "4", change: "1 cocina inactiva" },
 ];
 
 export const demoProducts: DemoProduct[] = [
   {
     id: 1,
-    name: "Frappé Chocolate",
-    description: "Helado, cremoso y con un swirl oscuro de cacao.",
-    price: 17,
-    category: "Frappuccino",
-    accent: "from-[#5B371E] via-[#8C5B34] to-[#F2E2C6]",
-    subtitle: "32 unidades",
+    name: "Capuccino",
+    description: "Café con leche espumada.",
+    price: 12.5,
+    category: "Cafes",
+    accent: "from-[#7A5438] via-[#B78B67] to-[#F1DFC9]",
+    subtitle: "Disponible",
     available: true,
     featured: true,
   },
   {
     id: 2,
-    name: "Cold Brew",
-    description: "Café frío intenso, limpio y muy refrescante.",
-    price: 12,
-    category: "Frío",
-    accent: "from-[#241A15] via-[#432C1F] to-[#8C5A2E]",
-    subtitle: "28 unidades",
+    name: "Frappe de Oreo",
+    description: "Bebida fría con galleta oreo.",
+    price: 14,
+    category: "Frappes",
+    accent: "from-[#2E211E] via-[#5B433D] to-[#D8C2B4]",
+    subtitle: "Disponible",
     available: true,
   },
   {
     id: 3,
-    name: "Caffè Misto",
-    description: "Espresso balanceado con leche cremosa vaporizada.",
-    price: 14,
-    category: "Caliente",
-    accent: "from-[#A36A3F] via-[#C99565] to-[#F6E7CF]",
-    subtitle: "26 unidades",
+    name: "Desayuno Clasico",
+    description: "Café, jugo, huevos revueltos y tostadas.",
+    price: 20,
+    category: "Desayunos",
+    accent: "from-[#7D5723] via-[#C1934C] to-[#F4E2BE]",
+    subtitle: "Disponible",
     available: true,
   },
   {
     id: 4,
-    name: "Dragonfruit Refresher",
-    description: "Notas cítricas y frutales con acabado vibrante.",
-    price: 15,
-    category: "Refresco",
-    accent: "from-[#B2265D] via-[#E54C7F] to-[#F9CBD8]",
-    subtitle: "18 unidades",
+    name: "Sandwich con pollo crispy",
+    description: "Pan artesanal con pollo crispy y salsa de la casa.",
+    price: 12,
+    category: "Sandwiches",
+    accent: "from-[#6A4A2D] via-[#A57852] to-[#EED8C2]",
+    subtitle: "Disponible",
     available: true,
   },
   {
     id: 5,
-    name: "Caramel Frappe",
-    description: "Caramelo tostado con textura ligera y dulce.",
-    price: 16,
-    category: "Frappuccino",
-    accent: "from-[#8F5A22] via-[#C48C4A] to-[#F5DFC2]",
-    subtitle: "24 unidades",
-    available: true,
+    name: "Cafe Americano",
+    description: "Café americano de origen.",
+    price: 6,
+    category: "Cafes",
+    accent: "from-[#231A15] via-[#4A3529] to-[#BDA18A]",
+    subtitle: "No disponible",
+    available: false,
   },
   {
     id: 6,
-    name: "Cheesecake",
-    description: "Postre suave con frutos rojos y base crocante.",
-    price: 13,
-    category: "Postres",
-    accent: "from-[#7C2F38] via-[#D06A78] to-[#F7D7DC]",
-    subtitle: "14 unidades",
+    name: "Cafe Mocaccino",
+    description: "Café con chocolate y leche.",
+    price: 8,
+    category: "Cafes",
+    accent: "from-[#4A2F28] via-[#85574A] to-[#D8B8A7]",
+    subtitle: "Inactivo",
     available: false,
   },
 ];
 
 export const demoTables: DemoTable[] = [
-  { id: 1, tableNumber: 1, qrToken: "mesa-1-demo", qrUrl: "https://starcafe.app/mesa/mesa-1-demo", active: true },
-  { id: 2, tableNumber: 2, qrToken: "mesa-2-demo", qrUrl: "https://starcafe.app/mesa/mesa-2-demo", active: true },
-  { id: 3, tableNumber: 3, qrToken: "mesa-3-demo", qrUrl: "https://starcafe.app/mesa/mesa-3-demo", active: true },
-  { id: 4, tableNumber: 4, qrToken: "mesa-4-demo", qrUrl: "https://starcafe.app/mesa/mesa-4-demo", active: false },
-  { id: 5, tableNumber: 5, qrToken: "mesa-5-demo", qrUrl: "https://starcafe.app/mesa/mesa-5-demo", active: true },
-  { id: 6, tableNumber: 6, qrToken: "mesa-6-demo", qrUrl: "https://starcafe.app/mesa/mesa-6-demo", active: true },
+  {
+    id: 1,
+    tableNumber: 1,
+    qrToken: "3f9b67aa-852d-4c05-b24e-6ac181d14428",
+    qrUrl: "http://localhost:3000/mesa/3f9b67aa-852d-4c05-b24e-6ac181d14428",
+    active: true,
+  },
+  {
+    id: 2,
+    tableNumber: 2,
+    qrToken: "0e6cfdb3-5e88-4b8a-bd4d-2a787db16a10",
+    qrUrl: "http://localhost:3000/mesa/0e6cfdb3-5e88-4b8a-bd4d-2a787db16a10",
+    active: true,
+  },
+  {
+    id: 3,
+    tableNumber: 3,
+    qrToken: "9a5dd9dd-6e6f-4dfb-b2ef-6a5dc0f8a2d1",
+    qrUrl: "http://localhost:3000/mesa/9a5dd9dd-6e6f-4dfb-b2ef-6a5dc0f8a2d1",
+    active: false,
+  },
 ];
 
 export const demoOrders: DemoOrder[] = [
   {
-    id: 56789,
+    id: 5,
     table: "Mesa 1",
-    customerName: "Andrea",
-    createdAt: "2026-06-26T10:05:00.000Z",
-    total: 35.5,
+    customerName: "Luis",
+    createdAt: "2026-06-26T10:15:00Z",
+    total: 26,
     status: "PREPARING",
     shortStatus: "Preparando",
     items: [
-      { id: 1, productName: "Frappé Chocolate", quantity: 2, price: 17, notes: "Sin crema", status: "PREPARING" },
-      { id: 2, productName: "Cold Brew", quantity: 1, price: 12, status: "PENDING" },
+      {
+        id: 101,
+        productName: "Capuccino",
+        quantity: 1,
+        price: 12.5,
+        notes: "Sin azucar",
+        status: "READY",
+      },
+      {
+        id: 102,
+        productName: "Frappe de Oreo",
+        quantity: 1,
+        price: 14,
+        status: "PREPARING",
+      },
     ],
   },
   {
-    id: 56788,
-    table: "Mesa 3",
-    customerName: "Luis",
-    createdAt: "2026-06-26T09:58:00.000Z",
-    total: 24,
+    id: 6,
+    table: "Mesa 2",
+    customerName: "Maria",
+    createdAt: "2026-06-26T10:20:00Z",
+    total: 20,
     status: "PENDING",
     shortStatus: "Pendiente",
     items: [
-      { id: 3, productName: "Cold Brew", quantity: 1, price: 12, status: "PENDING" },
-      { id: 4, productName: "Americano", quantity: 1, price: 12, notes: "Muy caliente", status: "PENDING" },
+      {
+        id: 103,
+        productName: "Desayuno Clasico",
+        quantity: 1,
+        price: 20,
+        notes: "Sin mermelada",
+        status: "PENDING",
+      },
     ],
   },
   {
-    id: 56787,
-    table: "Mesa 5",
-    customerName: "María",
-    createdAt: "2026-06-26T09:53:00.000Z",
-    total: 42,
+    id: 7,
+    table: "Mesa 1",
+    customerName: "Lucia",
+    createdAt: "2026-06-26T10:05:00Z",
+    total: 12.5,
     status: "READY",
     shortStatus: "Listo",
     items: [
-      { id: 5, productName: "Caffè Misto", quantity: 3, price: 14, status: "READY" },
+      {
+        id: 104,
+        productName: "Capuccino",
+        quantity: 1,
+        price: 12.5,
+        status: "READY",
+      },
     ],
   },
 ];
 
 export const demoHistoryOrders: DemoOrder[] = [
   {
-    id: 55217,
-    table: "Mesa 2",
-    customerName: "Juan",
-    createdAt: "2026-06-25T21:15:00.000Z",
-    total: 29,
-    status: "PAID",
-    shortStatus: "Pagado",
-    items: [
-      { id: 6, productName: "Caramel Frappe", quantity: 1, price: 16, status: "READY" },
-      { id: 7, productName: "Cheesecake", quantity: 1, price: 13, status: "READY" },
-    ],
-  },
-  {
-    id: 55216,
-    table: "Mesa 6",
-    customerName: "Teresa",
-    createdAt: "2026-06-25T20:48:00.000Z",
-    total: 19,
+    id: 3,
+    table: "Mesa 1",
+    customerName: "Luis",
+    createdAt: "2026-06-26T09:00:00Z",
+    total: 18,
     status: "CANCELLED",
     shortStatus: "Cancelado",
-    items: [{ id: 8, productName: "Cold Brew", quantity: 1, price: 12, status: "CANCELLED" }],
+    items: [],
+  },
+  {
+    id: 4,
+    table: "Mesa 2",
+    customerName: "Ana",
+    createdAt: "2026-06-26T08:30:00Z",
+    total: 24.5,
+    status: "PAID",
+    shortStatus: "Pagado",
+    items: [],
   },
 ];
 
 export const demoCategories = [
-  { id: 1, name: "Calientes", description: "Espresso, cappuccino y mezclas cremosas", products: 8, status: "ACTIVE" as const },
-  { id: 2, name: "Fríos", description: "Cold brew y bebidas heladas", products: 6, status: "ACTIVE" as const },
-  { id: 3, name: "Postres", description: "Cheesecakes, brownies y bakery", products: 4, status: "ACTIVE" as const },
+  { id: 1, name: "Cafes", description: "Bebidas calientes", products: 3, status: "ACTIVE" as const },
+  { id: 2, name: "Frappes", description: "Bebidas frias con hielo", products: 1, status: "ACTIVE" as const },
+  { id: 3, name: "Desayunos", description: "Opciones para empezar el dia", products: 1, status: "ACTIVE" as const },
+  { id: 4, name: "Sandwiches", description: "Opciones saladas", products: 1, status: "ACTIVE" as const },
 ];
 
 export const demoAddons = [
-  { id: 1, name: "Shot extra", price: 3, appliesTo: "Bebidas calientes", status: "ACTIVE" as const },
-  { id: 2, name: "Leche vegetal", price: 2.5, appliesTo: "Toda la carta", status: "ACTIVE" as const },
-  { id: 3, name: "Jarabe vainilla", price: 2, appliesTo: "Frappes y lattes", status: "INACTIVE" as const },
+  { id: 1, name: "Leche deslactosada", price: 1.5, appliesTo: "Cafes", status: "ACTIVE" as const },
+  { id: 2, name: "Shot extra de espresso", price: 2, appliesTo: "Cafes", status: "ACTIVE" as const },
+  { id: 3, name: "Crema batida", price: 1, appliesTo: "Frappes", status: "ACTIVE" as const },
+  { id: 4, name: "Queso extra", price: 2.5, appliesTo: "Sandwiches", status: "ACTIVE" as const },
 ];
 
 export const demoUsers = [
   { id: 1, name: "Admin Principal", email: "admin@starcafe.com", role: "ADMIN", status: "ACTIVE" as const },
-  { id: 2, name: "Camila Rojas", email: "kitchen@starcafe.com", role: "KITCHEN", status: "ACTIVE" as const },
-  { id: 3, name: "Carlos Vega", email: "cashier@starcafe.com", role: "ADMIN", status: "INACTIVE" as const },
+  { id: 2, name: "Cocina 1", email: "kitchen@starcafe.com", role: "KITCHEN", status: "ACTIVE" as const },
+  { id: 3, name: "Admin Secundario", email: "admin2@starcafe.com", role: "ADMIN", status: "ACTIVE" as const },
+  { id: 4, name: "Cocina 2", email: "kitchen2@starcafe.com", role: "KITCHEN", status: "INACTIVE" as const },
 ];
 
 export const demoCashierResults = [
-  { id: 56789, table: "Mesa 1", customer: "Andrea", status: "READY" as const, total: "$38.50" },
-  { id: 56787, table: "Mesa 5", customer: "María", status: "PAID" as const, total: "$42.00" },
+  { id: 5, table: "Mesa 1", customer: "Luis", status: "PREPARING" as const, total: "S/ 26.00" },
+  { id: 6, table: "Mesa 2", customer: "Maria", status: "PENDING" as const, total: "S/ 20.00" },
+  { id: 4, table: "Mesa 2", customer: "Ana", status: "PAID" as const, total: "S/ 24.50" },
 ];
 
-export const demoMenuTabs = ["Todos", "Caliente", "Frío", "Refresco", "Frappuccino", "Postres"];
+export const demoMenuTabs = ["Todos", "Cafes", "Frappes", "Desayunos", "Sandwiches"];
 
 export const demoCategoryBreakdown = [
-  { label: "Bebidas", value: "62%", color: "#006241" },
-  { label: "Alimentos", value: "28%", color: "#C89A58" },
-  { label: "Postres", value: "10%", color: "#A9BEAE" },
+  { label: "Cafes", value: "50%", color: "#006241" },
+  { label: "Frappes", value: "17%", color: "#C89A58" },
+  { label: "Desayunos", value: "17%", color: "#A9BEAE" },
+  { label: "Sandwiches", value: "16%", color: "#6E8B74" },
 ];
 
 export const demoExperiencePillars = [
-  "Diseño moderno y premium",
-  "100% responsivo",
-  "Experiencia intuitiva",
+  "Admin operativo",
+  "Kitchen rapido",
+  "Cliente mobile-first",
   "Estados claros",
-  "Sistema completo",
+  "Deploy visual",
 ];
+
+export const demoPublicTableSession: DemoPublicTableSession = {
+  table: demoTables[0],
+  activeOrdersCount: 2,
+  remainingSlots: 1,
+  canCreateMoreOrders: true,
+  activeOrders: [demoOrders[0], demoOrders[2]],
+};
+
+export const demoPublicTableSessionFull: DemoPublicTableSession = {
+  table: demoTables[1],
+  activeOrdersCount: 3,
+  remainingSlots: 0,
+  canCreateMoreOrders: false,
+  activeOrders: [
+    {
+      id: 8,
+      table: "Mesa 2",
+      customerName: "Carlos",
+      createdAt: "2026-06-26T10:25:00Z",
+      total: 12,
+      status: "PENDING",
+      shortStatus: "Pendiente",
+      items: [],
+    },
+    {
+      id: 9,
+      table: "Mesa 2",
+      customerName: "Rosa",
+      createdAt: "2026-06-26T10:10:00Z",
+      total: 14,
+      status: "PREPARING",
+      shortStatus: "Preparando",
+      items: [],
+    },
+    {
+      id: 10,
+      table: "Mesa 2",
+      customerName: "Diego",
+      createdAt: "2026-06-26T09:55:00Z",
+      total: 20,
+      status: "READY",
+      shortStatus: "Listo",
+      items: [],
+    },
+  ],
+};
+
+export const demoPublicTableSessionEmpty: DemoPublicTableSession = {
+  table: {
+    id: 4,
+    tableNumber: 4,
+    qrToken: "demo-qr-token",
+    qrUrl: "http://localhost:3000/mesa/demo-qr-token",
+    active: true,
+  },
+  activeOrdersCount: 0,
+  remainingSlots: 3,
+  canCreateMoreOrders: true,
+  activeOrders: [],
+};

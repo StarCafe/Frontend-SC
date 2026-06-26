@@ -4,9 +4,10 @@ import { useMemo, useState } from "react";
 import { ArrowLeft, Clock3, Plus, ShoppingBag, Star } from "lucide-react";
 import {
   demoMenuTabs,
-  demoOrders,
+  demoPublicTableSession,
+  demoPublicTableSessionEmpty,
+  demoPublicTableSessionFull,
   demoProducts,
-  demoTables,
 } from "@/shared/mock/starcafe-demo";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
@@ -19,7 +20,12 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
   const [activeTab, setActiveTab] = useState("Todos");
   const [selectedId, setSelectedId] = useState(demoProducts[0]?.id ?? 1);
   const [cart, setCart] = useState<Record<number, number>>({ 1: 2, 2: 1 });
-  const table = demoTables.find((item) => item.qrToken === qrToken) ?? demoTables[0];
+  const session = qrToken === "0e6cfdb3-5e88-4b8a-bd4d-2a787db16a10"
+    ? demoPublicTableSessionFull
+    : qrToken === "demo-qr-token"
+      ? demoPublicTableSessionEmpty
+      : demoPublicTableSession;
+  const table = session.table;
   const selectedProduct = demoProducts.find((item) => item.id === selectedId) ?? demoProducts[0];
   const filteredProducts = activeTab === "Todos"
     ? demoProducts
@@ -48,8 +54,16 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
               </div>
               <div className="flex items-center gap-2 rounded-2xl bg-white/8 px-4 py-3 text-sm text-white/70">
                 <Clock3 className="h-4 w-4" />
-                Cupos restantes: 2
+                Cupos restantes: {session.remainingSlots}
               </div>
+            </div>
+
+            <div className="mt-4 rounded-[24px] bg-white/6 px-4 py-3 text-sm text-white/75">
+              {session.canCreateMoreOrders
+                ? session.activeOrdersCount > 0
+                  ? "Tienes pedidos en curso. Puedes seguir agregando productos."
+                  : "Empieza tu pedido desde esta mesa."
+                : "Esta mesa ya alcanzo el maximo de pedidos activos."}
             </div>
 
             <div className="mt-5 flex gap-3 overflow-x-auto pb-1">
@@ -150,7 +164,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
                 </div>
               </div>
               <div className="mt-4 grid gap-3">
-                {demoOrders.slice(0, 2).map((order) => (
+                {session.activeOrders.length ? session.activeOrders.map((order) => (
                   <div key={order.id} className="rounded-[22px] bg-white/6 p-4">
                     <div className="flex items-center justify-between gap-2">
                       <div>
@@ -160,7 +174,11 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
                       <StatusBadge status={order.status} label={order.shortStatus} />
                     </div>
                   </div>
-                ))}
+                )) : (
+                  <div className="rounded-[22px] bg-white/6 p-4 text-sm text-white/65">
+                    Aun no hay pedidos activos para esta mesa.
+                  </div>
+                )}
               </div>
             </Card>
           </div>
