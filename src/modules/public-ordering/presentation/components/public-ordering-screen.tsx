@@ -160,22 +160,22 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
     selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
 
   return (
-    <main className="min-h-screen bg-[var(--color-background)] px-4 py-5 text-white">
+    <main className="min-h-screen bg-[var(--color-background)] px-3 py-4 text-white sm:px-4 sm:py-5">
       <div className="mx-auto grid w-full max-w-7xl gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
         <section className="section-grid gap-5">
-          <div className="dark-panel rounded-[34px] border border-white/10 p-5">
+          <div className="dark-panel rounded-[26px] border border-white/10 p-4 sm:rounded-[34px] sm:p-5">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <button className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 sm:h-11 sm:w-11">
                   <ArrowLeft className="h-4 w-4" />
                 </button>
                 <div>
                   <p className="text-sm text-white/60">Mesa {table.tableNumber}</p>
-                  <h1 className="text-3xl font-semibold">Bienvenido a StarCafe</h1>
+                  <h1 className="text-2xl font-semibold sm:text-3xl">Bienvenido a StarCafe</h1>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 rounded-2xl bg-white/8 px-4 py-3 text-sm text-white/70">
+              <div className="flex w-full items-center gap-2 rounded-2xl bg-white/8 px-4 py-3 text-sm text-white/70 sm:w-auto">
                 <Clock3 className="h-4 w-4" />
                 Cupos restantes: {session.remainingSlots}
               </div>
@@ -213,7 +213,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((product) => (
               <Card
                 key={product.id}
@@ -224,7 +224,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
                 <div className="mt-4 grid gap-3">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-xl font-semibold">{product.name}</p>
+                      <p className="text-lg font-semibold sm:text-xl">{product.name}</p>
                       <p className="text-sm text-[var(--color-muted)]">
                         {product.description}
                       </p>
@@ -236,7 +236,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <p className="text-lg font-semibold">
                         {formatCurrency(product.price)}
@@ -261,12 +261,12 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
           </div>
 
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
-            <Card className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-[var(--color-ink)] shadow-none">
-              <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
+            <Card className="rounded-[26px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-[var(--color-ink)] shadow-none sm:rounded-[32px] sm:p-5">
+              <div className="grid gap-4 md:grid-cols-[220px_minmax(0,1fr)] lg:grid-cols-[260px_minmax(0,1fr)]">
                 <ProductVisual
                   accent={selectedProduct.accent}
                   category={selectedProduct.category}
-                  className="min-h-[320px]"
+                  className="min-h-[220px] md:min-h-[320px]"
                 />
 
                 <div className="grid gap-4">
@@ -276,7 +276,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
                   </div>
 
                   <div>
-                    <h2 className="text-3xl font-semibold">{selectedProduct.name}</h2>
+                    <h2 className="text-2xl font-semibold sm:text-3xl">{selectedProduct.name}</h2>
                     <p className="mt-2 max-w-xl text-sm leading-7 text-[var(--color-muted)]">
                       {selectedProduct.description}
                     </p>
@@ -333,7 +333,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
                     />
                   </label>
 
-                  <div className="flex items-center justify-between rounded-[24px] bg-[var(--color-surface-strong)] px-4 py-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] bg-[var(--color-surface-strong)] px-4 py-4">
                     <div>
                       <p className="text-sm text-[var(--color-muted)]">
                         Precio final
@@ -350,7 +350,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
               </div>
             </Card>
 
-            <Card className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-[var(--color-ink)] shadow-none">
+            <Card className="rounded-[26px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-[var(--color-ink)] shadow-none sm:rounded-[32px] sm:p-5">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-white">
                   <ShoppingBag className="h-5 w-5" />
@@ -391,7 +391,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
           </div>
         </section>
 
-        <aside className="dark-panel h-fit rounded-[34px] border border-white/10 p-5">
+        <aside className="dark-panel h-fit rounded-[26px] border border-white/10 p-4 sm:rounded-[34px] sm:p-5 xl:sticky xl:top-5">
           <div className="grid gap-4">
             <div>
               <p className="text-sm text-white/60">Tu pedido</p>
@@ -422,7 +422,7 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
                         <p className="mt-1 text-sm text-white/75">Nota: {note}</p>
                       ) : null}
                     </div>
-                    <span className="font-semibold">
+                    <span className="shrink-0 font-semibold">
                       {formatCurrency(lineTotal)}
                     </span>
                   </div>

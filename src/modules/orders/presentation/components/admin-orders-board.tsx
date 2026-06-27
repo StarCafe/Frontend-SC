@@ -41,7 +41,7 @@ export function AdminOrdersBoard({ history = false }: { history?: boolean }) {
       />
       <div className="grid gap-5 xl:grid-cols-2">
         {orders.map((order) => (
-          <Card key={order.id} className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
+          <Card key={order.id} className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-sm text-[var(--color-muted)]">#{order.id} · {order.table}</p>
@@ -52,8 +52,8 @@ export function AdminOrdersBoard({ history = false }: { history?: boolean }) {
             </div>
             <div className="mt-4 grid gap-3">
               {order.items.map((item) => (
-                <div key={item.id} className="rounded-[22px] bg-[var(--color-surface)] p-4">
-                  <div className="flex items-center justify-between gap-3">
+                <div key={item.id} className="rounded-[18px] bg-[var(--color-surface)] p-4 sm:rounded-[22px]">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <p className="font-semibold text-[var(--color-ink)]">
                         {item.quantity} x {item.productName}
@@ -67,9 +67,9 @@ export function AdminOrdersBoard({ history = false }: { history?: boolean }) {
             </div>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <span className="text-lg font-semibold text-[var(--color-ink)]">{formatCurrency(order.total)}</span>
-              <div className="flex gap-2">
-                <Button variant="ghost">Ver detalle</Button>
-                <Button variant="danger">Cancelar pedido</Button>
+              <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+                <Button className="flex-1 sm:flex-none" variant="ghost">Ver detalle</Button>
+                <Button className="flex-1 sm:flex-none" variant="danger">Cancelar pedido</Button>
               </div>
             </div>
           </Card>

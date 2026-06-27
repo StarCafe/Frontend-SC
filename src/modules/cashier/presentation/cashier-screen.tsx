@@ -16,9 +16,9 @@ export function CashierScreen() {
       />
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="section-grid gap-5">
-          <Card className="rounded-[28px] bg-white p-4 shadow-[var(--shadow-card)]">
+          <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[28px]">
             <div className="flex items-center gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-muted)]">
-              <Search className="h-4 w-4" />
+              <Search className="h-4 w-4 shrink-0" />
               Buscar por nombre, mesa o estado...
             </div>
           </Card>
@@ -33,9 +33,9 @@ export function CashierScreen() {
             ])}
           />
         </div>
-        <Card className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
+        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5 xl:sticky xl:top-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-white">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-white">
               <CreditCard className="h-5 w-5" />
             </div>
             <div>

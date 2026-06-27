@@ -14,12 +14,12 @@ export function ProductsScreen() {
         eyebrow="Products"
         title="Catálogo de productos"
         description="Cards visuales para gestionar imagen, disponibilidad, categoría y estado sin depender del backend todavía."
-        action={<Button><Upload className="h-4 w-4" />Crear producto</Button>}
+        action={<Button className="w-full sm:w-auto"><Upload className="h-4 w-4" />Crear producto</Button>}
       />
 
-      <Card className="rounded-[28px] bg-white p-4 shadow-[var(--shadow-card)]">
+      <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[28px]">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-muted)]">
+          <div className="flex w-full items-center gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-muted)] lg:w-auto">
             <Search className="h-4 w-4" />
             Buscar producto...
           </div>
@@ -36,16 +36,16 @@ export function ProductsScreen() {
 
       <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
         {demoProducts.map((product) => (
-          <Card key={product.id} className="rounded-[30px] bg-white p-4 shadow-[var(--shadow-card)]">
+          <Card key={product.id} className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px]">
             <ProductVisual accent={product.accent} category={product.category} />
-            <div className="mt-4 flex items-start justify-between gap-3">
+            <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h3 className="text-xl font-semibold text-[var(--color-ink)]">{product.name}</h3>
                 <p className="mt-1 text-sm leading-6 text-[var(--color-muted)]">{product.description}</p>
               </div>
               <StatusBadge status={product.available ? "AVAILABLE" : "UNAVAILABLE"} label={product.available ? "Activo" : "Agotado"} />
             </div>
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-sm text-[var(--color-muted)]">{product.category}</p>
                 <p className="text-2xl font-semibold text-[var(--color-ink)]">{formatCurrency(product.price)}</p>
