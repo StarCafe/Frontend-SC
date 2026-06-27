@@ -94,8 +94,16 @@ select:-webkit-autofill {
   margin-inline: auto;
 }
 
+.app-shell-mobile {
+  width: min(100%, 430px);
+}
+
 @media (min-width: 640px) {
   .page-shell {
+    width: min(1280px, calc(100% - 2rem));
+  }
+
+  .app-shell-mobile {
     width: min(1280px, calc(100% - 2rem));
   }
 }
