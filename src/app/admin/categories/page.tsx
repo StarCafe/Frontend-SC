@@ -1,11 +1,5 @@
-import { PlaceholderPage } from "@/shared/components/ui/placeholder-page";
+import { CategoriesScreen } from "@/modules/categories/presentation/categories-screen";
 
 export default function AdminCategoriesPage() {
-  return (
-    <PlaceholderPage
-      title="Categorias"
-      domain="categories"
-      description="Modulo listo para crecer con formularios y repositorios propios."
-    />
-  );
+  return <CategoriesScreen />;
 }
