@@ -20,8 +20,8 @@ export function SectionHeading({
           </span>
         ) : null}
         <div className="section-grid gap-1">
-          <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
-          {description ? <p className="max-w-2xl text-sm leading-6 text-[var(--color-muted)]">{description}</p> : null}
+          <h1 className="text-[2rem] leading-tight font-semibold tracking-tight sm:text-3xl">{title}</h1>
+          {description ? <p className="max-w-2xl text-sm leading-6 text-[var(--color-muted)] sm:text-[15px]">{description}</p> : null}
         </div>
       </div>
       {action ? <div className="w-full md:w-auto">{action}</div> : null}

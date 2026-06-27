@@ -50,23 +50,25 @@ export function RoleShell({
   };
 
   return (
-    <div className="min-h-screen py-3 sm:py-5">
-      <div className="page-shell grid gap-4 lg:gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
-        <aside className="dark-panel rounded-[28px] border border-white/10 p-4 text-white sm:rounded-[36px] sm:p-5 xl:sticky xl:top-5 xl:max-h-[calc(100vh-2.5rem)]">
-          <div className="flex h-full flex-col gap-5 xl:gap-8">
-            <div className="section-grid gap-2 sm:flex sm:items-end sm:justify-between xl:block">
-              <span className="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">
+    <div className="min-h-screen px-2 py-2 sm:px-0 sm:py-5">
+      <div className="page-shell app-shell-mobile grid gap-3 sm:gap-4 lg:gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="dark-panel rounded-[30px] border border-white/10 p-3 text-white sm:rounded-[36px] sm:p-5 xl:sticky xl:top-5 xl:z-20 xl:max-h-[calc(100vh-2.5rem)]">
+          <div className="flex h-full flex-col gap-4 xl:gap-8">
+            <div className="section-grid gap-3 sm:flex sm:items-end sm:justify-between xl:block">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60">
                 StarCafe
               </span>
-              <div>
-                <h2 className="text-2xl font-semibold sm:text-3xl">{area}</h2>
+              <div className="section-grid gap-1">
+                <h2 className="text-[1.9rem] leading-none font-semibold sm:text-3xl">
+                  {area}
+                </h2>
                 <p className="text-sm text-white/70">
-                  {session.name} · {session.roleLabel}
+                  {session.name} / {session.roleLabel}
                 </p>
               </div>
             </div>
 
-            <nav className="flex gap-2 overflow-x-auto pb-1 xl:grid xl:overflow-visible xl:pb-0">
+            <nav className="grid grid-cols-3 gap-2 sm:grid-cols-4 xl:grid-cols-1 xl:gap-2">
               {navigation.map((item) => {
                 const active =
                   pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -76,16 +78,16 @@ export function RoleShell({
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex shrink-0 items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition xl:shrink",
+                      "flex min-h-[76px] flex-col items-start justify-between rounded-[22px] bg-white/5 px-3 py-3 text-left text-xs font-medium transition sm:min-h-[84px] sm:px-4 sm:text-sm xl:min-h-0 xl:flex-row xl:items-center xl:gap-3 xl:rounded-2xl xl:px-4 xl:py-3",
                       active
-                        ? "bg-[var(--color-primary)] text-white"
+                        ? "bg-[var(--color-primary)] text-white shadow-[0_16px_28px_rgba(0,98,65,0.28)]"
                         : "text-white/75 hover:bg-white/8 hover:text-white",
                     )}
                   >
                     {iconByLabel[item.label] ?? (
                       <UtensilsCrossed className="h-4 w-4" />
                     )}
-                    {item.label}
+                    <span className="leading-tight">{item.label}</span>
                   </Link>
                 );
               })}

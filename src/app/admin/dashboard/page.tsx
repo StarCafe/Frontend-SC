@@ -8,7 +8,7 @@ import { StatusBadge } from "@/shared/components/ui/status-badge";
 
 export default function AdminDashboardPage() {
   return (
-    <div className="section-grid gap-5 text-white">
+    <div className="section-grid gap-4 text-white sm:gap-5">
       <SectionHeading
         eyebrow="Admin area"
         title="Inicio administrativo"
@@ -16,7 +16,7 @@ export default function AdminDashboardPage() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
+        <Card className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
           <p className="text-sm font-medium text-[var(--color-muted)]">
             Mesas registradas
           </p>
@@ -28,7 +28,7 @@ export default function AdminDashboardPage() {
             className={buttonClasses({
               variant: "primary",
               className:
-                "mt-4 w-fit justify-start bg-[var(--color-primary)] px-4 !text-white hover:bg-[var(--color-primary-strong)]",
+                "mt-5 w-fit justify-start bg-[var(--color-primary)] px-4 !text-white hover:bg-[var(--color-primary-strong)]",
             })}
           >
             Ir a Mesas
@@ -36,7 +36,7 @@ export default function AdminDashboardPage() {
           </Link>
         </Card>
 
-        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
+        <Card className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
           <p className="text-sm font-medium text-[var(--color-muted)]">
             Pedidos activos
           </p>
@@ -48,7 +48,7 @@ export default function AdminDashboardPage() {
             className={buttonClasses({
               variant: "primary",
               className:
-                "mt-4 w-fit justify-start bg-[var(--color-primary)] px-4 !text-white hover:bg-[var(--color-primary-strong)]",
+                "mt-5 w-fit justify-start bg-[var(--color-primary)] px-4 !text-white hover:bg-[var(--color-primary-strong)]",
             })}
           >
             Ir a Pedidos
@@ -56,11 +56,11 @@ export default function AdminDashboardPage() {
           </Link>
         </Card>
 
-        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5 sm:col-span-2 xl:col-span-1">
+        <Card className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5 sm:col-span-2 xl:col-span-1">
           <p className="text-sm font-medium text-[var(--color-muted)]">
             Accesos rapidos
           </p>
-          <div className="mt-3 grid gap-2 text-sm">
+          <div className="mt-4 grid gap-2 text-sm sm:grid-cols-3 xl:grid-cols-1">
             <Link
               href="/admin/products"
               className="rounded-2xl bg-[var(--color-surface)] px-4 py-3 font-medium !text-black"
@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[1.05fr_1fr]">
-        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
+        <Card className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
           <h2 className="text-xl font-semibold text-[var(--color-ink)]">
             Pedidos recientes
           </h2>
@@ -92,11 +92,11 @@ export default function AdminDashboardPage() {
             {demoOrders.map((order) => (
               <div
                 key={order.id}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-[22px] border border-[var(--color-border)] px-4 py-4"
+                className="flex flex-col items-start gap-3 rounded-[22px] border border-[var(--color-border)] px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
                   <p className="font-semibold text-[var(--color-ink)]">
-                    #{order.id} · {order.table}
+                    #{order.id} / {order.table}
                   </p>
                   <p className="text-sm text-[var(--color-muted)]">
                     {order.items[0]?.productName}
@@ -108,7 +108,7 @@ export default function AdminDashboardPage() {
           </div>
         </Card>
 
-        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
+        <Card className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
           <h2 className="text-xl font-semibold text-[var(--color-ink)]">
             Estado de mesas
           </h2>
