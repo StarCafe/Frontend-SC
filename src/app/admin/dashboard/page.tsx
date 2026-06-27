@@ -15,8 +15,8 @@ export default function AdminDashboardPage() {
         description="Vista simple y operativa. Desde aqui el admin entra a las secciones reales del sistema sin KPIs inventados."
       />
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
           <p className="text-sm font-medium text-[var(--color-muted)]">
             Mesas registradas
           </p>
@@ -36,7 +36,7 @@ export default function AdminDashboardPage() {
           </Link>
         </Card>
 
-        <Card className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
+        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
           <p className="text-sm font-medium text-[var(--color-muted)]">
             Pedidos activos
           </p>
@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
           </Link>
         </Card>
 
-        <Card className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
+        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5 sm:col-span-2 xl:col-span-1">
           <p className="text-sm font-medium text-[var(--color-muted)]">
             Accesos rapidos
           </p>
@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[1.05fr_1fr]">
-        <Card className="rounded-[32px] bg-white p-5 shadow-[var(--shadow-card)]">
+        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
           <h2 className="text-xl font-semibold text-[var(--color-ink)]">
             Pedidos recientes
           </h2>
@@ -92,7 +92,7 @@ export default function AdminDashboardPage() {
             {demoOrders.map((order) => (
               <div
                 key={order.id}
-                className="flex items-center justify-between rounded-[22px] border border-[var(--color-border)] px-4 py-4"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-[22px] border border-[var(--color-border)] px-4 py-4"
               >
                 <div>
                   <p className="font-semibold text-[var(--color-ink)]">
@@ -108,11 +108,11 @@ export default function AdminDashboardPage() {
           </div>
         </Card>
 
-        <Card className="rounded-[32px] bg-white p-5 shadow-[var(--shadow-card)]">
+        <Card className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
           <h2 className="text-xl font-semibold text-[var(--color-ink)]">
             Estado de mesas
           </h2>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
             {demoTables.map((table) => (
               <div
                 key={table.id}

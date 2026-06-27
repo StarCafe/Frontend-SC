@@ -90,8 +90,14 @@ select:-webkit-autofill {
 }
 
 .page-shell {
-  width: min(1280px, calc(100% - 2rem));
+  width: min(1280px, calc(100% - 1rem));
   margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    width: min(1280px, calc(100% - 2rem));
+  }
 }
 
 .section-grid {

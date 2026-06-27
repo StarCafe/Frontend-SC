@@ -24,7 +24,7 @@ export function SectionHeading({
           {description ? <p className="max-w-2xl text-sm leading-6 text-[var(--color-muted)]">{description}</p> : null}
         </div>
       </div>
-      {action}
+      {action ? <div className="w-full md:w-auto">{action}</div> : null}
     </div>
   );
 }

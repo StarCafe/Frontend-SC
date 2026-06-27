@@ -10,12 +10,12 @@ export function CategoriesScreen() {
     <div className="section-grid gap-5">
       <SectionHeading
         eyebrow="Categories"
-        title="Categorías del menú"
-        description="Vista pensada para administrar la carta y mantener consistencia entre productos, addons y menú público."
-        action={<Button><Plus className="h-4 w-4" />Crear categoría</Button>}
+        title="Categorias del menu"
+        description="Vista pensada para administrar la carta y mantener consistencia entre productos, addons y menu publico."
+        action={<Button className="w-full sm:w-auto"><Plus className="h-4 w-4" />Crear categoria</Button>}
       />
       <DemoTable
-        headers={["Nombre", "Descripción", "Productos", "Estado"]}
+        headers={["Nombre", "Descripcion", "Productos", "Estado"]}
         rows={demoCategories.map((category) => [
           <span key={`${category.id}-name`} className="font-semibold">{category.name}</span>,
           category.description,

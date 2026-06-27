@@ -20,10 +20,10 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
           title="Historial de cocina"
           description="Resumen limpio para validar tiempos, productos despachados y cierres del turno."
         />
-        <div className="grid gap-4 xl:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {demoHistoryOrders.map((order) => (
-            <Card key={order.id} className="rounded-[28px] bg-white p-5 shadow-[var(--shadow-card)]">
-              <div className="flex items-center justify-between gap-3">
+            <Card key={order.id} className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[28px] sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-sm text-[var(--color-muted)]">{order.table}</p>
                   <h3 className="text-xl font-semibold text-[var(--color-ink)]">{order.customerName}</h3>
@@ -48,14 +48,14 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
       <div className="grid gap-4 xl:grid-cols-3">
         {columns.map((column) => (
           <div key={column.key} className="section-grid gap-4">
-            <div className="rounded-[24px] bg-white px-4 py-3 shadow-[var(--shadow-card)]">
+            <div className="rounded-[20px] bg-white px-4 py-3 shadow-[var(--shadow-card)] sm:rounded-[24px]">
               <h3 className="text-lg font-semibold text-[var(--color-ink)]">{column.label}</h3>
             </div>
             {demoOrders
               .filter((order) => order.status === column.key)
               .map((order) => (
-                <Card key={order.id} className="rounded-[28px] bg-white p-5 shadow-[var(--shadow-card)]">
-                  <div className="flex items-start justify-between gap-3">
+                <Card key={order.id} className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[28px] sm:p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="text-sm text-[var(--color-muted)]">{order.table}</p>
                       <h4 className="text-2xl font-semibold text-[var(--color-ink)]">{order.customerName}</h4>
@@ -65,7 +65,7 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
                   </div>
                   <div className="mt-4 grid gap-3">
                     {order.items.map((item) => (
-                      <div key={item.id} className="rounded-[20px] bg-[var(--color-surface)] p-4">
+                      <div key={item.id} className="rounded-[18px] bg-[var(--color-surface)] p-4 sm:rounded-[20px]">
                         <p className="font-semibold text-[var(--color-ink)]">
                           {item.quantity} x {item.productName}
                         </p>

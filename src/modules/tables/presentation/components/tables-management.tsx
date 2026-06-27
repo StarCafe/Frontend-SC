@@ -23,10 +23,10 @@ export function TablesManagement() {
         }
       />
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
         {demoTables.map((table) => (
-          <Card key={table.id} className="rounded-[30px] bg-white p-5 shadow-[var(--shadow-card)]">
-            <div className="flex items-start justify-between gap-4">
+          <Card key={table.id} className="rounded-[24px] bg-white p-4 shadow-[var(--shadow-card)] sm:rounded-[30px] sm:p-5">
+            <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-sm text-[var(--color-muted)]">Mesa</p>
                 <h3 className="text-3xl font-semibold text-[var(--color-ink)]">{table.tableNumber}</h3>
@@ -35,8 +35,8 @@ export function TablesManagement() {
               <StatusBadge status={table.active ? "ACTIVE" : "INACTIVE"} label={table.active ? "Activa" : "Inactiva"} />
             </div>
 
-            <div className="mt-5 rounded-[28px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-              <div className="mx-auto w-full max-w-[180px] rounded-[24px] bg-white p-4">
+            <div className="mt-5 rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:rounded-[28px]">
+              <div className="mx-auto w-full max-w-[180px] rounded-[20px] bg-white p-4 sm:rounded-[24px]">
                 <QRCode value={table.qrUrl} className="h-auto w-full" />
               </div>
             </div>
