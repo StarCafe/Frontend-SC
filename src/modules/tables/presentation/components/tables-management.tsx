@@ -47,7 +47,11 @@ export function TablesManagement() {
       return;
     }
 
-    void loadTables(auth.token);
+    const timeoutId = window.setTimeout(() => {
+      void loadTables(auth.token);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [auth]);
 
   if (!auth) {

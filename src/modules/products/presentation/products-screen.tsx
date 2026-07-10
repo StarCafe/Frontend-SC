@@ -82,7 +82,11 @@ export function ProductsScreen() {
       return;
     }
 
-    void loadData(auth.token);
+    const timeoutId = window.setTimeout(() => {
+      void loadData(auth.token);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [auth]);
 
   if (!auth) {

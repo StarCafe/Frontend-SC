@@ -51,7 +51,11 @@ export function CashierScreen() {
       return;
     }
 
-    void loadOrders(auth.token, initialFilters);
+    const timeoutId = window.setTimeout(() => {
+      void loadOrders(auth.token, initialFilters);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [auth]);
 
   if (!auth) {

@@ -58,7 +58,11 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
   }
 
   useEffect(() => {
-    void loadSessionAndMenu();
+    const timeoutId = window.setTimeout(() => {
+      void loadSessionAndMenu();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [qrToken]);
 
   const selectedProduct = useMemo(() => {

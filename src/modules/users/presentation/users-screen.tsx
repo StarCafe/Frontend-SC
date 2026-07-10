@@ -50,7 +50,11 @@ export function UsersScreen() {
       return;
     }
 
-    void loadUsers(auth.token);
+    const timeoutId = window.setTimeout(() => {
+      void loadUsers(auth.token);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [auth]);
 
   if (!auth) {

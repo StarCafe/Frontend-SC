@@ -29,25 +29,29 @@ export default function AdminDashboardPage() {
       return;
     }
 
-    async function loadData() {
-      setLoading(true);
+    const timeoutId = window.setTimeout(() => {
+      async function loadData() {
+        setLoading(true);
 
-      try {
-        const [ordersData, tablesData] = await Promise.all([
-          listAdminOrdersUseCase(ordersRepository, auth.token),
-          listTablesUseCase(tablesRepository, auth.token),
-        ]);
-        setOrders(ordersData);
-        setTables(tablesData);
-      } catch (error) {
-        const message = error instanceof HttpError ? error.message : "No se pudo cargar el dashboard.";
-        toast.error(message);
-      } finally {
-        setLoading(false);
+        try {
+          const [ordersData, tablesData] = await Promise.all([
+            listAdminOrdersUseCase(ordersRepository, auth.token),
+            listTablesUseCase(tablesRepository, auth.token),
+          ]);
+          setOrders(ordersData);
+          setTables(tablesData);
+        } catch (error) {
+          const message = error instanceof HttpError ? error.message : "No se pudo cargar el dashboard.";
+          toast.error(message);
+        } finally {
+          setLoading(false);
+        }
       }
-    }
 
-    void loadData();
+      void loadData();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [auth]);
 
   if (!auth) {

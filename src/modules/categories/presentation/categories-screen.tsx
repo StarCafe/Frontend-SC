@@ -43,7 +43,11 @@ export function CategoriesScreen() {
       return;
     }
 
-    void loadCategories(auth.token);
+    const timeoutId = window.setTimeout(() => {
+      void loadCategories(auth.token);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [auth]);
 
   if (!auth) {
