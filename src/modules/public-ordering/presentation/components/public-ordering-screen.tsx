@@ -176,6 +176,10 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
   }
 
   async function handleCreateOrder() {
+    if (!session) {
+      return;
+    }
+
     if (!session.canCreateMoreOrders) {
       toast.error("Esta mesa ya alcanzó su límite de pedidos activos.");
       return;
