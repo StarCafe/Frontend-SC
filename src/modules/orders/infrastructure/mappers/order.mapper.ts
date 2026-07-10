@@ -1,6 +1,16 @@
-import type { OrderEntity, OrderItemEntity } from "@/modules/orders/domain/order.entity";
+import type { OrderEntity, OrderItemAddonEntity, OrderItemEntity } from "@/modules/orders/domain/order.entity";
+
+function mapOrderItemAddon(item: Record<string, unknown>): OrderItemAddonEntity {
+  return {
+    addonId: Number(item.addonId ?? item.id ?? 0),
+    name: String(item.name ?? ""),
+    price: Number(item.price ?? 0),
+  };
+}
 
 function mapOrderItem(item: Record<string, unknown>): OrderItemEntity {
+  const addons = Array.isArray(item.addons) ? item.addons : [];
+
   return {
     id: Number(item.id ?? 0),
     productId: Number(item.productId ?? 0),
@@ -9,6 +19,9 @@ function mapOrderItem(item: Record<string, unknown>): OrderItemEntity {
     unitPrice: Number(item.unitPrice ?? item.price ?? 0),
     notes: String(item.notes ?? ""),
     status: String(item.status ?? "PENDING"),
+    addons: addons
+      .filter((addon): addon is Record<string, unknown> => typeof addon === "object" && addon !== null)
+      .map(mapOrderItemAddon),
   };
 }
 
@@ -17,6 +30,7 @@ export function mapOrder(order: Record<string, unknown>): OrderEntity {
 
   return {
     id: Number(order.id ?? 0),
+    businessId: order.businessId === null || order.businessId === undefined ? null : Number(order.businessId),
     tableId: Number(order.tableId ?? 0),
     tableNumber: Number(order.tableNumber ?? 0),
     customerName: String(order.customerName ?? "Cliente"),

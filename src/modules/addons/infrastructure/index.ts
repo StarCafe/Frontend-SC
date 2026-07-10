@@ -1,1 +1,1 @@
-export const addonsInfrastructureReady = true;
+export * from "@/modules/addons/infrastructure/repositories/addons-http.repository";

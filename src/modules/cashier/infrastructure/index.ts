@@ -1,1 +1,1 @@
-export const cashierInfrastructureReady = true;
+export * from "@/modules/cashier/infrastructure/repositories/cashier-http.repository";

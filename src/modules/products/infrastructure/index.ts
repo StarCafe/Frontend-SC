@@ -1,1 +1,1 @@
-export const productsInfrastructureReady = true;
+export * from "@/modules/products/infrastructure/repositories/products-http.repository";

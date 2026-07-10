@@ -1,3 +1,1 @@
-export type CashierModulePlaceholder = {
-  name: "cashier";
-};
+export * from "@/modules/cashier/domain/cashier.entity";

@@ -1,1 +1,1 @@
-export const menuInfrastructureReady = true;
+export * from "@/modules/menu/infrastructure/repositories/menu-http.repository";

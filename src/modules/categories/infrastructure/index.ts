@@ -1,1 +1,1 @@
-export const categoriesInfrastructureReady = true;
+export * from "@/modules/categories/infrastructure/repositories/categories-http.repository";

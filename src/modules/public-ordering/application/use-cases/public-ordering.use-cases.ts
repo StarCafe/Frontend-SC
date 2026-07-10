@@ -5,10 +5,6 @@ export function getPublicTableSessionUseCase(repository: PublicOrderingRepositor
   return repository.getSession(qrToken);
 }
 
-export function getPublicMenuUseCase(repository: PublicOrderingRepository) {
-  return repository.getMenu();
-}
-
 export function createPublicOrderUseCase(
   repository: PublicOrderingRepository,
   qrToken: string,
@@ -17,6 +13,6 @@ export function createPublicOrderUseCase(
   return repository.createOrder(qrToken, payload);
 }
 
-export function getPublicOrderStatusUseCase(repository: PublicOrderingRepository, orderId: number) {
-  return repository.getOrderStatus(orderId);
+export function getPublicOrderStatusUseCase(repository: PublicOrderingRepository, orderId: number, qrToken: string) {
+  return repository.getOrderStatus(orderId, qrToken);
 }

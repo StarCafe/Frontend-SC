@@ -1,1 +1,1 @@
-export const addonsApplicationReady = true;
+export * from "@/modules/addons/application/use-cases/addons.use-cases";

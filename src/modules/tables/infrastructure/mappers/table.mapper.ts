@@ -3,6 +3,9 @@ import type { TableEntity } from "@/modules/tables/domain/table.entity";
 export function mapTable(payload: Record<string, unknown>): TableEntity {
   return {
     id: Number(payload.id ?? 0),
+    businessId: payload.businessId === null || payload.businessId === undefined ? null : Number(payload.businessId),
+    businessName: String(payload.businessName ?? ""),
+    businessSlug: String(payload.businessSlug ?? ""),
     tableNumber: Number(payload.tableNumber ?? payload.number ?? 0),
     qrToken: String(payload.qrToken ?? ""),
     qrUrl: String(payload.qrUrl ?? ""),
