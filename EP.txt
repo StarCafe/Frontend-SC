@@ -1,0 +1,322 @@
+Admin Addons
+Gestion de adicionales y asignaciones a productos.
+
+
+
+GET
+/api/v1/admin/addons
+Listar addons
+
+
+
+POST
+/api/v1/admin/addons
+Crear addon
+
+
+
+POST
+/api/v1/admin/products/{productId}/addons/{addonId}
+Asignar addon a producto
+
+
+Admin Business Branding
+Configuracion de branding por cafeteria para usuarios ADMIN.
+
+
+
+GET
+/api/v1/admin/business
+Obtener branding de la cafeteria actual
+
+
+
+PATCH
+/api/v1/admin/business/logo
+Actualizar logo de la cafeteria
+
+
+
+PATCH
+/api/v1/admin/business/theme
+Actualizar tema predefinido de la cafeteria
+
+
+Admin Categories
+Gestion de categorias del menu por cafeteria.
+
+
+
+GET
+/api/v1/admin/categories
+Listar categorias
+
+
+
+POST
+/api/v1/admin/categories
+Crear categoria
+
+
+Admin Orders
+Supervision y acciones administrativas sobre pedidos.
+
+
+
+GET
+/api/v1/admin/orders
+Listar pedidos admin
+
+
+
+PATCH
+/api/v1/admin/orders/{orderId}/cancel
+Cancelar pedido
+
+
+
+GET
+/api/v1/admin/orders/history
+Historial de pedidos admin
+
+
+Admin Product Images
+Carga, reemplazo y eliminacion de imagenes de producto.
+
+
+
+DELETE
+/api/v1/admin/products/{productId}/image
+Eliminar metadata de imagen principal
+
+
+
+PATCH
+/api/v1/admin/products/{productId}/image
+Reemplazar imagen principal de producto
+
+
+
+POST
+/api/v1/admin/products/{productId}/image
+Subir imagen principal de producto
+
+
+Admin Products
+Gestion de productos del menu por cafeteria.
+
+
+
+GET
+/api/v1/admin/products
+Listar productos
+
+
+
+POST
+/api/v1/admin/products
+Crear producto
+
+
+
+PATCH
+/api/v1/admin/products/{id}
+Actualizar producto
+
+
+
+PATCH
+/api/v1/admin/products/{id}/activate
+Reactivar producto
+
+
+
+PATCH
+/api/v1/admin/products/{id}/deactivate
+Desactivar producto
+
+
+
+PATCH
+/api/v1/admin/products/{id}/unavailable
+Marcar producto no disponible
+
+
+Admin Tables
+Gestion de mesas y QR por cafeteria.
+
+
+
+GET
+/api/v1/admin/tables
+Listar mesas
+
+
+
+POST
+/api/v1/admin/tables
+Crear mesa
+
+
+
+PATCH
+/api/v1/admin/tables/{id}/deactivate
+Desactivar mesa
+
+
+
+PATCH
+/api/v1/admin/tables/{id}/regenerate-qr
+Regenerar QR de mesa
+
+
+Admin Users
+Gestion de usuarios administrativos y de cocina por cafeteria.
+
+
+
+GET
+/api/v1/admin/users
+Listar usuarios
+
+
+
+POST
+/api/v1/admin/users
+Crear usuario
+
+
+
+PATCH
+/api/v1/admin/users/{id}/deactivate
+Desactivar usuario
+
+
+Auth
+Autenticacion y perfil del usuario autenticado.
+
+
+
+POST
+/api/v1/auth/login
+Login
+
+
+GET
+/api/v1/auth/me
+Usuario autenticado
+
+
+
+POST
+/api/v1/auth/register
+Registrar usuario
+
+
+Cashier
+Busqueda y pago de pedidos en caja.
+
+
+
+POST
+/api/v1/admin/cashier/orders/{orderId}/pay
+Pagar pedido
+
+
+
+GET
+/api/v1/admin/cashier/orders/search
+Buscar pedidos para caja
+
+
+Health
+Verificacion operativa del proceso y disponibilidad de base de datos.
+
+
+
+GET
+/health
+Health basico del proceso
+
+
+GET
+/ready
+Readiness con verificacion de base de datos
+
+Kitchen
+Flujo operativo de cocina.
+
+
+
+PATCH
+/api/v1/kitchen/order-items/{itemId}/ready
+Marcar item como READY
+
+
+
+GET
+/api/v1/kitchen/orders
+Pedidos activos de cocina
+
+
+
+PATCH
+/api/v1/kitchen/orders/{orderId}/preparing
+Mover pedido a PREPARING
+
+
+
+PATCH
+/api/v1/kitchen/orders/{orderId}/ready
+Marcar pedido como READY
+
+
+
+GET
+/api/v1/kitchen/orders/history
+Historial de cocina
+
+
+Public
+Endpoints publicos para clientes que ingresan por QR.
+
+
+
+GET
+/api/v1/public/menu
+Listar menu publico
+
+
+GET
+/api/v1/public/orders/{orderId}/status
+Estado de pedido
+
+
+POST
+/api/v1/public/tables/{qrToken}/orders
+Crear pedido desde mesa
+
+
+GET
+/api/v1/public/tables/{qrToken}/session
+Obtener mesa y pedidos activos por QR
+
+
+GET
+/api/v1/tables/qr/{qrToken}
+Obtener mesa por QR
+
+Super Admin Businesses
+Gestion global de cafeterias dentro de la plataforma Nova.
+
+
+
+GET
+/api/v1/super-admin/businesses
+Listar cafeterias
+
+
+
+POST
+/api/v1/super-admin/businesses
+Crear cafeteria
