@@ -56,8 +56,9 @@ export function AddonsScreen() {
       return;
     }
 
+    const token = auth.token;
     const timeoutId = window.setTimeout(() => {
-      void loadData(auth.token);
+      void loadData(token);
     }, 0);
 
     return () => window.clearTimeout(timeoutId);

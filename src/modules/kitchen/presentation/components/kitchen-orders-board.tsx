@@ -54,8 +54,9 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
       return;
     }
 
+    const token = auth.token;
     const timeoutId = window.setTimeout(() => {
-      void loadOrders(auth.token);
+      void loadOrders(token);
     }, 0);
 
     return () => window.clearTimeout(timeoutId);

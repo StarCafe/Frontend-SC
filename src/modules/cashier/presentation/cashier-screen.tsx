@@ -51,8 +51,9 @@ export function CashierScreen() {
       return;
     }
 
+    const token = auth.token;
     const timeoutId = window.setTimeout(() => {
-      void loadOrders(auth.token, initialFilters);
+      void loadOrders(token, initialFilters);
     }, 0);
 
     return () => window.clearTimeout(timeoutId);

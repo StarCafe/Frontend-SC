@@ -47,8 +47,9 @@ export function TablesManagement() {
       return;
     }
 
+    const token = auth.token;
     const timeoutId = window.setTimeout(() => {
-      void loadTables(auth.token);
+      void loadTables(token);
     }, 0);
 
     return () => window.clearTimeout(timeoutId);

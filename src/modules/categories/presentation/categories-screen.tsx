@@ -43,8 +43,9 @@ export function CategoriesScreen() {
       return;
     }
 
+    const token = auth.token;
     const timeoutId = window.setTimeout(() => {
-      void loadCategories(auth.token);
+      void loadCategories(token);
     }, 0);
 
     return () => window.clearTimeout(timeoutId);

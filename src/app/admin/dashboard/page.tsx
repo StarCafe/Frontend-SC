@@ -29,14 +29,15 @@ export default function AdminDashboardPage() {
       return;
     }
 
+    const token = auth.token;
     const timeoutId = window.setTimeout(() => {
       async function loadData() {
         setLoading(true);
 
         try {
           const [ordersData, tablesData] = await Promise.all([
-            listAdminOrdersUseCase(ordersRepository, auth.token),
-            listTablesUseCase(tablesRepository, auth.token),
+            listAdminOrdersUseCase(ordersRepository, token),
+            listTablesUseCase(tablesRepository, token),
           ]);
           setOrders(ordersData);
           setTables(tablesData);
