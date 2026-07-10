@@ -1,3 +1,5 @@
+import { env } from "@/shared/lib/env";
+
 export type DemoStatus =
   | "PENDING"
   | "PREPARING"
@@ -53,6 +55,10 @@ export interface DemoPublicTableSession {
   remainingSlots: number;
   canCreateMoreOrders: boolean;
   activeOrders: DemoOrder[];
+}
+
+function buildMesaQrUrl(qrToken: string) {
+  return `${env.appBaseUrl}/mesa/${qrToken}`;
 }
 
 export const demoPalette = [
@@ -151,21 +157,21 @@ export const demoTables: DemoTable[] = [
     id: 1,
     tableNumber: 1,
     qrToken: "3f9b67aa-852d-4c05-b24e-6ac181d14428",
-    qrUrl: "http://localhost:3000/mesa/3f9b67aa-852d-4c05-b24e-6ac181d14428",
+    qrUrl: buildMesaQrUrl("3f9b67aa-852d-4c05-b24e-6ac181d14428"),
     active: true,
   },
   {
     id: 2,
     tableNumber: 2,
     qrToken: "0e6cfdb3-5e88-4b8a-bd4d-2a787db16a10",
-    qrUrl: "http://localhost:3000/mesa/0e6cfdb3-5e88-4b8a-bd4d-2a787db16a10",
+    qrUrl: buildMesaQrUrl("0e6cfdb3-5e88-4b8a-bd4d-2a787db16a10"),
     active: true,
   },
   {
     id: 3,
     tableNumber: 3,
     qrToken: "9a5dd9dd-6e6f-4dfb-b2ef-6a5dc0f8a2d1",
-    qrUrl: "http://localhost:3000/mesa/9a5dd9dd-6e6f-4dfb-b2ef-6a5dc0f8a2d1",
+    qrUrl: buildMesaQrUrl("9a5dd9dd-6e6f-4dfb-b2ef-6a5dc0f8a2d1"),
     active: false,
   },
 ];
@@ -355,7 +361,7 @@ export const demoPublicTableSessionEmpty: DemoPublicTableSession = {
     id: 4,
     tableNumber: 4,
     qrToken: "demo-qr-token",
-    qrUrl: "http://localhost:3000/mesa/demo-qr-token",
+    qrUrl: buildMesaQrUrl("demo-qr-token"),
     active: true,
   },
   activeOrdersCount: 0,

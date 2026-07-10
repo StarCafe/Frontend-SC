@@ -2,7 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Create your local environment file from the example and set your own values:
+
+```bash
+cp .env.example .env.local
+```
+
+Required variables:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+NEXT_PUBLIC_APP_BASE_URL=http://localhost:3000
+```
+
+Then run the development server:
 
 ```bash
 npm run dev
@@ -14,7 +27,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the URL configured in `NEXT_PUBLIC_APP_BASE_URL` with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
