@@ -158,6 +158,10 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
   }
 
   function addSelectedProductToCart() {
+    if (!selectedProduct) {
+      return;
+    }
+
     setCart((current) => [
       ...current,
       {
