@@ -25,7 +25,17 @@ export function useAuthGuard(expectedRole: Role) {
     }
 
     if (user.role !== expectedRole) {
-      router.replace(user.role === "ADMIN" ? "/admin/dashboard" : "/kitchen/orders");
+      if (user.role === "ADMIN") {
+        router.replace("/admin/dashboard");
+        return;
+      }
+
+      if (user.role === "KITCHEN") {
+        router.replace("/kitchen/orders");
+        return;
+      }
+
+      router.replace("/");
       return;
     }
   }, [expectedRole, hydrated, pathname, router, token, user]);

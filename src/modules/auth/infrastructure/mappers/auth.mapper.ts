@@ -1,7 +1,15 @@
 import type { AuthSession, AuthUser, Role } from "@/modules/auth/domain/auth.entity";
 
 function resolveRole(value: unknown): Role {
-  return value === "KITCHEN" ? "KITCHEN" : "ADMIN";
+  if (value === "SUPER_ADMIN") {
+    return "SUPER_ADMIN";
+  }
+
+  if (value === "KITCHEN") {
+    return "KITCHEN";
+  }
+
+  return "ADMIN";
 }
 
 export function mapAuthUser(payload: Record<string, unknown>): AuthUser {
@@ -10,6 +18,7 @@ export function mapAuthUser(payload: Record<string, unknown>): AuthUser {
     name: String(payload.name ?? payload.fullName ?? payload.username ?? "Usuario StarCafe"),
     email: String(payload.email ?? ""),
     role: resolveRole(payload.role),
+    businessId: payload.businessId === null || payload.businessId === undefined ? null : Number(payload.businessId),
     isActive: payload.isActive === undefined ? true : Boolean(payload.isActive),
   };
 }

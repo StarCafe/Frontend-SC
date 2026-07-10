@@ -26,5 +26,15 @@ export function SessionBootstrap() {
       });
   }, [clearSession, hydrated, setUser, token, user]);
 
+  useEffect(() => {
+    if (!hydrated || !token) {
+      return;
+    }
+
+    if (user?.isActive === false) {
+      clearSession();
+    }
+  }, [clearSession, hydrated, token, user]);
+
   return null;
 }

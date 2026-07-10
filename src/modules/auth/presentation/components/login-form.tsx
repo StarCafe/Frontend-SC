@@ -6,10 +6,14 @@ import { Coffee, QrCode, ShieldCheck, UtensilsCrossed } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { loginUseCase } from "@/modules/auth/application/use-cases/auth.use-cases";
 import { loginSchema, type LoginFormValues } from "@/modules/auth/application/schemas/login.schema";
+import { authRepository } from "@/modules/auth/infrastructure/repositories/auth-http.repository";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
+import { useAuthStore } from "@/shared/store/auth-store";
+import { HttpError } from "@/shared/lib/api/http-client";
 import { cn } from "@/shared/utils/cn";
 
 const accessOptions = [
@@ -43,6 +47,7 @@ export function LoginForm({
   description: string;
 }) {
   const router = useRouter();
+  const setSession = useAuthStore((state) => state.setSession);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -52,9 +57,23 @@ export function LoginForm({
     },
   });
 
-  const onSubmit = form.handleSubmit(async () => {
-    toast.success("Demo mode activado");
-    router.push(role === "ADMIN" ? "/admin/dashboard" : "/kitchen/orders");
+  const onSubmit = form.handleSubmit(async (values) => {
+    try {
+      const session = await loginUseCase(authRepository, values);
+
+      if (session.user.role !== role) {
+        toast.error(`Este usuario pertenece al rol ${session.user.role}.`);
+        return;
+      }
+
+      setSession(session);
+      toast.success("Sesion iniciada");
+      router.push(role === "ADMIN" ? "/admin/dashboard" : "/kitchen/orders");
+    } catch (error) {
+      const message =
+        error instanceof HttpError ? error.message : "No se pudo iniciar sesion.";
+      toast.error(message);
+    }
   });
 
   return (
@@ -72,7 +91,7 @@ export function LoginForm({
           </div>
 
           <p className="max-w-lg text-base leading-7 text-white/72 sm:text-lg sm:leading-8">
-            Entra a la vista que quieras revisar para el deploy visual.
+            Inicia sesion con el backend local de Nova y entra a la vista que corresponda a tu rol.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
@@ -108,7 +127,7 @@ export function LoginForm({
         <form className="section-grid gap-6" onSubmit={onSubmit}>
           <div className="section-grid gap-3">
             <span className="w-fit rounded-full bg-[var(--color-surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">
-              Demo access
+              Acceso seguro
             </span>
             <div className="flex items-start gap-3 sm:items-center">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-white">
@@ -142,7 +161,7 @@ export function LoginForm({
           </label>
 
           <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
-            Ingresar al demo
+            {form.formState.isSubmitting ? "Ingresando..." : "Ingresar"}
           </Button>
         </form>
       </Card>

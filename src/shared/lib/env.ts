@@ -1,4 +1,16 @@
-function getRequiredEnv(name: "NEXT_PUBLIC_API_BASE_URL" | "NEXT_PUBLIC_APP_BASE_URL") {
+function getEnvValue(...names: string[]) {
+  for (const name of names) {
+    const value = process.env[name]?.trim();
+
+    if (value) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
+function getRequiredEnv(name: "NEXT_PUBLIC_APP_BASE_URL") {
   const value = process.env[name]?.trim();
 
   if (!value) {
@@ -8,7 +20,7 @@ function getRequiredEnv(name: "NEXT_PUBLIC_API_BASE_URL" | "NEXT_PUBLIC_APP_BASE
   return value;
 }
 
-const API_BASE_URL = getRequiredEnv("NEXT_PUBLIC_API_BASE_URL");
+const API_BASE_URL = getEnvValue("NEXT_PUBLIC_API_URL", "NEXT_PUBLIC_API_BASE_URL") ?? "http://localhost:8081";
 const APP_BASE_URL = getRequiredEnv("NEXT_PUBLIC_APP_BASE_URL");
 
 export const env = {

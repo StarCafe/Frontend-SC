@@ -1,5 +1,5 @@
 import { env } from "@/shared/lib/env";
-import type { ApiEnvelope } from "@/shared/types/api";
+import type { ApiEnvelope, ApiFailure } from "@/shared/types/api";
 
 export class HttpError extends Error {
   constructor(
@@ -14,6 +14,7 @@ export class HttpError extends Error {
 
 type RequestOptions = RequestInit & {
   token?: string | null;
+  query?: Record<string, string | number | boolean | null | undefined>;
 };
 
 async function parseResponse<T>(response: Response): Promise<T> {
@@ -29,6 +30,11 @@ async function parseResponse<T>(response: Response): Promise<T> {
     throw new HttpError(message, response.status, body);
   }
 
+  if (body && typeof body === "object" && "success" in body && body.success === false) {
+    const failure = body as ApiFailure;
+    throw new HttpError(failure.message, response.status, body);
+  }
+
   if (body && typeof body === "object" && "data" in body) {
     return (body as ApiEnvelope<T>).data as T;
   }
@@ -36,21 +42,40 @@ async function parseResponse<T>(response: Response): Promise<T> {
   return body as T;
 }
 
+function buildUrl(path: string, query?: RequestOptions["query"]) {
+  const url = new URL(path, env.apiBaseUrl);
+
+  if (!query) {
+    return url.toString();
+  }
+
+  Object.entries(query).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === "") {
+      return;
+    }
+
+    url.searchParams.set(key, String(value));
+  });
+
+  return url.toString();
+}
+
 export async function apiClient<T>(path: string, options: RequestOptions = {}) {
-  const headers = new Headers(options.headers);
+  const { query, token, ...requestInit } = options;
+  const headers = new Headers(requestInit.headers);
 
   headers.set("Accept", "application/json");
 
-  if (!(options.body instanceof FormData)) {
+  if (requestInit.body && !(requestInit.body instanceof FormData)) {
     headers.set("Content-Type", "application/json");
   }
 
-  if (options.token) {
-    headers.set("Authorization", `Bearer ${options.token}`);
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(`${env.apiBaseUrl}${path}`, {
-    ...options,
+  const response = await fetch(buildUrl(path, query), {
+    ...requestInit,
     headers,
     cache: "no-store",
   });

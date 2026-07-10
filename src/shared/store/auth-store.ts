@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>()(
       markHydrated: () => set({ hydrated: true }),
     }),
     {
-      name: "starcafe-auth",
+      name: "nova-auth",
       partialize: (state) => ({
         token: state.token,
         user: state.user,

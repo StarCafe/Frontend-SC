@@ -1,10 +1,11 @@
-export type Role = "ADMIN" | "KITCHEN";
+export type Role = "SUPER_ADMIN" | "ADMIN" | "KITCHEN";
 
 export interface AuthUser {
   id: number;
   name: string;
   email: string;
   role: Role;
+  businessId: number | null;
   isActive?: boolean;
 }
 

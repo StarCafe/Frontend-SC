@@ -14,8 +14,11 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { useMemo } from "react";
+import { useAuthGuard } from "@/modules/auth/presentation/hooks/use-auth-guard";
 import { buttonClasses } from "@/shared/components/ui/button-styles";
-import { demoAdminUser, demoKitchenUser } from "@/shared/mock/starcafe-demo";
+import { Spinner } from "@/shared/components/ui/spinner";
+import { useAuthStore } from "@/shared/store/auth-store";
 import { cn } from "@/shared/utils/cn";
 
 export interface NavigationItem {
@@ -35,7 +38,15 @@ export function RoleShell({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  const session = role === "ADMIN" ? demoAdminUser : demoKitchenUser;
+  const auth = useAuthGuard(role);
+  const clearSession = useAuthStore((state) => state.clearSession);
+  const sessionLabel = useMemo(() => {
+    if (!auth?.user) {
+      return "";
+    }
+
+    return auth.user.businessId ? `Cafeteria #${auth.user.businessId}` : "Sin cafeteria";
+  }, [auth?.user]);
   const iconByLabel: Record<string, ReactNode> = {
     Dashboard: <LayoutDashboard className="h-4 w-4" />,
     Mesas: <Coffee className="h-4 w-4" />,
@@ -49,6 +60,17 @@ export function RoleShell({
     Ajustes: <Settings className="h-4 w-4" />,
   };
 
+  if (!auth) {
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <div className="flex items-center gap-3 rounded-2xl bg-white px-5 py-4 text-[var(--color-ink)] shadow-[var(--shadow-card)]">
+          <Spinner />
+          <span>Validando sesion...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen px-2 py-2 sm:px-0 sm:py-5">
       <div className="page-shell app-shell-mobile grid gap-3 sm:gap-4 lg:gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
@@ -56,15 +78,16 @@ export function RoleShell({
           <div className="flex h-full flex-col gap-4 xl:gap-8">
             <div className="section-grid gap-3 sm:flex sm:items-end sm:justify-between xl:block">
               <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60">
-                StarCafe
+                Nova
               </span>
               <div className="section-grid gap-1">
                 <h2 className="text-[1.9rem] leading-none font-semibold sm:text-3xl">
                   {area}
                 </h2>
                 <p className="text-sm text-white/70">
-                  {session.name} / {session.roleLabel}
+                  {auth.user.name} / {auth.user.role}
                 </p>
+                <p className="text-xs text-white/50">{sessionLabel}</p>
               </div>
             </div>
 
@@ -95,19 +118,20 @@ export function RoleShell({
 
             <div className="rounded-[24px] border border-white/10 bg-white/5 p-4 xl:mt-auto xl:rounded-[28px]">
               <p className="text-sm leading-6 text-white/70">
-                Demo visual con datos hardcodeados para deploy y revision UI/UX.
+                Sesion activa contra el backend local. Las vistas se cargan segun tu rol y el contexto de cafeteria del token.
               </p>
-              <Link
+              <button
                 href={role === "ADMIN" ? "/admin/login" : "/kitchen/login"}
                 className={buttonClasses({
                   variant: "ghost",
                   className:
                     "mt-4 w-full justify-start border border-white/10 text-white hover:bg-white/10",
                 })}
+                onClick={() => clearSession()}
               >
                 <LogOut className="h-4 w-4" />
                 Cerrar sesion
-              </Link>
+              </button>
             </div>
           </div>
         </aside>
