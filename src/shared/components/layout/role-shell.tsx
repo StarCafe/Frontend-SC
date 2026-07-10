@@ -121,7 +121,6 @@ export function RoleShell({
                 Sesion activa contra el backend local. Las vistas se cargan segun tu rol y el contexto de cafeteria del token.
               </p>
               <button
-                href={role === "ADMIN" ? "/admin/login" : "/kitchen/login"}
                 className={buttonClasses({
                   variant: "ghost",
                   className:
