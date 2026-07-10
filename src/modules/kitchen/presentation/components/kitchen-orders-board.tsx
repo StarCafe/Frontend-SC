@@ -66,12 +66,14 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
     return null;
   }
 
+  const token = auth.token;
+
   async function runAction(key: string, action: () => Promise<void>) {
     setBusyKey(key);
 
     try {
       await action();
-      await loadOrders(auth.token);
+      await loadOrders(token);
     } catch (error) {
       const message = error instanceof HttpError ? error.message : "No se pudo completar la acción.";
       toast.error(message);
@@ -154,7 +156,7 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
                           variant="ghost"
                           onClick={() =>
                             runAction(`item-${item.id}`, () =>
-                              markKitchenItemReadyUseCase(kitchenRepository, auth.token, item.id),
+                              markKitchenItemReadyUseCase(kitchenRepository, token, item.id),
                             )
                           }
                           type="button"
@@ -171,7 +173,7 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
                       variant="secondary"
                       onClick={() =>
                         runAction(`preparing-${order.id}`, () =>
-                          markKitchenOrderPreparingUseCase(kitchenRepository, auth.token, order.id),
+                          markKitchenOrderPreparingUseCase(kitchenRepository, token, order.id),
                         )
                       }
                       type="button"
@@ -182,7 +184,7 @@ export function KitchenOrdersBoard({ history = false }: { history?: boolean }) {
                       disabled={order.status === "READY" || busyKey === `ready-${order.id}`}
                       onClick={() =>
                         runAction(`ready-${order.id}`, () =>
-                          markKitchenOrderReadyUseCase(kitchenRepository, auth.token, order.id),
+                          markKitchenOrderReadyUseCase(kitchenRepository, token, order.id),
                         )
                       }
                       type="button"

@@ -54,9 +54,11 @@ export function AdminOrdersBoard({ history = false }: { history?: boolean }) {
     return null;
   }
 
+  const token = auth.token;
+
   async function handleCancel(orderId: number) {
     try {
-      await cancelOrderUseCase(ordersRepository, auth.token, orderId);
+      await cancelOrderUseCase(ordersRepository, token, orderId);
       setOrders((current) =>
         current.map((order) => (order.id === orderId ? { ...order, status: "CANCELLED" } : order)),
       );

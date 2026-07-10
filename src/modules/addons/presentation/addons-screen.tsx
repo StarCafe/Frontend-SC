@@ -68,12 +68,14 @@ export function AddonsScreen() {
     return null;
   }
 
+  const token = auth.token;
+
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
 
     try {
-      const created = await createAddonUseCase(addonsRepository, auth.token, {
+      const created = await createAddonUseCase(addonsRepository, token, {
         name,
         price: Number(price),
       });
@@ -101,8 +103,8 @@ export function AddonsScreen() {
     setAssigning(true);
 
     try {
-      await assignAddonToProductUseCase(addonsRepository, auth.token, Number(productId), Number(addonId));
-      await loadData(auth.token);
+      await assignAddonToProductUseCase(addonsRepository, token, Number(productId), Number(addonId));
+      await loadData(token);
       toast.success("Addon asignado al producto");
     } catch (error) {
       const message = error instanceof HttpError ? error.message : "No se pudo asignar el addon.";

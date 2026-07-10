@@ -55,12 +55,14 @@ export function CategoriesScreen() {
     return null;
   }
 
+  const token = auth.token;
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
 
     try {
-      const created = await createCategoryUseCase(categoriesRepository, auth.token, { name, description });
+      const created = await createCategoryUseCase(categoriesRepository, token, { name, description });
       setCategories((current) => [created, ...current]);
       setName("");
       setDescription("");

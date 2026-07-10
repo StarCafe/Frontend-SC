@@ -94,12 +94,14 @@ export function ProductsScreen() {
     return null;
   }
 
+  const token = auth.token;
+
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
 
     try {
-      const created = await createProductUseCase(productsRepository, auth.token, form);
+      const created = await createProductUseCase(productsRepository, token, form);
       setProducts((current) => [created, ...current]);
       setForm({
         categoryId: categories[0]?.id ?? 0,
@@ -117,12 +119,12 @@ export function ProductsScreen() {
   }
 
   async function refreshProducts() {
-    await loadData(auth.token);
+    await loadData(token);
   }
 
   async function handleUpdate(product: ProductEntity) {
     try {
-      const updated = await updateProductUseCase(productsRepository, auth.token, product.id, {
+      const updated = await updateProductUseCase(productsRepository, token, product.id, {
         categoryId: product.categoryId,
         name: product.name,
         description: product.description,
@@ -157,8 +159,8 @@ export function ProductsScreen() {
 
     try {
       const updated = current.image
-        ? await replaceProductImageUseCase(productsRepository, auth.token, productId, file)
-        : await uploadProductImageUseCase(productsRepository, auth.token, productId, file);
+        ? await replaceProductImageUseCase(productsRepository, token, productId, file)
+        : await uploadProductImageUseCase(productsRepository, token, productId, file);
       setProducts((items) => items.map((item) => (item.id === productId ? updated : item)));
       toast.success("Imagen actualizada");
     } catch (error) {
@@ -176,7 +178,7 @@ export function ProductsScreen() {
     }
 
     try {
-      await assignAddonToProductUseCase(addonsRepository, auth.token, productId, addonId);
+      await assignAddonToProductUseCase(addonsRepository, token, productId, addonId);
       await refreshProducts();
       toast.success("Addon asignado");
     } catch (error) {
@@ -313,8 +315,8 @@ export function ProductsScreen() {
                         handleProductAction(
                           () =>
                             product.isActive
-                              ? deactivateProductUseCase(productsRepository, auth.token, product.id)
-                              : activateProductUseCase(productsRepository, auth.token, product.id),
+                              ? deactivateProductUseCase(productsRepository, token, product.id)
+                              : activateProductUseCase(productsRepository, token, product.id),
                           product.isActive ? "Producto desactivado" : "Producto reactivado",
                         )
                       }
@@ -326,7 +328,7 @@ export function ProductsScreen() {
                       variant="ghost"
                       onClick={() =>
                         handleProductAction(
-                          () => markProductUnavailableUseCase(productsRepository, auth.token, product.id),
+                          () => markProductUnavailableUseCase(productsRepository, token, product.id),
                           "Producto marcado como no disponible",
                         )
                       }
@@ -351,7 +353,7 @@ export function ProductsScreen() {
                         variant="danger"
                         onClick={() =>
                           handleProductAction(
-                            () => deleteProductImageUseCase(productsRepository, auth.token, product.id),
+                            () => deleteProductImageUseCase(productsRepository, token, product.id),
                             "Imagen eliminada",
                           )
                         }

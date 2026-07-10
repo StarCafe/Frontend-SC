@@ -6,7 +6,11 @@ export class HttpCashierRepository implements CashierRepository {
   async search(token: string, filters: CashierSearchFilters) {
     const payload = await apiClient<unknown>("/api/v1/admin/cashier/orders/search", {
       token,
-      query: filters,
+      query: {
+        customerName: filters.customerName,
+        tableNumber: filters.tableNumber,
+        status: filters.status,
+      },
     });
 
     return extractOrders(payload);

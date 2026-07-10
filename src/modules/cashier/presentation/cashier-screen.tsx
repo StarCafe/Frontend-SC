@@ -63,11 +63,13 @@ export function CashierScreen() {
     return null;
   }
 
+  const token = auth.token;
+
   const selectedOrder = orders.find((order) => order.id === selectedOrderId) ?? orders[0] ?? null;
 
   async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await loadOrders(auth.token, filters);
+    await loadOrders(token, filters);
   }
 
   async function handlePay() {
@@ -78,9 +80,9 @@ export function CashierScreen() {
     setPaying(true);
 
     try {
-      await payCashierOrderUseCase(cashierRepository, auth.token, selectedOrder.id);
+      await payCashierOrderUseCase(cashierRepository, token, selectedOrder.id);
       toast.success("Pedido cobrado");
-      await loadOrders(auth.token, filters);
+      await loadOrders(token, filters);
     } catch (error) {
       const message = error instanceof HttpError ? error.message : "No se pudo cobrar el pedido.";
       toast.error(message);

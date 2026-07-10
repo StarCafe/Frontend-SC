@@ -59,12 +59,14 @@ export function TablesManagement() {
     return null;
   }
 
+  const token = auth.token;
+
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
 
     try {
-      const created = await createTableUseCase(tablesRepository, auth.token, {
+      const created = await createTableUseCase(tablesRepository, token, {
         tableNumber: Number(tableNumber),
       });
       setTables((current) => [created, ...current]);
@@ -80,7 +82,7 @@ export function TablesManagement() {
 
   async function handleRegenerate(tableId: number) {
     try {
-      const updated = await regenerateTableQrUseCase(tablesRepository, auth.token, tableId);
+      const updated = await regenerateTableQrUseCase(tablesRepository, token, tableId);
       setTables((current) => current.map((table) => (table.id === tableId ? updated : table)));
       toast.success("QR regenerado");
     } catch (error) {
@@ -91,7 +93,7 @@ export function TablesManagement() {
 
   async function handleDeactivate(tableId: number) {
     try {
-      await deactivateTableUseCase(tablesRepository, auth.token, tableId);
+      await deactivateTableUseCase(tablesRepository, token, tableId);
       setTables((current) =>
         current.map((table) => (table.id === tableId ? { ...table, isActive: false } : table)),
       );

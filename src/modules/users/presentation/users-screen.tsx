@@ -62,12 +62,14 @@ export function UsersScreen() {
     return null;
   }
 
+  const token = auth.token;
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
 
     try {
-      const created = await createUserUseCase(usersRepository, auth.token, form);
+      const created = await createUserUseCase(usersRepository, token, form);
       setUsers((current) => [created, ...current]);
       setForm(initialForm);
       toast.success("Usuario creado");
@@ -81,7 +83,7 @@ export function UsersScreen() {
 
   async function handleDeactivate(userId: number) {
     try {
-      await deactivateUserUseCase(usersRepository, auth.token, userId);
+      await deactivateUserUseCase(usersRepository, token, userId);
       setUsers((current) =>
         current.map((user) => (user.id === userId ? { ...user, isActive: false } : user)),
       );
