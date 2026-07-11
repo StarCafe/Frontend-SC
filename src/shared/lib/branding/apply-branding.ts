@@ -1,5 +1,23 @@
 import type { BusinessBrandingEntity } from "@/modules/business-branding/domain/business-branding.entity";
 
+const brandingVariables = [
+  "--color-background",
+  "--color-background-soft",
+  "--color-surface",
+  "--color-surface-strong",
+  "--color-surface-muted",
+  "--color-panel",
+  "--color-panel-dark",
+  "--color-border",
+  "--color-border-strong",
+  "--color-ink",
+  "--color-muted",
+  "--color-primary",
+  "--color-primary-strong",
+  "--color-secondary",
+  "--color-accent",
+] as const;
+
 const themePresets: Record<string, Partial<Record<(typeof brandingVariables)[number], string>>> = {
   forest: {
     "--color-background": "#041914",
@@ -70,24 +88,6 @@ const themePresets: Record<string, Partial<Record<(typeof brandingVariables)[num
     "--color-accent": "#a8b5ff",
   },
 };
-
-const brandingVariables = [
-  "--color-background",
-  "--color-background-soft",
-  "--color-surface",
-  "--color-surface-strong",
-  "--color-surface-muted",
-  "--color-panel",
-  "--color-panel-dark",
-  "--color-border",
-  "--color-border-strong",
-  "--color-ink",
-  "--color-muted",
-  "--color-primary",
-  "--color-primary-strong",
-  "--color-secondary",
-  "--color-accent",
-] as const;
 
 let defaultVariables: Record<string, string> | null = null;
 
