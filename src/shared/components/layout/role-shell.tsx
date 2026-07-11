@@ -158,14 +158,11 @@ export function RoleShell({
             </nav>
 
             <div className="rounded-[24px] border border-white/10 bg-white/5 p-4 xl:mt-auto xl:rounded-[28px]">
-              <p className="text-sm leading-6 text-white/70">
-                Sesion activa contra el backend local. Las vistas se cargan segun tu rol y el contexto de cafeteria del token.
-              </p>
               <button
                 className={buttonClasses({
                   variant: "ghost",
                   className:
-                    "mt-4 w-full justify-start border border-white/10 text-white hover:bg-white/10",
+                    "w-full justify-start border border-white/10 text-white hover:bg-white/10",
                 })}
                 onClick={() => clearSession()}
               >
