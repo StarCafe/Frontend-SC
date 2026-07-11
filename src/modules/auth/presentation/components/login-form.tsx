@@ -77,17 +77,17 @@ export function LoginForm({
 
   return (
     <div className="grid w-full max-w-6xl gap-4 sm:gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <section className="grid rounded-[28px] border border-[#2D2D2D] bg-[#111111] p-5 text-[#FFFFFF] shadow-[0_24px_60px_rgba(0,0,0,0.28)] sm:rounded-[40px] sm:p-8 lg:p-10">
+      <section className="grid rounded-[28px] border border-[#2D2D2D] bg-[#111111] p-5 text-[#FFFFFF] shadow-none sm:rounded-[40px] sm:p-8 lg:p-10">
         <div className="flex flex-col gap-6 sm:gap-8">
-          <div className="flex items-center gap-4 text-[#FFFFFF] sm:gap-5">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-[28px] border border-[#555555] bg-[#FFFFFF] p-2 shadow-[0_18px_34px_rgba(0,0,0,0.24)] sm:h-24 sm:w-24">
+          <div className="flex items-center gap-4 text-[#FFFFFF] sm:gap-6">
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-[28px] sm:h-28 sm:w-28">
               <Image
                 alt="Logo de Nova"
-                className="h-full w-full object-contain"
-                height={96}
+                className="h-full w-full scale-125 object-cover"
+                height={112}
                 priority
                 src="/Nova-Logo.png"
-                width={96}
+                width={112}
               />
             </div>
             <div>
@@ -129,7 +129,7 @@ export function LoginForm({
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-xl rounded-[28px] border border-[#555555] bg-[#D7D7D7] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.2)] sm:rounded-[40px] sm:p-8 lg:p-10">
+      <section className="mx-auto w-full max-w-xl rounded-[28px] border border-[#555555] bg-[#D7D7D7] p-5 shadow-none sm:rounded-[40px] sm:p-8 lg:p-10">
         <form className="section-grid gap-6" onSubmit={onSubmit}>
           <div className="section-grid gap-3">
             <span className="w-fit rounded-full bg-[#FFFFFF] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#555555]">

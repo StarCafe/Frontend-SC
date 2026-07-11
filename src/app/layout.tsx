@@ -5,6 +5,11 @@ import { AppProviders } from "@/shared/components/providers/app-providers";
 export const metadata: Metadata = {
   title: "Nova",
   description: "Plataforma web para administracion, cocina y pedidos por QR",
+  icons: {
+    icon: "/Nova-Logo.png",
+    shortcut: "/Nova-Logo.png",
+    apple: "/Nova-Logo.png",
+  },
 };
 
 export default function RootLayout({
