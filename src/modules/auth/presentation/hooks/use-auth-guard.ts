@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/shared/store/auth-store";
 import type { Role } from "@/modules/auth/domain/auth.entity";
@@ -11,6 +11,10 @@ export function useAuthGuard(expectedRole: Role) {
   const token = useAuthStore((state) => state.token);
   const user = useAuthStore((state) => state.user);
   const hydrated = useAuthStore((state) => state.hydrated);
+  const authState = useMemo(
+    () => (token && user ? { token, user } : null),
+    [token, user],
+  );
 
   useEffect(() => {
     if (!hydrated) {
@@ -42,5 +46,5 @@ export function useAuthGuard(expectedRole: Role) {
     return null;
   }
 
-  return { token, user };
+  return authState;
 }

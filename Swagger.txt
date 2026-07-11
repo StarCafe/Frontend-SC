@@ -1,0 +1,3407 @@
+Nova API
+ 2.0.0 
+OAS 3.0
+/openapi.json
+Documentacion para pruebas del backend multi-cafeteria de Nova.
+
+
+Authorize
+Admin Addons
+Gestion de adicionales y asignaciones a productos.
+
+
+
+GET
+/api/v1/admin/addons
+Listar addons
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+includeInactive
+string
+(query)
+Incluir addons inactivos
+
+includeInactive
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/admin/addons
+Crear addon
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "businessId": 0,
+  "name": "string",
+  "price": 0
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/admin/products/{productId}/addons/{addonId}
+Asignar addon a producto
+
+
+Parameters
+Try it out
+Name	Description
+productId *
+string
+(path)
+Id del producto
+
+productId
+addonId *
+string
+(path)
+Id del addon
+
+addonId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Admin Business Branding
+Configuracion de branding por cafeteria para usuarios ADMIN.
+
+
+
+GET
+/api/v1/admin/business
+Obtener branding de la cafeteria actual
+
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/business/logo
+Actualizar logo de la cafeteria
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+multipart/form-data
+logo *
+string($binary)
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/business/theme
+Actualizar tema predefinido de la cafeteria
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "themeKey": "string"
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Admin Categories
+Gestion de categorias del menu por cafeteria.
+
+
+
+GET
+/api/v1/admin/categories
+Listar categorias
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+includeInactive
+string
+(query)
+Incluir categorias inactivas
+
+includeInactive
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/admin/categories
+Crear categoria
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "businessId": 0,
+  "description": "string",
+  "name": "string"
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Admin Orders
+Supervision y acciones administrativas sobre pedidos.
+
+
+
+GET
+/api/v1/admin/orders
+Listar pedidos admin
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/orders/{orderId}/cancel
+Cancelar pedido
+
+
+Parameters
+Try it out
+Name	Description
+orderId *
+string
+(path)
+Id del pedido
+
+orderId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/admin/orders/history
+Historial de pedidos admin
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Admin Product Images
+Carga, reemplazo y eliminacion de imagenes de producto.
+
+
+
+DELETE
+/api/v1/admin/products/{productId}/image
+Eliminar metadata de imagen principal
+
+
+Parameters
+Try it out
+Name	Description
+productId *
+string
+(path)
+Id del producto
+
+productId
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+deleteFile
+string
+(query)
+Eliminar tambien el archivo fisico
+
+deleteFile
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/products/{productId}/image
+Reemplazar imagen principal de producto
+
+
+Parameters
+Try it out
+Name	Description
+productId *
+string
+(path)
+Id del producto
+
+productId
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+Request body
+
+multipart/form-data
+image *
+string($binary)
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/admin/products/{productId}/image
+Subir imagen principal de producto
+
+
+Parameters
+Try it out
+Name	Description
+productId *
+string
+(path)
+Id del producto
+
+productId
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+Request body
+
+multipart/form-data
+image *
+string($binary)
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Admin Products
+Gestion de productos del menu por cafeteria.
+
+
+
+GET
+/api/v1/admin/products
+Listar productos
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+includeInactive
+string
+(query)
+Incluir productos inactivos
+
+includeInactive
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/admin/products
+Crear producto
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "businessId": 0,
+  "categoryId": 0,
+  "description": "string",
+  "name": "string",
+  "price": 0
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/products/{id}
+Actualizar producto
+
+
+Parameters
+Try it out
+Name	Description
+id *
+string
+(path)
+Id del producto
+
+id
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "businessId": 0,
+  "categoryId": 0,
+  "description": "string",
+  "isAvailable": true,
+  "name": "string",
+  "price": 0
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/products/{id}/activate
+Reactivar producto
+
+
+Parameters
+Try it out
+Name	Description
+id *
+string
+(path)
+Id del producto
+
+id
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/products/{id}/deactivate
+Desactivar producto
+
+
+Parameters
+Try it out
+Name	Description
+id *
+string
+(path)
+Id del producto
+
+id
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/products/{id}/unavailable
+Marcar producto no disponible
+
+
+Parameters
+Try it out
+Name	Description
+id *
+string
+(path)
+Id del producto
+
+id
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Admin Tables
+Gestion de mesas y QR por cafeteria.
+
+
+
+GET
+/api/v1/admin/tables
+Listar mesas
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/admin/tables
+Crear mesa
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "businessId": 0,
+  "tableNumber": 0
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/tables/{id}/deactivate
+Desactivar mesa
+
+
+Parameters
+Try it out
+Name	Description
+id *
+string
+(path)
+Id de la mesa
+
+id
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/tables/{id}/regenerate-qr
+Regenerar QR de mesa
+
+
+Parameters
+Try it out
+Name	Description
+id *
+string
+(path)
+Id de la mesa
+
+id
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Admin Users
+Gestion de usuarios administrativos y de cocina por cafeteria.
+
+
+
+GET
+/api/v1/admin/users
+Listar usuarios
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/admin/users
+Crear usuario
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "businessId": 0,
+  "email": "string",
+  "name": "string",
+  "password": "string",
+  "role": "string"
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/admin/users/{id}/deactivate
+Desactivar usuario
+
+
+Parameters
+Try it out
+Name	Description
+id *
+string
+(path)
+Id del usuario
+
+id
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Auth
+Autenticacion y perfil del usuario autenticado.
+
+
+
+POST
+/api/v1/auth/login
+Login
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "email": "string",
+  "password": "string"
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/auth/me
+Usuario autenticado
+
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/auth/register
+Registrar usuario
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "businessId": 0,
+  "email": "string",
+  "name": "string",
+  "password": "string",
+  "role": "string"
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Cashier
+Busqueda y pago de pedidos en caja.
+
+
+
+POST
+/api/v1/admin/cashier/orders/{orderId}/pay
+Pagar pedido
+
+
+Parameters
+Try it out
+Name	Description
+orderId *
+string
+(path)
+Id del pedido
+
+orderId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/admin/cashier/orders/search
+Buscar pedidos para caja
+
+
+Parameters
+Try it out
+Name	Description
+businessId
+string
+(query)
+Contexto de cafeteria para SUPER_ADMIN
+
+businessId
+customerName
+string
+(query)
+Nombre del cliente
+
+customerName
+tableNumber
+string
+(query)
+Numero de mesa
+
+tableNumber
+status
+string
+(query)
+Estado del pedido
+
+status
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Health
+Verificacion operativa del proceso y disponibilidad de base de datos.
+
+
+
+GET
+/health
+Health basico del proceso
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/ready
+Readiness con verificacion de base de datos
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Kitchen
+Flujo operativo de cocina.
+
+
+
+PATCH
+/api/v1/kitchen/order-items/{itemId}/ready
+Marcar item como READY
+
+
+Parameters
+Try it out
+Name	Description
+itemId *
+string
+(path)
+Id del item
+
+itemId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/kitchen/orders
+Pedidos activos de cocina
+
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/kitchen/orders/{orderId}/preparing
+Mover pedido a PREPARING
+
+
+Parameters
+Try it out
+Name	Description
+orderId *
+string
+(path)
+Id del pedido
+
+orderId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+PATCH
+/api/v1/kitchen/orders/{orderId}/ready
+Marcar pedido como READY
+
+
+Parameters
+Try it out
+Name	Description
+orderId *
+string
+(path)
+Id del pedido
+
+orderId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/kitchen/orders/history
+Historial de cocina
+
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Public
+Endpoints publicos para clientes que ingresan por QR.
+
+
+
+GET
+/api/v1/public/menu
+Listar menu publico
+
+Parameters
+Try it out
+Name	Description
+businessSlug
+string
+(query)
+Slug de la cafeteria
+
+businessSlug
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/public/orders/{orderId}/status
+Estado de pedido
+
+Parameters
+Try it out
+Name	Description
+orderId *
+string
+(path)
+Id del pedido
+
+orderId
+qrToken
+string
+(query)
+Token QR de la mesa dueña del pedido
+
+qrToken
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/public/tables/{qrToken}/orders
+Crear pedido desde mesa
+
+Parameters
+Try it out
+Name	Description
+qrToken *
+string
+(path)
+Token del QR
+
+qrToken
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "customerName": "string",
+  "items": [
+    {
+      "addonIds": [
+        0
+      ],
+      "notes": "string",
+      "productId": 0,
+      "quantity": 0
+    }
+  ]
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/public/tables/{qrToken}/session
+Obtener mesa y pedidos activos por QR
+
+Parameters
+Try it out
+Name	Description
+qrToken *
+string
+(path)
+Token del QR
+
+qrToken
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+GET
+/api/v1/tables/qr/{qrToken}
+Obtener mesa por QR
+
+Parameters
+Try it out
+Name	Description
+qrToken *
+string
+(path)
+Token del QR
+
+qrToken
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+Super Admin Businesses
+Gestion global de cafeterias dentro de la plataforma Nova.
+
+
+
+GET
+/api/v1/super-admin/businesses
+Listar cafeterias
+
+
+Parameters
+Try it out
+Name	Description
+includeInactive
+string
+(query)
+Incluir cafeterias inactivas
+
+includeInactive
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+
+POST
+/api/v1/super-admin/businesses
+Crear cafeteria
+
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "logoUrl": "string",
+  "name": "string",
+  "primaryColor": "string",
+  "slug": "string"
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+201	
+Created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "data": {},
+  "success": true
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "string",
+  "success": true
+}
+No links

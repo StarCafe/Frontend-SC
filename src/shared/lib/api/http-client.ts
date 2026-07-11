@@ -43,7 +43,11 @@ async function parseResponse<T>(response: Response): Promise<T> {
 }
 
 function buildUrl(path: string, query?: RequestOptions["query"]) {
-  const url = new URL(path, env.apiBaseUrl);
+  const normalizedBaseUrl = env.apiBaseUrl.endsWith("/")
+    ? env.apiBaseUrl
+    : `${env.apiBaseUrl}/`;
+  const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
+  const url = new URL(normalizedPath, normalizedBaseUrl);
 
   if (!query) {
     return url.toString();
