@@ -3,8 +3,8 @@ import "./globals.css";
 import { AppProviders } from "@/shared/components/providers/app-providers";
 
 export const metadata: Metadata = {
-  title: "StarCafe Control Center",
-  description: "Frontend DDD para administracion, cocina y pedidos por QR",
+  title: "Nova",
+  description: "Plataforma web para administracion, cocina y pedidos por QR",
 };
 
 export default function RootLayout({

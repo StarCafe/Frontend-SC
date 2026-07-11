@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Coffee, QrCode, ShieldCheck, UtensilsCrossed } from "lucide-react";
+import Image from "next/image";
+import { QrCode, ShieldCheck, UtensilsCrossed } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -81,17 +82,24 @@ export function LoginForm({
       <section className="dark-panel grid rounded-[28px] border border-white/10 p-5 sm:rounded-[40px] sm:p-8 lg:p-10">
         <div className="flex flex-col gap-6 sm:gap-8">
           <div className="flex items-center gap-3 text-white">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-accent)]/15 text-[var(--color-accent)] sm:h-14 sm:w-14">
-              <Coffee className="h-7 w-7 sm:h-8 sm:w-8" />
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/95 p-1.5 shadow-[0_14px_30px_rgba(0,0,0,0.16)] sm:h-16 sm:w-16">
+              <Image
+                alt="Logo de Nova"
+                className="h-full w-full object-contain"
+                height={64}
+                priority
+                src="/Nova-Logo.png"
+                width={64}
+              />
             </div>
             <div>
-              <h2 className="text-3xl font-semibold sm:text-4xl">StarCafe</h2>
-              <p className="text-white/70">Selecciona tu vista</p>
+              <h2 className="text-3xl font-semibold sm:text-4xl">Nova</h2>
+              <p className="text-white/70">Acceso a la plataforma</p>
             </div>
           </div>
 
           <p className="max-w-lg text-base leading-7 text-white/72 sm:text-lg sm:leading-8">
-            Inicia sesion con el backend local de Nova y entra a la vista que corresponda a tu rol.
+            Inicia sesion en la plataforma Nova y entra a la vista que corresponda a tu rol.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
