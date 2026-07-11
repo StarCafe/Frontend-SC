@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
-import { Power, Plus, RefreshCcw } from "lucide-react";
+import { Copy, Download, Power, Plus, RefreshCcw, Share2 } from "lucide-react";
 import {
   createTableUseCase,
   deactivateTableUseCase,
@@ -28,6 +28,7 @@ export function TablesManagement() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [tableNumber, setTableNumber] = useState("1");
+  const qrContainersRef = useRef<Record<number, HTMLDivElement | null>>({});
 
   async function loadTables(token: string) {
     setLoading(true);
@@ -104,6 +105,87 @@ export function TablesManagement() {
     }
   }
 
+  function getQrSvgMarkup(tableId: number) {
+    const svg = qrContainersRef.current[tableId]?.querySelector("svg");
+
+    if (!svg) {
+      throw new Error("No se encontró el QR para esta mesa.");
+    }
+
+    return new XMLSerializer().serializeToString(svg);
+  }
+
+  async function handleDownloadQr(table: TableEntity) {
+    try {
+      const svgMarkup = getQrSvgMarkup(table.id);
+      const svgBlob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
+      const svgUrl = URL.createObjectURL(svgBlob);
+      const image = new Image();
+
+      await new Promise<void>((resolve, reject) => {
+        image.onload = () => resolve();
+        image.onerror = () => reject(new Error("No se pudo procesar el QR."));
+        image.src = svgUrl;
+      });
+
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width || 512;
+      canvas.height = image.height || 512;
+      const context = canvas.getContext("2d");
+
+      if (!context) {
+        URL.revokeObjectURL(svgUrl);
+        throw new Error("No se pudo preparar la descarga del QR.");
+      }
+
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(svgUrl);
+
+      const downloadUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = `mesa-${table.tableNumber}-qr.png`;
+      link.click();
+
+      toast.success("QR descargado");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "No se pudo descargar el QR.";
+      toast.error(message);
+    }
+  }
+
+  async function handleCopyLink(table: TableEntity) {
+    try {
+      await navigator.clipboard.writeText(table.qrUrl);
+      toast.success("Enlace copiado");
+    } catch {
+      toast.error("No se pudo copiar el enlace.");
+    }
+  }
+
+  async function handleShare(table: TableEntity) {
+    if (!navigator.share) {
+      toast.error("Tu navegador no soporta compartir desde esta pantalla.");
+      return;
+    }
+
+    try {
+      await navigator.share({
+        title: `Mesa ${table.tableNumber}`,
+        text: `Acceso QR para la mesa ${table.tableNumber}`,
+        url: table.qrUrl,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        return;
+      }
+
+      toast.error("No se pudo compartir el QR.");
+    }
+  }
+
   return (
     <div className="section-grid gap-5">
       <SectionHeading
@@ -148,7 +230,12 @@ export function TablesManagement() {
               </div>
 
               <div className="mt-5 rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:rounded-[28px]">
-                <div className="mx-auto w-full max-w-[180px] rounded-[20px] bg-white p-4 sm:rounded-[24px]">
+                <div
+                  ref={(element) => {
+                    qrContainersRef.current[table.id] = element;
+                  }}
+                  className="mx-auto w-full max-w-[180px] rounded-[20px] bg-white p-4 sm:rounded-[24px]"
+                >
                   <QRCode value={table.qrUrl} className="h-auto w-full" />
                 </div>
               </div>
@@ -158,7 +245,22 @@ export function TablesManagement() {
                 <p className="break-all">{table.qrUrl}</p>
               </div>
 
-              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                <Button variant="ghost" onClick={() => handleDownloadQr(table)} type="button">
+                  <Download className="h-4 w-4" />
+                  Descargar
+                </Button>
+                <Button variant="ghost" onClick={() => handleCopyLink(table)} type="button">
+                  <Copy className="h-4 w-4" />
+                  Copiar link
+                </Button>
+                <Button variant="ghost" onClick={() => handleShare(table)} type="button">
+                  <Share2 className="h-4 w-4" />
+                  Compartir
+                </Button>
+              </div>
+
+              <div className="mt-2 grid gap-2 sm:grid-cols-2">
                 <Button variant="ghost" onClick={() => handleRegenerate(table.id)} type="button">
                   <RefreshCcw className="h-4 w-4" />
                   Regenerar
