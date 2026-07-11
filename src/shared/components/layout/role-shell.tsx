@@ -82,27 +82,10 @@ export function RoleShell({
       <div className="page-shell app-shell-mobile grid gap-3 sm:gap-4 lg:gap-5 xl:grid-cols-[292px_minmax(0,1fr)]">
         <aside className="dark-panel rounded-[30px] border border-white/10 p-3 text-white sm:rounded-[36px] sm:p-5 xl:sticky xl:top-5 xl:z-20 xl:min-h-[calc(100vh-2.5rem)] xl:max-h-[calc(100vh-2.5rem)]">
           <div className="flex h-full flex-col gap-4 xl:gap-8">
-            <div className="section-grid gap-3 sm:flex sm:items-end sm:justify-between xl:block">
-              {branding?.logoUrl ? (
-                <img
-                  alt={branding.name}
-                  className="h-14 w-14 rounded-[20px] bg-white/95 object-cover p-1.5 shadow-[0_14px_30px_rgba(0,0,0,0.18)]"
-                  src={branding.logoUrl}
-                />
-              ) : (
-                <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60">
-                  Nova
-                </span>
-              )}
-              <div className="section-grid gap-1">
-                <h2 className="text-[1.9rem] leading-none font-semibold sm:text-3xl">
-                  {area}
-                </h2>
-                <p className="text-sm text-white/70">
-                  {auth.user.name} / {auth.user.role}
-                </p>
-                <p className="text-xs text-white/45">{sessionLabel}</p>
-              </div>
+            <div className="section-grid gap-1">
+              <h2 className="text-[1.9rem] leading-none font-semibold sm:text-3xl">
+                {area}
+              </h2>
             </div>
 
             <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
@@ -157,12 +140,12 @@ export function RoleShell({
               })}
             </nav>
 
-            <div className="rounded-[24px] border border-white/10 bg-white/5 p-4 xl:mt-auto xl:rounded-[28px]">
+            <div className="xl:mt-auto">
               <button
                 className={buttonClasses({
                   variant: "ghost",
                   className:
-                    "w-full justify-start border border-white/10 text-white hover:bg-white/10",
+                    "w-full justify-start rounded-[24px] border border-white/10 bg-white/5 px-5 py-6 text-white hover:bg-white/10 xl:rounded-[28px]",
                 })}
                 onClick={() => clearSession()}
               >

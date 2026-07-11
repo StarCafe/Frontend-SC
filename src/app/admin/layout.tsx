@@ -11,6 +11,10 @@ const adminNavigation = [
   { href: "/admin/categories", label: "Categorias" },
   { href: "/admin/addons", label: "Addons" },
   { href: "/admin/orders", label: "Pedidos" },
+  { href: "/admin/orders/history", label: "Historial" },
+  { href: "/admin/cashier", label: "Caja" },
+  { href: "/admin/users", label: "Usuarios" },
+  { href: "/admin/settings", label: "Ajustes" },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
