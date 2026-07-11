@@ -1,29 +1,20 @@
-function getEnvValue(...names: string[]) {
-  for (const name of names) {
-    const value = process.env[name]?.trim();
+function getRequiredValue(value: string | undefined, name: string) {
+  const normalized = value?.trim();
 
-    if (value) {
-      return value;
-    }
-  }
-
-  return null;
-}
-
-function getRequiredEnv(name: "NEXT_PUBLIC_APP_BASE_URL") {
-  const value = process.env[name]?.trim();
-
-  if (!value) {
+  if (!normalized) {
     throw new Error(`Missing required environment variable: ${name}`);
   }
 
-  return value;
+  return normalized;
 }
 
-const API_BASE_URL = getEnvValue("NEXT_PUBLIC_API_URL", "NEXT_PUBLIC_API_BASE_URL") ?? "http://localhost:8081";
-const APP_BASE_URL = getRequiredEnv("NEXT_PUBLIC_APP_BASE_URL");
-
 export const env = {
-  apiBaseUrl: API_BASE_URL,
-  appBaseUrl: APP_BASE_URL,
+  apiBaseUrl: getRequiredValue(
+    process.env.NEXT_PUBLIC_API_URL,
+    "NEXT_PUBLIC_API_URL",
+  ),
+  appBaseUrl: getRequiredValue(
+    process.env.NEXT_PUBLIC_APP_BASE_URL,
+    "NEXT_PUBLIC_APP_BASE_URL",
+  ),
 };

@@ -6,13 +6,11 @@ import { authRepository } from "@/modules/auth/infrastructure/repositories/auth-
 import { useAuthStore } from "@/shared/store/auth-store";
 
 export function SessionBootstrap() {
-  const { token, user, hydrated, setUser, clearSession } = useAuthStore((state) => ({
-    token: state.token,
-    user: state.user,
-    hydrated: state.hydrated,
-    setUser: state.setUser,
-    clearSession: state.clearSession,
-  }));
+  const token = useAuthStore((state) => state.token);
+  const user = useAuthStore((state) => state.user);
+  const hydrated = useAuthStore((state) => state.hydrated);
+  const setUser = useAuthStore((state) => state.setUser);
+  const clearSession = useAuthStore((state) => state.clearSession);
 
   useEffect(() => {
     if (!hydrated || !token || user) {

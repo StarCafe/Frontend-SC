@@ -8,11 +8,9 @@ import type { Role } from "@/modules/auth/domain/auth.entity";
 export function useAuthGuard(expectedRole: Role) {
   const router = useRouter();
   const pathname = usePathname();
-  const { token, user, hydrated } = useAuthStore((state) => ({
-    token: state.token,
-    user: state.user,
-    hydrated: state.hydrated,
-  }));
+  const token = useAuthStore((state) => state.token);
+  const user = useAuthStore((state) => state.user);
+  const hydrated = useAuthStore((state) => state.hydrated);
 
   useEffect(() => {
     if (!hydrated) {
