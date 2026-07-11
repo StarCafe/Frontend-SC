@@ -13,12 +13,19 @@ function resolveRole(value: unknown): Role {
 }
 
 export function mapAuthUser(payload: Record<string, unknown>): AuthUser {
+  const business =
+    typeof payload.business === "object" && payload.business !== null
+      ? (payload.business as Record<string, unknown>)
+      : null;
+
   return {
     id: Number(payload.id ?? 0),
     name: String(payload.name ?? payload.fullName ?? payload.username ?? "Usuario StarCafe"),
     email: String(payload.email ?? ""),
     role: resolveRole(payload.role),
     businessId: payload.businessId === null || payload.businessId === undefined ? null : Number(payload.businessId),
+    businessName: String(business?.name ?? payload.businessName ?? payload.business_name ?? ""),
+    businessSlug: String(business?.slug ?? payload.businessSlug ?? payload.business_slug ?? ""),
     isActive: payload.isActive === undefined ? true : Boolean(payload.isActive),
   };
 }

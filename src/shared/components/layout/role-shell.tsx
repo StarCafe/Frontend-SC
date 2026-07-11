@@ -47,7 +47,11 @@ export function RoleShell({
       return "";
     }
 
-    return branding?.name || (auth.user.businessId ? `Cafeteria #${auth.user.businessId}` : "Sin cafeteria");
+    return (
+      branding?.name ||
+      auth.user.businessName ||
+      (auth.user.businessId ? `Cafeteria #${auth.user.businessId}` : "Sin cafeteria")
+    );
   }, [auth?.user, branding?.name]);
   const iconByLabel: Record<string, ReactNode> = {
     Dashboard: <LayoutDashboard className="h-4 w-4" />,
@@ -119,7 +123,7 @@ export function RoleShell({
                 )}
                 <div className="min-w-0">
                   <p className="truncate text-base font-semibold text-white">
-                    {branding?.name ?? sessionLabel}
+                    {branding?.name ?? auth.user.businessName ?? sessionLabel}
                   </p>
                   <p className="truncate text-xs text-white/60">
                     {branding?.themeKey || "Tema activo"}

@@ -6,6 +6,8 @@ export interface AuthUser {
   email: string;
   role: Role;
   businessId: number | null;
+  businessName?: string;
+  businessSlug?: string;
   isActive?: boolean;
 }
 
