@@ -242,7 +242,6 @@ export function TablesManagement() {
 
               <div className="mt-4 grid gap-1 text-sm text-[var(--color-muted)]">
                 <p className="font-semibold text-[var(--color-ink)]">{table.qrToken}</p>
-                <p className="break-all">{table.qrUrl}</p>
               </div>
 
               <div className="mt-4 grid gap-2 sm:grid-cols-3">

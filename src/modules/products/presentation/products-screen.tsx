@@ -324,18 +324,44 @@ export function ProductsScreen() {
                     >
                       {product.isActive ? "Desactivar" : "Activar"}
                     </Button>
-                    <Button
-                      variant="ghost"
-                      onClick={() =>
-                        handleProductAction(
-                          () => markProductUnavailableUseCase(productsRepository, token, product.id),
-                          "Producto marcado como no disponible",
-                        )
-                      }
-                      type="button"
-                    >
-                      No disponible
-                    </Button>
+                    {product.isActive && product.isAvailable ? (
+                      <Button
+                        variant="ghost"
+                        onClick={() =>
+                          handleProductAction(
+                            () => markProductUnavailableUseCase(productsRepository, token, product.id),
+                            "Producto marcado como no disponible",
+                          )
+                        }
+                        type="button"
+                      >
+                        No disponible
+                      </Button>
+                    ) : null}
+                    {product.isActive && !product.isAvailable ? (
+                      <Button
+                        onClick={() =>
+                          handleProductAction(
+                            async () => {
+                              const updated = await updateProductUseCase(productsRepository, token, product.id, {
+                                categoryId: product.categoryId,
+                                name: product.name,
+                                description: product.description,
+                                price: product.price,
+                                isAvailable: true,
+                              });
+                              setProducts((current) =>
+                                current.map((item) => (item.id === product.id ? updated : item)),
+                              );
+                            },
+                            "Producto marcado como disponible",
+                          )
+                        }
+                        type="button"
+                      >
+                        Volver disponible
+                      </Button>
+                    ) : null}
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Input
