@@ -79,14 +79,14 @@ export function RoleShell({
 
   return (
     <div className="min-h-screen px-2 py-2 sm:px-0 sm:py-5">
-      <div className="page-shell app-shell-mobile grid gap-3 sm:gap-4 lg:gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
-        <aside className="dark-panel rounded-[30px] border border-white/10 p-3 text-white sm:rounded-[36px] sm:p-5 xl:sticky xl:top-5 xl:z-20 xl:max-h-[calc(100vh-2.5rem)]">
+      <div className="page-shell app-shell-mobile grid gap-3 sm:gap-4 lg:gap-5 xl:grid-cols-[292px_minmax(0,1fr)]">
+        <aside className="dark-panel rounded-[30px] border border-white/10 p-3 text-white sm:rounded-[36px] sm:p-5 xl:sticky xl:top-5 xl:z-20 xl:min-h-[calc(100vh-2.5rem)] xl:max-h-[calc(100vh-2.5rem)]">
           <div className="flex h-full flex-col gap-4 xl:gap-8">
             <div className="section-grid gap-3 sm:flex sm:items-end sm:justify-between xl:block">
               {branding?.logoUrl ? (
                 <img
                   alt={branding.name}
-                  className="h-12 w-12 rounded-2xl bg-white object-cover p-1"
+                  className="h-14 w-14 rounded-[20px] bg-white/95 object-cover p-1.5 shadow-[0_14px_30px_rgba(0,0,0,0.18)]"
                   src={branding.logoUrl}
                 />
               ) : (
@@ -101,21 +101,21 @@ export function RoleShell({
                 <p className="text-sm text-white/70">
                   {auth.user.name} / {auth.user.role}
                 </p>
-                <p className="text-xs text-white/50">{sessionLabel}</p>
+                <p className="text-xs text-white/45">{sessionLabel}</p>
               </div>
             </div>
 
-            <div className="rounded-[24px] border border-white/10 bg-white/6 p-4">
+            <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
               <div className="flex items-center gap-3">
                 {branding?.logoUrl ? (
                   <img
                     alt={branding.name}
-                    className="h-12 w-12 rounded-2xl bg-white object-cover p-1"
+                    className="h-14 w-14 rounded-[20px] bg-white/95 object-cover p-1.5"
                     src={branding.logoUrl}
                   />
                 ) : (
                   <div
-                    className="grid h-12 w-12 place-items-center rounded-2xl text-sm font-semibold text-white"
+                    className="grid h-14 w-14 place-items-center rounded-[20px] text-base font-semibold text-white shadow-[0_12px_22px_rgba(0,0,0,0.16)]"
                     style={{ backgroundColor: "var(--color-primary)" }}
                   >
                     {(branding?.name ?? sessionLabel ?? area).slice(0, 1).toUpperCase()}
@@ -142,10 +142,10 @@ export function RoleShell({
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex min-h-[76px] flex-col items-start justify-between rounded-[22px] bg-white/5 px-3 py-3 text-left text-xs font-medium transition sm:min-h-[84px] sm:px-4 sm:text-sm xl:min-h-0 xl:flex-row xl:items-center xl:gap-3 xl:rounded-2xl xl:px-4 xl:py-3",
+                      "flex min-h-[76px] flex-col items-start justify-between rounded-[22px] border border-transparent bg-white/5 px-3 py-3 text-left text-xs font-medium transition sm:min-h-[84px] sm:px-4 sm:text-sm xl:min-h-0 xl:flex-row xl:items-center xl:gap-3 xl:rounded-2xl xl:px-4 xl:py-3",
                       active
-                        ? "bg-[var(--color-primary)] text-white shadow-[0_16px_28px_rgba(0,98,65,0.28)]"
-                        : "text-white/75 hover:bg-white/8 hover:text-white",
+                        ? "border-white/10 bg-[var(--color-primary)] text-white shadow-[0_16px_28px_rgba(0,0,0,0.18)]"
+                        : "text-white/75 hover:border-white/8 hover:bg-white/8 hover:text-white",
                     )}
                   >
                     {iconByLabel[item.label] ?? (
