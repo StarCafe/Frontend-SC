@@ -106,6 +106,54 @@ function normalizeHex(value: string) {
   return null;
 }
 
+function hexToRgb(hex: string) {
+  const normalized = normalizeHex(hex);
+
+  if (!normalized) {
+    return null;
+  }
+
+  return {
+    r: parseInt(normalized.slice(1, 3), 16),
+    g: parseInt(normalized.slice(3, 5), 16),
+    b: parseInt(normalized.slice(5, 7), 16),
+  };
+}
+
+function rgbToHex(red: number, green: number, blue: number) {
+  return `#${red.toString(16).padStart(2, "0")}${green
+    .toString(16)
+    .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
+}
+
+function mixHex(baseHex: string, targetHex: string, ratio: number) {
+  const base = hexToRgb(baseHex);
+  const target = hexToRgb(targetHex);
+
+  if (!base || !target) {
+    return baseHex;
+  }
+
+  const mix = (source: number, destination: number) =>
+    Math.round(source * (1 - ratio) + destination * ratio);
+
+  return rgbToHex(
+    mix(base.r, target.r),
+    mix(base.g, target.g),
+    mix(base.b, target.b),
+  );
+}
+
+function rgba(hex: string, alpha: number) {
+  const rgb = hexToRgb(hex);
+
+  if (!rgb) {
+    return `rgba(0, 0, 0, ${alpha})`;
+  }
+
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+}
+
 function shadeHex(hex: string, multiplier: number) {
   const normalized = normalizeHex(hex);
 
@@ -120,6 +168,42 @@ function shadeHex(hex: string, multiplier: number) {
   return `#${red.toString(16).padStart(2, "0")}${green
     .toString(16)
     .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
+}
+
+function derivePaletteFromPrimary(primaryColor: string) {
+  const normalized = normalizeHex(primaryColor);
+
+  if (!normalized) {
+    return null;
+  }
+
+  const secondary = mixHex(normalized, "#0d1014", 0.72);
+  const background = mixHex(normalized, "#050607", 0.82);
+  const backgroundSoft = mixHex(normalized, "#101317", 0.7);
+  const surface = mixHex(normalized, "#fffaf2", 0.9);
+  const surfaceStrong = mixHex(normalized, "#f1e5d5", 0.78);
+  const surfaceMuted = mixHex(normalized, "#dfd2be", 0.72);
+  const ink = mixHex(normalized, "#1c1f24", 0.82);
+  const muted = mixHex(normalized, "#7f7f7f", 0.6);
+  const accent = mixHex(normalized, "#f0cf82", 0.46);
+
+  return {
+    "--color-background": background,
+    "--color-background-soft": backgroundSoft,
+    "--color-surface": surface,
+    "--color-surface-strong": surfaceStrong,
+    "--color-surface-muted": surfaceMuted,
+    "--color-panel": rgba(surface, 0.9),
+    "--color-panel-dark": rgba(backgroundSoft, 0.78),
+    "--color-border": rgba(ink, 0.12),
+    "--color-border-strong": rgba(ink, 0.22),
+    "--color-ink": ink,
+    "--color-muted": muted,
+    "--color-primary": normalized,
+    "--color-primary-strong": shadeHex(normalized, 0.72),
+    "--color-secondary": secondary,
+    "--color-accent": accent,
+  } satisfies Partial<Record<(typeof brandingVariables)[number], string>>;
 }
 
 function ensureDefaultVariables() {
@@ -156,10 +240,15 @@ export function applyBrandingTheme(branding: BusinessBrandingEntity) {
 
   ensureDefaultVariables();
   const preset = themePresets[branding.themeKey];
+  const derivedPalette = derivePaletteFromPrimary(branding.primaryColor);
 
-  if (preset) {
+  if (preset || derivedPalette) {
     brandingVariables.forEach((variable) => {
-      const value = preset[variable] ?? defaultVariables?.[variable] ?? "";
+      const value =
+        preset?.[variable] ??
+        derivedPalette?.[variable] ??
+        defaultVariables?.[variable] ??
+        "";
       document.documentElement.style.setProperty(variable, value);
     });
   } else {
@@ -174,5 +263,8 @@ export function applyBrandingTheme(branding: BusinessBrandingEntity) {
 
   document.documentElement.style.setProperty("--color-primary", primaryColor);
   document.documentElement.style.setProperty("--color-primary-strong", shadeHex(primaryColor, 0.72));
-  document.documentElement.style.setProperty("--color-accent", shadeHex(primaryColor, 1.12));
+  document.documentElement.style.setProperty(
+    "--color-accent",
+    derivedPalette?.["--color-accent"] ?? shadeHex(primaryColor, 1.12),
+  );
 }
