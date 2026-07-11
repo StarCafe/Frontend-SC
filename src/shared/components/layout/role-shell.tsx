@@ -18,6 +18,7 @@ import { useMemo } from "react";
 import { useAuthGuard } from "@/modules/auth/presentation/hooks/use-auth-guard";
 import { buttonClasses } from "@/shared/components/ui/button-styles";
 import { Spinner } from "@/shared/components/ui/spinner";
+import { useBusinessBrandingStore } from "@/shared/store/business-branding-store";
 import { useAuthStore } from "@/shared/store/auth-store";
 import { cn } from "@/shared/utils/cn";
 
@@ -40,13 +41,14 @@ export function RoleShell({
   const pathname = usePathname();
   const auth = useAuthGuard(role);
   const clearSession = useAuthStore((state) => state.clearSession);
+  const branding = useBusinessBrandingStore((state) => state.branding);
   const sessionLabel = useMemo(() => {
     if (!auth?.user) {
       return "";
     }
 
-    return auth.user.businessId ? `Cafeteria #${auth.user.businessId}` : "Sin cafeteria";
-  }, [auth?.user]);
+    return branding?.name || (auth.user.businessId ? `Cafeteria #${auth.user.businessId}` : "Sin cafeteria");
+  }, [auth?.user, branding?.name]);
   const iconByLabel: Record<string, ReactNode> = {
     Dashboard: <LayoutDashboard className="h-4 w-4" />,
     Mesas: <Coffee className="h-4 w-4" />,
@@ -77,9 +79,17 @@ export function RoleShell({
         <aside className="dark-panel rounded-[30px] border border-white/10 p-3 text-white sm:rounded-[36px] sm:p-5 xl:sticky xl:top-5 xl:z-20 xl:max-h-[calc(100vh-2.5rem)]">
           <div className="flex h-full flex-col gap-4 xl:gap-8">
             <div className="section-grid gap-3 sm:flex sm:items-end sm:justify-between xl:block">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60">
-                Nova
-              </span>
+              {branding?.logoUrl ? (
+                <img
+                  alt={branding.name}
+                  className="h-12 w-12 rounded-2xl bg-white object-cover p-1"
+                  src={branding.logoUrl}
+                />
+              ) : (
+                <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/60">
+                  Nova
+                </span>
+              )}
               <div className="section-grid gap-1">
                 <h2 className="text-[1.9rem] leading-none font-semibold sm:text-3xl">
                   {area}

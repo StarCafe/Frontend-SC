@@ -14,6 +14,7 @@ const adminNavigation = [
   { href: "/admin/orders/history", label: "Historial" },
   { href: "/admin/cashier", label: "Caja" },
   { href: "/admin/users", label: "Usuarios" },
+  { href: "/admin/settings", label: "Ajustes" },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
