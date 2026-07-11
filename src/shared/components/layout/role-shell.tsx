@@ -2,8 +2,12 @@
 
 import Link from "next/link";
 import {
+  Archive,
+  Banknote,
   Coffee,
   CupSoda,
+  FolderTree,
+  History,
   LayoutDashboard,
   LogOut,
   Package,
@@ -57,13 +61,14 @@ export function RoleShell({
     Dashboard: <LayoutDashboard className="h-4 w-4" />,
     Mesas: <Coffee className="h-4 w-4" />,
     Productos: <Package className="h-4 w-4" />,
-    Categorias: <Package className="h-4 w-4" />,
+    Categorias: <FolderTree className="h-4 w-4" />,
     Addons: <CupSoda className="h-4 w-4" />,
     Pedidos: <Receipt className="h-4 w-4" />,
-    Historial: <Receipt className="h-4 w-4" />,
-    Caja: <Receipt className="h-4 w-4" />,
+    Historial: <History className="h-4 w-4" />,
+    Caja: <Banknote className="h-4 w-4" />,
     Usuarios: <Users className="h-4 w-4" />,
     Ajustes: <Settings className="h-4 w-4" />,
+    Inventario: <Archive className="h-4 w-4" />,
   };
 
   if (!auth) {
