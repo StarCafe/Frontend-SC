@@ -79,10 +79,10 @@ export function LoginForm({
 
   return (
     <div className="grid w-full max-w-6xl gap-4 sm:gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <section className="dark-panel grid rounded-[28px] border border-white/10 p-5 sm:rounded-[40px] sm:p-8 lg:p-10">
+      <section className="grid rounded-[28px] border border-[#2D2D2D] bg-[#111111] p-5 text-[#FFFFFF] shadow-[0_24px_60px_rgba(0,0,0,0.28)] sm:rounded-[40px] sm:p-8 lg:p-10">
         <div className="flex flex-col gap-6 sm:gap-8">
-          <div className="flex items-center gap-3 text-white">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/95 p-1.5 shadow-[0_14px_30px_rgba(0,0,0,0.16)] sm:h-16 sm:w-16">
+          <div className="flex items-center gap-3 text-[#FFFFFF]">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[#2D2D2D] bg-[#FFFFFF] p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.18)] sm:h-16 sm:w-16">
               <Image
                 alt="Logo de Nova"
                 className="h-full w-full object-contain"
@@ -94,11 +94,11 @@ export function LoginForm({
             </div>
             <div>
               <h2 className="text-3xl font-semibold sm:text-4xl">Nova</h2>
-              <p className="text-white/70">Acceso a la plataforma</p>
+              <p className="text-[#D7D7D7]">Acceso a la plataforma</p>
             </div>
           </div>
 
-          <p className="max-w-lg text-base leading-7 text-white/72 sm:text-lg sm:leading-8">
+          <p className="max-w-lg text-base leading-7 text-[#D7D7D7] sm:text-lg sm:leading-8">
             Inicia sesion en la plataforma Nova y entra a la vista que corresponda a tu rol.
           </p>
 
@@ -116,8 +116,8 @@ export function LoginForm({
                   className={cn(
                     "rounded-[22px] border p-3 text-center transition sm:rounded-[28px] sm:p-4",
                     active
-                      ? "border-[var(--color-accent)] bg-[var(--color-accent)]/18 text-white"
-                      : "border-white/10 bg-white/5 text-white/75 hover:bg-white/10",
+                      ? "border-[#555555] bg-[#2D2D2D] text-[#FFFFFF]"
+                      : "border-[#2D2D2D] bg-[#111111] text-[#D7D7D7] hover:bg-[#2D2D2D]",
                   )}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -131,44 +131,54 @@ export function LoginForm({
         </div>
       </section>
 
-      <Card className="mx-auto w-full max-w-xl rounded-[28px] bg-white p-5 shadow-[var(--shadow-soft)] sm:rounded-[40px] sm:p-8 lg:p-10">
+      <Card className="mx-auto w-full max-w-xl rounded-[28px] border border-[#555555] bg-[#D7D7D7] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.2)] sm:rounded-[40px] sm:p-8 lg:p-10">
         <form className="section-grid gap-6" onSubmit={onSubmit}>
           <div className="section-grid gap-3">
-            <span className="w-fit rounded-full bg-[var(--color-surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">
+            <span className="w-fit rounded-full bg-[#FFFFFF] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#555555]">
               Acceso seguro
             </span>
             <div className="flex items-start gap-3 sm:items-center">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-white">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#2D2D2D] text-[#FFFFFF]">
                 <ShieldCheck className="h-6 w-6" />
               </div>
               <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-3xl">{title}</h1>
-                <p className="text-sm leading-6 text-[var(--color-muted)]">{description}</p>
+                <h1 className="text-2xl font-semibold tracking-tight text-[#111111] sm:text-3xl">{title}</h1>
+                <p className="text-sm leading-6 text-[#555555]">{description}</p>
               </div>
             </div>
           </div>
 
           <label className="section-grid gap-2">
-            <span className="text-sm font-medium text-[var(--color-ink)]">Correo</span>
+            <span className="text-sm font-medium text-[#111111]">Correo</span>
             <Input
+              className="border-[#555555] bg-[#FFFFFF] text-[#111111] caret-[#111111] placeholder:text-[#555555] focus:border-[#2D2D2D] focus:ring-4 focus:ring-[rgba(85,85,85,0.12)]"
               type="email"
               placeholder={role === "ADMIN" ? "admin@starcafe.com" : "kitchen@starcafe.com"}
               {...form.register("email")}
             />
             {form.formState.errors.email ? (
-              <span className="text-sm text-[var(--color-danger)]">{form.formState.errors.email.message}</span>
+              <span className="text-sm text-[#555555]">{form.formState.errors.email.message}</span>
             ) : null}
           </label>
 
           <label className="section-grid gap-2">
-            <span className="text-sm font-medium text-[var(--color-ink)]">Clave</span>
-            <Input type="password" placeholder="******" {...form.register("password")} />
+            <span className="text-sm font-medium text-[#111111]">Clave</span>
+            <Input
+              className="border-[#555555] bg-[#FFFFFF] text-[#111111] caret-[#111111] placeholder:text-[#555555] focus:border-[#2D2D2D] focus:ring-4 focus:ring-[rgba(85,85,85,0.12)]"
+              type="password"
+              placeholder="******"
+              {...form.register("password")}
+            />
             {form.formState.errors.password ? (
-              <span className="text-sm text-[var(--color-danger)]">{form.formState.errors.password.message}</span>
+              <span className="text-sm text-[#555555]">{form.formState.errors.password.message}</span>
             ) : null}
           </label>
 
-          <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
+          <Button
+            className="w-full bg-[#111111] text-[#FFFFFF] hover:bg-[#2D2D2D]"
+            disabled={form.formState.isSubmitting}
+            type="submit"
+          >
             {form.formState.isSubmitting ? "Ingresando..." : "Ingresar"}
           </Button>
         </form>
