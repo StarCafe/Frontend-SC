@@ -101,6 +101,33 @@ export function RoleShell({
               </div>
             </div>
 
+            <div className="rounded-[24px] border border-white/10 bg-white/6 p-4">
+              <div className="flex items-center gap-3">
+                {branding?.logoUrl ? (
+                  <img
+                    alt={branding.name}
+                    className="h-12 w-12 rounded-2xl bg-white object-cover p-1"
+                    src={branding.logoUrl}
+                  />
+                ) : (
+                  <div
+                    className="grid h-12 w-12 place-items-center rounded-2xl text-sm font-semibold text-white"
+                    style={{ backgroundColor: "var(--color-primary)" }}
+                  >
+                    {(branding?.name ?? sessionLabel ?? area).slice(0, 1).toUpperCase()}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <p className="truncate text-base font-semibold text-white">
+                    {branding?.name ?? sessionLabel}
+                  </p>
+                  <p className="truncate text-xs text-white/60">
+                    {branding?.themeKey || "Tema activo"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <nav className="grid grid-cols-3 gap-2 sm:grid-cols-4 xl:grid-cols-1 xl:gap-2">
               {navigation.map((item) => {
                 const active =

@@ -20,7 +20,7 @@ export function BusinessBrandingBootstrap() {
       return;
     }
 
-    if (!token || user?.role !== "ADMIN") {
+    if (!token || (user?.role !== "ADMIN" && user?.role !== "KITCHEN")) {
       clearBranding();
       return;
     }

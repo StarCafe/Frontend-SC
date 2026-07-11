@@ -11,6 +11,7 @@ import { menuRepository } from "@/modules/menu/infrastructure/repositories/menu-
 import type { OrderEntity } from "@/modules/orders/domain/order.entity";
 import { usePolling } from "@/shared/hooks/use-polling";
 import { HttpError } from "@/shared/lib/api/http-client";
+import { applyBrandingTheme, resetBrandingTheme } from "@/shared/lib/branding/apply-branding";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
@@ -64,6 +65,25 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
 
     return () => window.clearTimeout(timeoutId);
   }, [qrToken]);
+
+  useEffect(() => {
+    if (!session) {
+      return;
+    }
+
+    applyBrandingTheme({
+      name: session.businessName,
+      slug: session.businessSlug,
+      logoUrl: session.businessLogoUrl ?? "",
+      primaryColor: session.businessPrimaryColor ?? "",
+      themeKey: session.businessThemeKey ?? "",
+      availableThemes: [],
+    });
+
+    return () => {
+      resetBrandingTheme();
+    };
+  }, [session]);
 
   const selectedProduct = useMemo(() => {
     if (!selectedProductId) {
@@ -227,11 +247,30 @@ export function PublicOrderingScreen({ qrToken }: { qrToken: string }) {
         <section className="section-grid min-w-0 gap-5">
           <div className="dark-panel w-full max-w-full overflow-hidden rounded-[28px] border border-white/10 p-4 sm:rounded-[34px] sm:p-5">
             <div className="flex flex-col gap-4">
-              <div className="min-w-0">
-                <p className="text-sm text-white/60">Mesa {session.tableNumber}</p>
-                <h1 className="text-[1.8rem] leading-tight font-semibold break-words sm:text-3xl">
-                  {session.businessName}
-                </h1>
+              <div className="flex flex-wrap items-center gap-4">
+                {session.businessLogoUrl ? (
+                  <img
+                    alt={session.businessName}
+                    className="h-14 w-14 rounded-2xl bg-white object-cover p-1"
+                    src={session.businessLogoUrl}
+                  />
+                ) : (
+                  <div
+                    className="grid h-14 w-14 place-items-center rounded-2xl text-lg font-semibold text-white"
+                    style={{ backgroundColor: "var(--color-primary)" }}
+                  >
+                    {session.businessName.slice(0, 1).toUpperCase()}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <p className="text-sm text-white/60">Mesa {session.tableNumber}</p>
+                  <h1 className="text-[1.8rem] leading-tight font-semibold break-words sm:text-3xl">
+                    {session.businessName}
+                  </h1>
+                  <p className="text-sm text-white/55">
+                    {session.businessThemeKey || "Experiencia de la cafetería"}
+                  </p>
+                </div>
               </div>
               <div className="flex items-center gap-2 rounded-2xl bg-white/8 px-4 py-3 text-sm text-white/70">
                 <Clock3 className="h-4 w-4" />
