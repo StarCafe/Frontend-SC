@@ -4,7 +4,7 @@ export function mapCategory(payload: Record<string, unknown>): CategoryEntity {
   return {
     id: Number(payload.id ?? 0),
     name: String(payload.name ?? ""),
-    description: String(payload.description ?? ""),
+    description: payload.description ? String(payload.description) : undefined,
     isActive: Boolean(payload.isActive ?? true),
   };
 }

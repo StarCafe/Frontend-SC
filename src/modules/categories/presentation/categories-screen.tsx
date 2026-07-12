@@ -23,7 +23,6 @@ export function CategoriesScreen() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
 
   async function loadCategories(token: string) {
     setLoading(true);
@@ -62,10 +61,9 @@ export function CategoriesScreen() {
     setSubmitting(true);
 
     try {
-      const created = await createCategoryUseCase(categoriesRepository, token, { name, description });
+      const created = await createCategoryUseCase(categoriesRepository, token, { name });
       setCategories((current) => [created, ...current]);
       setName("");
-      setDescription("");
       toast.success("Categoría creada");
     } catch (error) {
       const message = error instanceof HttpError ? error.message : "No se pudo crear la categoría.";
@@ -84,13 +82,8 @@ export function CategoriesScreen() {
       />
 
       <Card className="self-start rounded-[24px] bg-white p-5 shadow-[var(--shadow-card)]">
-        <form className="grid gap-3 md:grid-cols-[1fr_1.2fr_auto]" onSubmit={handleSubmit}>
+        <form className="grid gap-3 md:grid-cols-[1fr_auto]" onSubmit={handleSubmit}>
           <Input placeholder="Nombre" value={name} onChange={(event) => setName(event.target.value)} />
-          <Input
-            placeholder="Descripción"
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-          />
           <Button disabled={submitting} type="submit">
             {submitting ? <Spinner /> : <Plus className="h-4 w-4" />}
             Crear categoría
@@ -105,10 +98,13 @@ export function CategoriesScreen() {
         </Card>
       ) : categories.length ? (
         <DemoTable
-          headers={["Nombre", "Descripción", "Estado"]}
+          headers={["Nombre", "Estado"]}
+          minWidth="520px"
+          columnTemplate="minmax(0,1.5fr) minmax(140px,0.7fr)"
           rows={categories.map((category) => [
-            <span key={`${category.id}-name`} className="font-semibold">{category.name}</span>,
-            category.description,
+            <span key={`${category.id}-name`} className="font-semibold">
+              {category.name}
+            </span>,
             <StatusBadge
               key={`${category.id}-status`}
               status={category.isActive ? "ACTIVE" : "INACTIVE"}
