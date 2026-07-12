@@ -65,6 +65,12 @@ export function mapBusinessBranding(payload: Record<string, unknown>): BusinessB
   }
 
   return {
+    businessId:
+      payload.businessId === null || payload.businessId === undefined
+        ? business?.id === null || business?.id === undefined
+          ? null
+          : Number(business.id)
+        : Number(payload.businessId),
     name: String(payload.name ?? payload.businessName ?? payload.business_name ?? business?.name ?? "Nova"),
     slug: String(payload.slug ?? payload.businessSlug ?? payload.business_slug ?? business?.slug ?? ""),
     logoUrl: String(payload.logoUrl ?? payload.logo_url ?? business?.logoUrl ?? business?.logo_url ?? ""),

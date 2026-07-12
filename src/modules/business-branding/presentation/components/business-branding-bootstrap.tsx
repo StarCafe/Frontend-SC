@@ -9,11 +9,22 @@ import { useBusinessBrandingStore } from "@/shared/store/business-branding-store
 import { useAuthStore } from "@/shared/store/auth-store";
 
 function matchesCurrentBusiness(
+  brandingBusinessId: number | null | undefined,
   brandingName: string | undefined,
   brandingSlug: string | undefined,
+  userBusinessId: number | null | undefined,
   userBusinessName: string | undefined,
   userBusinessSlug: string | undefined,
 ) {
+  if (
+    brandingBusinessId !== null &&
+    brandingBusinessId !== undefined &&
+    userBusinessId !== null &&
+    userBusinessId !== undefined
+  ) {
+    return brandingBusinessId === userBusinessId;
+  }
+
   const normalizedBrandingSlug = brandingSlug?.trim().toLowerCase();
   const normalizedUserSlug = userBusinessSlug?.trim().toLowerCase();
 
@@ -60,8 +71,10 @@ export function BusinessBrandingBootstrap() {
     }
 
     const sameBusinessAsSession = matchesCurrentBusiness(
+      branding?.businessId,
       branding?.name,
       branding?.slug,
+      user?.businessId,
       user?.businessName,
       user?.businessSlug,
     );
@@ -97,6 +110,7 @@ export function BusinessBrandingBootstrap() {
     setBranding,
     token,
     user?.businessName,
+    user?.businessId,
     user?.businessSlug,
     user?.role,
   ]);

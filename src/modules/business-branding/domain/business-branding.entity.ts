@@ -5,6 +5,7 @@ export interface AvailableThemeEntity {
 }
 
 export interface BusinessBrandingEntity {
+  businessId?: number | null;
   name: string;
   slug: string;
   logoUrl: string;
