@@ -83,7 +83,7 @@ export function RoleShell({
         </div>
         <button
           aria-label="Cerrar menú"
-          className="grid h-11 w-11 place-items-center rounded-[18px] border border-white/10 bg-white/5 text-white md:hidden"
+          className="grid h-11 w-11 touch-manipulation cursor-pointer place-items-center rounded-[18px] border border-white/10 bg-white/5 text-white transition-[background-color,filter,transform,box-shadow] duration-150 ease-out hover:bg-white/10 active:scale-[0.97] active:brightness-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-secondary)] md:hidden"
           onClick={() => setMobileSidebarOpen(false)}
           type="button"
         >
@@ -125,10 +125,10 @@ export function RoleShell({
               key={item.href}
               href={item.href}
               className={cn(
-                "flex min-h-[76px] flex-col items-start justify-between rounded-[22px] border border-transparent bg-white/5 px-3 py-3 text-left text-xs font-medium transition sm:min-h-[84px] sm:px-4 sm:text-sm xl:min-h-0 xl:flex-row xl:items-center xl:gap-3 xl:rounded-2xl xl:px-4 xl:py-3",
+                "flex min-h-[76px] touch-manipulation cursor-pointer flex-col items-start justify-between rounded-[22px] border border-transparent bg-white/5 px-3 py-3 text-left text-xs font-medium transition-[background-color,filter,transform,box-shadow] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-secondary)] active:scale-[0.97] sm:min-h-[84px] sm:px-4 sm:text-sm xl:min-h-0 xl:flex-row xl:items-center xl:gap-3 xl:rounded-2xl xl:px-4 xl:py-3",
                 active
-                  ? "border-white/10 bg-[var(--color-primary)] text-white shadow-[0_16px_28px_rgba(0,0,0,0.18)]"
-                  : "text-white/75 hover:border-white/8 hover:bg-white/8 hover:text-white",
+                  ? "border-white/10 bg-[var(--color-primary)] text-white shadow-[0_16px_28px_rgba(0,0,0,0.18)] hover:brightness-95 active:brightness-90"
+                  : "text-white/75 hover:border-white/8 hover:bg-white/8 hover:text-white active:bg-white/12",
               )}
               onClick={() => setMobileSidebarOpen(false)}
             >
@@ -144,7 +144,7 @@ export function RoleShell({
           className={buttonClasses({
             variant: "ghost",
             className:
-              "w-full justify-start rounded-[24px] border border-white/10 bg-white/5 px-5 py-4 text-white hover:bg-white/10 xl:rounded-[28px]",
+              "w-full justify-start rounded-[24px] border border-white/10 bg-white/5 px-5 py-4 text-white hover:bg-white/10 active:bg-white/14 focus-visible:ring-white/70 focus-visible:ring-offset-[var(--color-secondary)] xl:rounded-[28px]",
           })}
           onClick={() => clearSession()}
           type="button"
@@ -176,7 +176,7 @@ export function RoleShell({
         </div>
         <button
           aria-label="Abrir menú"
-          className="grid h-11 w-11 place-items-center rounded-[18px] border border-white/10 bg-white/5 text-white"
+          className="grid h-11 w-11 touch-manipulation cursor-pointer place-items-center rounded-[18px] border border-white/10 bg-white/5 text-white transition-[background-color,filter,transform,box-shadow] duration-150 ease-out hover:bg-white/10 active:scale-[0.97] active:brightness-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]"
           onClick={() => setMobileSidebarOpen(true)}
           type="button"
         >
