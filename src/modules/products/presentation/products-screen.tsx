@@ -463,7 +463,14 @@ export function ProductsScreen() {
           })}
         </div>
       ) : (
-        <EmptyState title="No hay productos" description="Crea el primero para que aparezca en el menú y la caja." />
+        <EmptyState
+          title={products.length ? "No hay productos que coincidan" : "No hay productos"}
+          description={
+            products.length
+              ? "Prueba con otro nombre o cambia el filtro de categoría."
+              : "Crea el primero para que aparezca en el menú y la caja."
+          }
+        />
       )}
     </div>
   );
