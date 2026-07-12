@@ -10,7 +10,6 @@ import { useAuthGuard } from "@/modules/auth/presentation/hooks/use-auth-guard";
 import { HttpError } from "@/shared/lib/api/http-client";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
-import { DemoTable } from "@/shared/components/ui/demo-table";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { fieldClassName, Input } from "@/shared/components/ui/input";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
@@ -142,25 +141,49 @@ export function CashierScreen() {
               <span>Buscando pedidos...</span>
             </Card>
           ) : orders.length ? (
-            <DemoTable
-              headers={["Pedido", "Mesa", "Cliente", "Estado", "Total"]}
-              columnTemplate="110px 110px minmax(180px,1fr) 130px 130px"
-              minWidth="660px"
-              rows={orders.map((item) => [
-                <button
-                  key={`${item.id}-link`}
-                  className="font-semibold text-left underline-offset-2 hover:underline"
-                  onClick={() => setSelectedOrderId(item.id)}
-                  type="button"
+            <div className="overflow-x-auto rounded-[24px] border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)] sm:rounded-[28px]">
+              <div className="min-w-[560px]">
+                <div
+                  className="grid border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-[13px] font-semibold uppercase tracking-[0.14em] text-[var(--color-muted)] sm:px-5"
+                  style={{ gridTemplateColumns: "84px 112px minmax(120px,1fr) 116px 100px" }}
                 >
-                  #{item.id}
-                </button>,
-                `Mesa ${item.tableNumber}`,
-                item.customerName,
-                <StatusBadge key={`${item.id}-status`} status={item.status as "PENDING"} />,
-                formatCurrency(item.total),
-              ])}
-            />
+                  <div className="min-w-0 whitespace-nowrap pr-2">Pedido</div>
+                  <div className="min-w-0 whitespace-nowrap pr-2">Mesa</div>
+                  <div className="min-w-0 whitespace-nowrap pr-2">Cliente</div>
+                  <div className="min-w-0 whitespace-nowrap pr-2">Estado</div>
+                  <div className="min-w-0 whitespace-nowrap text-right">Total</div>
+                </div>
+
+                <div>
+                  {orders.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="grid items-center px-4 py-4 text-[15px] text-[var(--color-ink)] sm:px-5"
+                      style={{ gridTemplateColumns: "84px 112px minmax(120px,1fr) 116px 100px" }}
+                    >
+                      <div className={index !== orders.length - 1 ? "contents border-b border-[var(--color-border)]" : "contents"}>
+                        <button
+                          className="pr-2 text-left font-semibold underline-offset-2 hover:underline"
+                          onClick={() => setSelectedOrderId(item.id)}
+                          type="button"
+                        >
+                          #{item.id}
+                        </button>
+                        <div className="pr-2">Mesa {item.tableNumber}</div>
+                        <div className="min-w-0 truncate pr-2">{item.customerName}</div>
+                        <div className="pr-2">
+                          <StatusBadge status={item.status as "PENDING"} />
+                        </div>
+                        <div className="text-right font-medium">{formatCurrency(item.total)}</div>
+                      </div>
+                      {index !== orders.length - 1 ? (
+                        <div className="col-span-5 mt-4 border-b border-[var(--color-border)]" />
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           ) : (
             <EmptyState
               title="No hay resultados"
