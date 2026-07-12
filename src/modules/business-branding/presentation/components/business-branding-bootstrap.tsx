@@ -8,6 +8,29 @@ import { applyBrandingTheme, resetBrandingTheme } from "@/shared/lib/branding/ap
 import { useBusinessBrandingStore } from "@/shared/store/business-branding-store";
 import { useAuthStore } from "@/shared/store/auth-store";
 
+function matchesCurrentBusiness(
+  brandingName: string | undefined,
+  brandingSlug: string | undefined,
+  userBusinessName: string | undefined,
+  userBusinessSlug: string | undefined,
+) {
+  const normalizedBrandingSlug = brandingSlug?.trim().toLowerCase();
+  const normalizedUserSlug = userBusinessSlug?.trim().toLowerCase();
+
+  if (normalizedBrandingSlug && normalizedUserSlug) {
+    return normalizedBrandingSlug === normalizedUserSlug;
+  }
+
+  const normalizedBrandingName = brandingName?.trim().toLowerCase();
+  const normalizedUserName = userBusinessName?.trim().toLowerCase();
+
+  if (normalizedBrandingName && normalizedUserName) {
+    return normalizedBrandingName === normalizedUserName;
+  }
+
+  return false;
+}
+
 export function BusinessBrandingBootstrap() {
   const pathname = usePathname();
   const token = useAuthStore((state) => state.token);
@@ -36,6 +59,17 @@ export function BusinessBrandingBootstrap() {
       return;
     }
 
+    const sameBusinessAsSession = matchesCurrentBusiness(
+      branding?.name,
+      branding?.slug,
+      user?.businessName,
+      user?.businessSlug,
+    );
+
+    if (branding && !sameBusinessAsSession) {
+      clearBranding();
+    }
+
     let cancelled = false;
 
     void getBusinessBrandingUseCase(businessBrandingRepository, token)
@@ -46,14 +80,26 @@ export function BusinessBrandingBootstrap() {
       })
       .catch(() => {
         if (!cancelled) {
-          clearBranding();
+          if (!sameBusinessAsSession) {
+            clearBranding();
+          }
         }
       });
 
     return () => {
       cancelled = true;
     };
-  }, [clearBranding, hydrated, isNeutralRoute, setBranding, token, user?.role]);
+  }, [
+    branding,
+    clearBranding,
+    hydrated,
+    isNeutralRoute,
+    setBranding,
+    token,
+    user?.businessName,
+    user?.businessSlug,
+    user?.role,
+  ]);
 
   useEffect(() => {
     if (isNeutralRoute) {
