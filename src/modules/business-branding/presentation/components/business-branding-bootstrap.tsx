@@ -7,6 +7,7 @@ import { businessBrandingRepository } from "@/modules/business-branding/infrastr
 import { applyBrandingTheme, resetBrandingTheme } from "@/shared/lib/branding/apply-branding";
 import { useBusinessBrandingStore } from "@/shared/store/business-branding-store";
 import { useAuthStore } from "@/shared/store/auth-store";
+import type { BusinessBrandingEntity } from "@/modules/business-branding/domain/business-branding.entity";
 
 function matchesCurrentBusiness(
   brandingBusinessId: number | null | undefined,
@@ -40,6 +41,42 @@ function matchesCurrentBusiness(
   }
 
   return false;
+}
+
+function buildBrandingFromUser(
+  user:
+    | {
+        businessId?: number | null;
+        businessName?: string;
+        businessSlug?: string;
+        businessLogoUrl?: string;
+        businessPrimaryColor?: string;
+        businessThemeKey?: string;
+      }
+    | null
+    | undefined,
+): BusinessBrandingEntity | null {
+  if (!user?.businessId && !user?.businessName && !user?.businessSlug) {
+    return null;
+  }
+
+  return {
+    businessId: user.businessId ?? null,
+    name: user.businessName || "Nova",
+    slug: user.businessSlug || "",
+    logoUrl: user.businessLogoUrl || "",
+    primaryColor: user.businessPrimaryColor || "",
+    themeKey: user.businessThemeKey || "",
+    availableThemes: user.businessThemeKey
+      ? [
+          {
+            key: user.businessThemeKey,
+            label: user.businessThemeKey,
+            primaryColor: user.businessPrimaryColor || undefined,
+          },
+        ]
+      : [],
+  };
 }
 
 export function BusinessBrandingBootstrap() {
@@ -83,6 +120,12 @@ export function BusinessBrandingBootstrap() {
       clearBranding();
     }
 
+    const fallbackBranding = buildBrandingFromUser(user);
+
+    if (fallbackBranding && (!branding || !sameBusinessAsSession)) {
+      setBranding(fallbackBranding);
+    }
+
     let cancelled = false;
 
     void getBusinessBrandingUseCase(businessBrandingRepository, token)
@@ -93,6 +136,11 @@ export function BusinessBrandingBootstrap() {
       })
       .catch(() => {
         if (!cancelled) {
+          if (fallbackBranding) {
+            setBranding(fallbackBranding);
+            return;
+          }
+
           if (!sameBusinessAsSession) {
             clearBranding();
           }

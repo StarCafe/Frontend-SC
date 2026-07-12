@@ -7,13 +7,13 @@ import { useAuthStore } from "@/shared/store/auth-store";
 
 export function SessionBootstrap() {
   const token = useAuthStore((state) => state.token);
-  const user = useAuthStore((state) => state.user);
   const hydrated = useAuthStore((state) => state.hydrated);
+  const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
   const clearSession = useAuthStore((state) => state.clearSession);
 
   useEffect(() => {
-    if (!hydrated || !token || user) {
+    if (!hydrated || !token) {
       return;
     }
 
@@ -22,7 +22,7 @@ export function SessionBootstrap() {
       .catch(() => {
         clearSession();
       });
-  }, [clearSession, hydrated, setUser, token, user]);
+  }, [clearSession, hydrated, setUser, token]);
 
   useEffect(() => {
     if (!hydrated || !token) {

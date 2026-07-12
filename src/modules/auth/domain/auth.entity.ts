@@ -8,6 +8,9 @@ export interface AuthUser {
   businessId: number | null;
   businessName?: string;
   businessSlug?: string;
+  businessLogoUrl?: string;
+  businessPrimaryColor?: string;
+  businessThemeKey?: string;
   isActive?: boolean;
 }
 

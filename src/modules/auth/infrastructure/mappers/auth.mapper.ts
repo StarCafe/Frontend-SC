@@ -12,6 +12,24 @@ function resolveRole(value: unknown): Role {
   return "ADMIN";
 }
 
+function resolveBusinessId(payload: Record<string, unknown>, business: Record<string, unknown> | null) {
+  const candidates = [
+    payload.businessId,
+    payload.business_id,
+    business?.id,
+    business?.businessId,
+    business?.business_id,
+  ];
+
+  for (const candidate of candidates) {
+    if (candidate !== null && candidate !== undefined && candidate !== "") {
+      return Number(candidate);
+    }
+  }
+
+  return null;
+}
+
 export function mapAuthUser(payload: Record<string, unknown>): AuthUser {
   const business =
     typeof payload.business === "object" && payload.business !== null
@@ -23,9 +41,14 @@ export function mapAuthUser(payload: Record<string, unknown>): AuthUser {
     name: String(payload.name ?? payload.fullName ?? payload.username ?? "Usuario StarCafe"),
     email: String(payload.email ?? ""),
     role: resolveRole(payload.role),
-    businessId: payload.businessId === null || payload.businessId === undefined ? null : Number(payload.businessId),
+    businessId: resolveBusinessId(payload, business),
     businessName: String(business?.name ?? payload.businessName ?? payload.business_name ?? ""),
     businessSlug: String(business?.slug ?? payload.businessSlug ?? payload.business_slug ?? ""),
+    businessLogoUrl: String(business?.logoUrl ?? business?.logo_url ?? payload.logoUrl ?? payload.logo_url ?? ""),
+    businessPrimaryColor: String(
+      business?.primaryColor ?? business?.primary_color ?? payload.primaryColor ?? payload.primary_color ?? "",
+    ),
+    businessThemeKey: String(business?.themeKey ?? business?.theme_key ?? payload.themeKey ?? payload.theme_key ?? ""),
     isActive: payload.isActive === undefined ? true : Boolean(payload.isActive),
   };
 }
