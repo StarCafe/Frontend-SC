@@ -13,7 +13,7 @@ import { HttpError } from "@/shared/lib/api/http-client";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { Input } from "@/shared/components/ui/input";
+import { fieldClassName, Input } from "@/shared/components/ui/input";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { useBusinessBrandingStore } from "@/shared/store/business-branding-store";
@@ -159,7 +159,7 @@ export function BusinessBrandingScreen() {
               <div className="rounded-[26px] border border-[var(--color-border)] bg-white/55 p-4 backdrop-blur-sm">
                 <p className="text-sm font-medium text-[var(--color-muted)]">Tema visual</p>
                 <select
-                  className="mt-3 h-12 w-full rounded-2xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)]"
+                  className={`mt-3 ${fieldClassName}`}
                   value={selectedThemeKey}
                   onChange={(event) => setSelectedThemeKey(event.target.value)}
                 >

@@ -12,7 +12,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { DemoTable } from "@/shared/components/ui/demo-table";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { Input } from "@/shared/components/ui/input";
+import { fieldClassName, Input } from "@/shared/components/ui/input";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { StatusBadge } from "@/shared/components/ui/status-badge";
@@ -119,7 +119,7 @@ export function CashierScreen() {
                 }
               />
               <select
-                className="h-12 rounded-2xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)]"
+                className={fieldClassName}
                 value={filters.status ?? ""}
                 onChange={(event) => setFilters((current) => ({ ...current, status: event.target.value }))}
               >
@@ -144,6 +144,8 @@ export function CashierScreen() {
           ) : orders.length ? (
             <DemoTable
               headers={["Pedido", "Mesa", "Cliente", "Estado", "Total"]}
+              columnTemplate="110px 110px minmax(180px,1fr) 130px 130px"
+              minWidth="660px"
               rows={orders.map((item) => [
                 <button
                   key={`${item.id}-link`}
@@ -160,7 +162,11 @@ export function CashierScreen() {
               ])}
             />
           ) : (
-            <EmptyState title="No hay resultados" description="Ajusta los filtros y vuelve a consultar." />
+            <EmptyState
+              title="No hay resultados"
+              description="Ajusta los filtros y vuelve a consultar."
+              icon={<Search className="h-5 w-5" />}
+            />
           )}
         </div>
 
@@ -202,10 +208,16 @@ export function CashierScreen() {
                 </div>
               </div>
               <div className="mt-4 grid gap-2">
-                <Button disabled={paying || selectedOrder.status === "PAID"} onClick={handlePay} type="button">
-                  {paying ? <Spinner /> : null}
-                  Marcar como pagado
-                </Button>
+                {selectedOrder.status === "PAID" ? (
+                  <div className="flex justify-start">
+                    <StatusBadge label="Pagado" status="PAID" />
+                  </div>
+                ) : (
+                  <Button disabled={paying} onClick={handlePay} type="button">
+                    {paying ? <Spinner /> : null}
+                    Marcar como pagado
+                  </Button>
+                )}
               </div>
             </>
           ) : (

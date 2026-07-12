@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Inbox, TableProperties } from "lucide-react";
 import { listAdminOrdersUseCase } from "@/modules/orders/application/use-cases/order.use-cases";
 import type { OrderEntity } from "@/modules/orders/domain/order.entity";
 import { ordersRepository } from "@/modules/orders/infrastructure/repositories/order-http.repository";
@@ -13,6 +13,7 @@ import { useAuthGuard } from "@/modules/auth/presentation/hooks/use-auth-guard";
 import { HttpError } from "@/shared/lib/api/http-client";
 import { buttonClasses } from "@/shared/components/ui/button-styles";
 import { Card } from "@/shared/components/ui/card";
+import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { StatusBadge } from "@/shared/components/ui/status-badge";
@@ -128,44 +129,64 @@ export default function AdminDashboardPage() {
       <div className="grid gap-5 xl:grid-cols-[1.05fr_1fr]">
         <Card className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
           <h2 className="text-xl font-semibold text-[var(--color-ink)]">Pedidos recientes</h2>
-          <div className="mt-4 grid gap-3">
-            {orders.slice(0, 5).map((order) => (
-              <div
-                key={order.id}
-                className="flex flex-col items-start gap-3 rounded-[22px] border border-[var(--color-border)] px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div>
-                  <p className="font-semibold text-[var(--color-ink)]">#{order.id} / Mesa {order.tableNumber}</p>
-                  <p className="text-sm text-[var(--color-muted)]">{order.items[0]?.productName ?? "Sin items"}</p>
+          {orders.length ? (
+            <div className="mt-4 grid gap-3">
+              {orders.slice(0, 5).map((order) => (
+                <div
+                  key={order.id}
+                  className="flex flex-col items-start gap-3 rounded-[22px] border border-[var(--color-border)] px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div>
+                    <p className="font-semibold text-[var(--color-ink)]">#{order.id} / Mesa {order.tableNumber}</p>
+                    <p className="text-sm text-[var(--color-muted)]">{order.items[0]?.productName ?? "Sin items"}</p>
+                  </div>
+                  <StatusBadge status={order.status as "PENDING"} />
                 </div>
-                <StatusBadge status={order.status as "PENDING"} />
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-4">
+              <EmptyState
+                title="No hay pedidos recientes"
+                description="Los nuevos pedidos aparecerán aquí apenas entren a la cafetería."
+                icon={<Inbox className="h-5 w-5" />}
+              />
+            </div>
+          )}
         </Card>
 
         <Card className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-card)] sm:rounded-[32px] sm:p-5">
           <h2 className="text-xl font-semibold text-[var(--color-ink)]">Estado de mesas</h2>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
-            {tables.slice(0, 6).map((table) => (
-              <div
-                key={table.id}
-                className={`rounded-[24px] p-4 ${
-                  table.isActive
-                    ? "bg-[var(--color-primary)] text-white"
-                    : "bg-[var(--color-surface)] text-[var(--color-ink)]"
-                }`}
-              >
-                <p className="font-semibold">Mesa {table.tableNumber}</p>
-                <p className={`mt-2 text-sm ${table.isActive ? "text-white/85" : "text-[var(--color-muted)]"}`}>
-                  {table.isActive ? "Activa" : "Inactiva"}
-                </p>
-                <p className={`text-sm break-all ${table.isActive ? "text-white/90" : "text-[var(--color-muted)]"}`}>
-                  {table.qrToken}
-                </p>
-              </div>
-            ))}
-          </div>
+          {tables.length ? (
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
+              {tables.slice(0, 6).map((table) => (
+                <div
+                  key={table.id}
+                  className={`rounded-[24px] p-4 ${
+                    table.isActive
+                      ? "bg-[var(--color-primary)] text-white"
+                      : "bg-[var(--color-surface)] text-[var(--color-ink)]"
+                  }`}
+                >
+                  <p className="font-semibold">Mesa {table.tableNumber}</p>
+                  <p className={`mt-2 text-sm ${table.isActive ? "text-white/85" : "text-[var(--color-muted)]"}`}>
+                    {table.isActive ? "Activa" : "Inactiva"}
+                  </p>
+                  <p className={`text-sm break-all ${table.isActive ? "text-white/90" : "text-[var(--color-muted)]"}`}>
+                    {table.qrToken}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-4">
+              <EmptyState
+                title="No hay mesas registradas"
+                description="Cuando crees mesas, su estado operativo aparecerá aquí."
+                icon={<TableProperties className="h-5 w-5" />}
+              />
+            </div>
+          )}
         </Card>
       </div>
     </div>

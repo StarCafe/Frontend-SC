@@ -27,10 +27,11 @@ import { HttpError } from "@/shared/lib/api/http-client";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { Input } from "@/shared/components/ui/input";
+import { fieldClassName, Input } from "@/shared/components/ui/input";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { StatusBadge } from "@/shared/components/ui/status-badge";
+import { Switch } from "@/shared/components/ui/switch";
 import { formatCurrency } from "@/shared/utils/format";
 import { toast } from "sonner";
 
@@ -198,7 +199,7 @@ export function ProductsScreen() {
       <Card className="rounded-[24px] bg-white p-5 shadow-[var(--shadow-card)]">
         <form className="grid gap-3 lg:grid-cols-[180px_1fr_1.2fr_160px_auto]" onSubmit={handleCreate}>
           <select
-            className="h-12 rounded-2xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)]"
+            className={fieldClassName}
             value={form.categoryId}
             onChange={(event) => setForm((current) => ({ ...current, categoryId: Number(event.target.value) }))}
           >
@@ -292,15 +293,15 @@ export function ProductsScreen() {
                 </div>
                 <div className="mt-4 grid gap-2 text-sm text-[var(--color-muted)]">
                   <p>{categoryName}</p>
-                  <p className="text-2xl font-semibold text-[var(--color-ink)]">{formatCurrency(product.price)}</p>
+                    <p className="text-3xl font-bold text-[var(--color-ink)]">{formatCurrency(product.price)}</p>
                   <p>{product.isActive ? "Activo" : "Inactivo"}</p>
                   <p>
                     Addons: {product.addons.length ? product.addons.map((addon) => addon.name).join(", ") : "Sin addons"}
                   </p>
                 </div>
-                <div className="mt-4 grid gap-2">
+                <div className="mt-4 grid gap-3">
                   <div className="flex flex-wrap gap-2">
-                    <Button variant="ghost" onClick={() => setEditingId(isEditing ? null : product.id)} type="button">
+                    <Button variant="secondary" onClick={() => setEditingId(isEditing ? null : product.id)} type="button">
                       {isEditing ? "Cancelar" : "Editar"}
                     </Button>
                     {isEditing ? (
@@ -310,7 +311,7 @@ export function ProductsScreen() {
                       </Button>
                     ) : null}
                     <Button
-                      variant="secondary"
+                      variant={product.isActive ? "danger" : "secondary"}
                       onClick={() =>
                         handleProductAction(
                           () =>
@@ -324,25 +325,22 @@ export function ProductsScreen() {
                     >
                       {product.isActive ? "Desactivar" : "Activar"}
                     </Button>
-                    {product.isActive && product.isAvailable ? (
-                      <Button
-                        variant="ghost"
-                        onClick={() =>
-                          handleProductAction(
-                            () => markProductUnavailableUseCase(productsRepository, token, product.id),
-                            "Producto marcado como no disponible",
-                          )
-                        }
-                        type="button"
-                      >
-                        No disponible
-                      </Button>
-                    ) : null}
-                    {product.isActive && !product.isAvailable ? (
-                      <Button
-                        onClick={() =>
-                          handleProductAction(
-                            async () => {
+                  </div>
+                  <div className="flex items-center justify-between gap-3 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-[var(--color-ink)]">Disponibilidad</p>
+                      <p className="text-xs leading-5 text-[var(--color-muted)]">
+                        {product.isAvailable ? "Visible para pedidos" : "Oculto temporalmente en el menú"}
+                      </p>
+                    </div>
+                    <Switch
+                      ariaLabel={`Cambiar disponibilidad de ${product.name}`}
+                      checked={product.isAvailable}
+                      disabled={!product.isActive}
+                      onCheckedChange={(nextChecked) =>
+                        void handleProductAction(
+                          async () => {
+                            if (nextChecked) {
                               const updated = await updateProductUseCase(productsRepository, token, product.id, {
                                 categoryId: product.categoryId,
                                 name: product.name,
@@ -353,15 +351,15 @@ export function ProductsScreen() {
                               setProducts((current) =>
                                 current.map((item) => (item.id === product.id ? updated : item)),
                               );
-                            },
-                            "Producto marcado como disponible",
-                          )
-                        }
-                        type="button"
-                      >
-                        Volver disponible
-                      </Button>
-                    ) : null}
+                              return;
+                            }
+
+                            await markProductUnavailableUseCase(productsRepository, token, product.id);
+                          },
+                          nextChecked ? "Producto marcado como disponible" : "Producto marcado como no disponible",
+                        )
+                      }
+                    />
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Input
@@ -391,7 +389,7 @@ export function ProductsScreen() {
                   </div>
                   <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                     <select
-                      className="h-12 rounded-2xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)]"
+                      className={fieldClassName}
                       value={addonSelections[product.id] ?? ""}
                       onChange={(event) =>
                         setAddonSelections((current) => ({ ...current, [product.id]: event.target.value }))

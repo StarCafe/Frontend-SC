@@ -28,7 +28,7 @@
 @theme inline {
   --color-background: var(--color-background);
   --color-foreground: var(--color-ink);
-  --font-sans: "Aptos", "Trebuchet MS", "Segoe UI", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "Cascadia Code", "Consolas", monospace;
 }
 
@@ -61,6 +61,14 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button,
+input,
+select,
+textarea,
+[role="switch"] {
+  min-height: 44px;
 }
 
 input:-webkit-autofill,

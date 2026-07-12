@@ -13,7 +13,7 @@ import { HttpError } from "@/shared/lib/api/http-client";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { Input } from "@/shared/components/ui/input";
+import { fieldClassName, Input } from "@/shared/components/ui/input";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { StatusBadge } from "@/shared/components/ui/status-badge";
@@ -174,7 +174,7 @@ export function AddonsScreen() {
           </p>
           <form className="mt-4 grid gap-3" onSubmit={handleAssign}>
             <select
-              className="h-12 rounded-2xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)]"
+              className={fieldClassName}
               value={productId}
               onChange={(event) => setProductId(event.target.value)}
             >
@@ -186,7 +186,7 @@ export function AddonsScreen() {
               ))}
             </select>
             <select
-              className="h-12 rounded-2xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)]"
+              className={fieldClassName}
               value={addonId}
               onChange={(event) => setAddonId(event.target.value)}
             >

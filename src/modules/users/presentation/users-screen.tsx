@@ -15,7 +15,7 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SectionHeading } from "@/shared/components/ui/section-heading";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { StatusBadge } from "@/shared/components/ui/status-badge";
-import { Input } from "@/shared/components/ui/input";
+import { fieldClassName, Input } from "@/shared/components/ui/input";
 import { toast } from "sonner";
 
 const initialForm: CreateUserPayload = {
@@ -122,7 +122,7 @@ export function UsersScreen() {
             onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
           />
           <select
-            className="h-12 rounded-2xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)]"
+            className={fieldClassName}
             value={form.role}
             onChange={(event) =>
               setForm((current) => ({ ...current, role: event.target.value as CreateUserPayload["role"] }))
@@ -158,7 +158,7 @@ export function UsersScreen() {
             <Button
               key={`${user.id}-action`}
               disabled={!user.isActive}
-              variant="ghost"
+              variant="danger"
               onClick={() => handleDeactivate(user.id)}
               type="button"
             >

@@ -83,7 +83,7 @@ export function CategoriesScreen() {
         description="Gestiona categorías reales para el menú público y los productos administrativos."
       />
 
-      <Card className="rounded-[24px] bg-white p-5 shadow-[var(--shadow-card)]">
+      <Card className="self-start rounded-[24px] bg-white p-5 shadow-[var(--shadow-card)]">
         <form className="grid gap-3 md:grid-cols-[1fr_1.2fr_auto]" onSubmit={handleSubmit}>
           <Input placeholder="Nombre" value={name} onChange={(event) => setName(event.target.value)} />
           <Input
