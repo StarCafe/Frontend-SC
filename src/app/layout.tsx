@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="h-full antialiased" data-scroll-behavior="smooth">
-      <body className="min-h-full bg-[var(--color-surface)] text-[var(--color-ink)]">
+      <body className="min-h-full text-[var(--color-ink)]">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

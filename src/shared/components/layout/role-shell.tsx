@@ -144,7 +144,7 @@ export function RoleShell({
           className={buttonClasses({
             variant: "ghost",
             className:
-              "w-full justify-start rounded-[24px] border border-white/10 bg-white/5 px-5 py-6 text-white hover:bg-white/10 xl:rounded-[28px]",
+              "w-full justify-start rounded-[24px] border border-white/10 bg-white/5 px-5 py-4 text-white hover:bg-white/10 xl:rounded-[28px]",
           })}
           onClick={() => clearSession()}
           type="button"
