@@ -103,7 +103,6 @@ export function BusinessBrandingBootstrap() {
       cancelled = true;
     };
   }, [
-    branding,
     clearBranding,
     hydrated,
     isNeutralRoute,

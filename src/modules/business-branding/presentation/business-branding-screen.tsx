@@ -79,6 +79,8 @@ export function BusinessBrandingScreen() {
 
   const token = auth.token;
 
+  const selectedTheme = themeOptions.find((theme) => theme.key === selectedThemeKey) ?? null;
+
   async function handleThemeSave() {
     if (!selectedThemeKey) {
       toast.error("Selecciona un tema.");
@@ -89,6 +91,13 @@ export function BusinessBrandingScreen() {
 
     try {
       await updateBusinessThemeUseCase(businessBrandingRepository, token, selectedThemeKey);
+      if (branding) {
+        setBranding({
+          ...branding,
+          themeKey: selectedThemeKey,
+          primaryColor: selectedTheme?.primaryColor ?? branding.primaryColor,
+        });
+      }
       await loadBranding(token);
       toast.success("Tema actualizado");
     } catch (error) {
