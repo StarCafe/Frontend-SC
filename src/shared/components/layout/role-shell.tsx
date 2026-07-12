@@ -199,7 +199,7 @@ export function RoleShell({
           {sidebarContent}
         </aside>
 
-        <div className="section-grid gap-4 lg:gap-5">{children}</div>
+        <div className="section-grid self-start gap-4 lg:gap-5">{children}</div>
       </div>
     </div>
   );
