@@ -172,9 +172,6 @@ export default function AdminDashboardPage() {
                   <p className={`mt-2 text-sm ${table.isActive ? "text-white/85" : "text-[var(--color-muted)]"}`}>
                     {table.isActive ? "Activa" : "Inactiva"}
                   </p>
-                  <p className={`text-sm break-all ${table.isActive ? "text-white/90" : "text-[var(--color-muted)]"}`}>
-                    {table.qrToken}
-                  </p>
                 </div>
               ))}
             </div>

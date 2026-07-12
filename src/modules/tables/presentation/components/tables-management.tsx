@@ -240,10 +240,6 @@ export function TablesManagement() {
                 </div>
               </div>
 
-              <div className="mt-4 grid gap-1 text-sm text-[var(--color-muted)]">
-                <p className="font-semibold text-[var(--color-ink)]">{table.qrToken}</p>
-              </div>
-
               <div className="mt-4 grid gap-2 sm:grid-cols-3">
                 <Button variant="ghost" onClick={() => handleDownloadQr(table)} type="button">
                   <Download className="h-4 w-4" />
