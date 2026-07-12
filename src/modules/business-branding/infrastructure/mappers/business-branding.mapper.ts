@@ -3,6 +3,25 @@ import type {
   BusinessBrandingEntity,
 } from "@/modules/business-branding/domain/business-branding.entity";
 
+function resolveBusinessBrandingId(payload: Record<string, unknown>, business: Record<string, unknown> | null) {
+  const candidates = [
+    payload.businessId,
+    payload.business_id,
+    payload.id,
+    business?.id,
+    business?.businessId,
+    business?.business_id,
+  ];
+
+  for (const candidate of candidates) {
+    if (candidate !== null && candidate !== undefined && candidate !== "") {
+      return Number(candidate);
+    }
+  }
+
+  return null;
+}
+
 function mapTheme(payload: unknown): AvailableThemeEntity | null {
   if (typeof payload === "string") {
     return {
@@ -65,12 +84,7 @@ export function mapBusinessBranding(payload: Record<string, unknown>): BusinessB
   }
 
   return {
-    businessId:
-      payload.businessId === null || payload.businessId === undefined
-        ? business?.id === null || business?.id === undefined
-          ? null
-          : Number(business.id)
-        : Number(payload.businessId),
+    businessId: resolveBusinessBrandingId(payload, business),
     name: String(payload.name ?? payload.businessName ?? payload.business_name ?? business?.name ?? "Nova"),
     slug: String(payload.slug ?? payload.businessSlug ?? payload.business_slug ?? business?.slug ?? ""),
     logoUrl: String(payload.logoUrl ?? payload.logo_url ?? business?.logoUrl ?? business?.logo_url ?? ""),

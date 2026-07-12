@@ -50,17 +50,19 @@ export function RoleShell({
   const branding = useBusinessBrandingStore((state) => state.branding);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const businessName = auth?.user?.businessName ?? "";
+  const businessLogoUrl = branding?.logoUrl || auth?.user?.businessLogoUrl || "";
+  const businessThemeKey = branding?.themeKey || auth?.user?.businessThemeKey || "";
+  const businessCardName = businessName || branding?.name || "";
   const sessionLabel = useMemo(() => {
     if (!auth?.user) {
       return "";
     }
 
     return (
-      branding?.name ||
-      auth.user.businessName ||
+      businessCardName ||
       (auth.user.businessId ? `Cafeteria #${auth.user.businessId}` : "Sin cafeteria")
     );
-  }, [auth?.user, branding?.name]);
+  }, [auth?.user, businessCardName]);
   const iconByLabel: Record<string, ReactNode> = {
     Dashboard: <LayoutDashboard className="h-4 w-4" />,
     Mesas: <Coffee className="h-4 w-4" />,
@@ -93,25 +95,25 @@ export function RoleShell({
 
       <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
         <div className="flex items-center gap-3">
-          {branding?.logoUrl ? (
+          {businessLogoUrl ? (
             <img
-              alt={branding.name}
+              alt={businessCardName || sessionLabel || area}
               className="h-14 w-14 rounded-[20px] bg-white/95 object-cover p-1.5"
-              src={branding.logoUrl}
+              src={businessLogoUrl}
             />
           ) : (
             <div
               className="grid h-14 w-14 place-items-center rounded-[20px] text-base font-semibold text-white shadow-[0_12px_22px_rgba(0,0,0,0.16)]"
               style={{ backgroundColor: "var(--color-primary)" }}
             >
-              {(branding?.name ?? sessionLabel ?? area).slice(0, 1).toUpperCase()}
+              {(businessCardName || sessionLabel || area).slice(0, 1).toUpperCase()}
             </div>
           )}
           <div className="min-w-0">
             <p className="truncate text-base font-semibold text-white">
-              {branding?.name || businessName || sessionLabel}
+              {businessCardName || sessionLabel}
             </p>
-            <p className="truncate text-xs text-white/60">{branding?.themeKey || "Tema activo"}</p>
+            <p className="truncate text-xs text-white/60">{businessThemeKey || "Tema activo"}</p>
           </div>
         </div>
       </div>

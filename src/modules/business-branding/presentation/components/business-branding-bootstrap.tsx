@@ -56,27 +56,50 @@ function buildBrandingFromUser(
     | null
     | undefined,
 ): BusinessBrandingEntity | null {
-  if (!user?.businessId && !user?.businessName && !user?.businessSlug) {
+  const hasRealBrandingData = Boolean(
+    user?.businessName ||
+      user?.businessSlug ||
+      user?.businessLogoUrl ||
+      user?.businessPrimaryColor ||
+      user?.businessThemeKey,
+  );
+
+  if (!hasRealBrandingData) {
     return null;
   }
 
+  const resolvedUser = user;
+
   return {
-    businessId: user.businessId ?? null,
-    name: user.businessName || "Nova",
-    slug: user.businessSlug || "",
-    logoUrl: user.businessLogoUrl || "",
-    primaryColor: user.businessPrimaryColor || "",
-    themeKey: user.businessThemeKey || "",
-    availableThemes: user.businessThemeKey
+    businessId: resolvedUser?.businessId ?? null,
+    name: resolvedUser?.businessName || "",
+    slug: resolvedUser?.businessSlug || "",
+    logoUrl: resolvedUser?.businessLogoUrl || "",
+    primaryColor: resolvedUser?.businessPrimaryColor || "",
+    themeKey: resolvedUser?.businessThemeKey || "",
+    availableThemes: resolvedUser?.businessThemeKey
       ? [
           {
-            key: user.businessThemeKey,
-            label: user.businessThemeKey,
-            primaryColor: user.businessPrimaryColor || undefined,
+            key: resolvedUser.businessThemeKey,
+            label: resolvedUser.businessThemeKey,
+            primaryColor: resolvedUser.businessPrimaryColor || undefined,
           },
         ]
       : [],
   };
+}
+
+function hasBusinessContext(
+  user:
+    | {
+        businessId?: number | null;
+        businessName?: string;
+        businessSlug?: string;
+      }
+    | null
+    | undefined,
+) {
+  return Boolean(user?.businessId || user?.businessName || user?.businessSlug);
 }
 
 export function BusinessBrandingBootstrap() {
@@ -87,6 +110,7 @@ export function BusinessBrandingBootstrap() {
   const branding = useBusinessBrandingStore((state) => state.branding);
   const setBranding = useBusinessBrandingStore((state) => state.setBranding);
   const clearBranding = useBusinessBrandingStore((state) => state.clearBranding);
+  const findBrandingForBusiness = useBusinessBrandingStore((state) => state.findBrandingForBusiness);
   const isNeutralRoute =
     pathname === "/admin/login" ||
     pathname === "/kitchen/login" ||
@@ -115,9 +139,29 @@ export function BusinessBrandingBootstrap() {
       user?.businessName,
       user?.businessSlug,
     );
+    const userHasBusinessContext = hasBusinessContext(user);
+    const cachedBranding = findBrandingForBusiness({
+      businessId: user?.businessId,
+      businessSlug: user?.businessSlug,
+      businessName: user?.businessName,
+    });
+    const sameBusinessAsCached = cachedBranding
+      ? matchesCurrentBusiness(
+          cachedBranding.businessId,
+          cachedBranding.name,
+          cachedBranding.slug,
+          user?.businessId,
+          user?.businessName,
+          user?.businessSlug,
+        )
+      : false;
 
-    if (branding && !sameBusinessAsSession) {
+    if (branding && userHasBusinessContext && !sameBusinessAsSession) {
       clearBranding();
+    }
+
+    if (cachedBranding && sameBusinessAsCached && (!branding || (userHasBusinessContext && !sameBusinessAsSession))) {
+      setBranding(cachedBranding);
     }
 
     const fallbackBranding = buildBrandingFromUser(user);
@@ -141,7 +185,7 @@ export function BusinessBrandingBootstrap() {
             return;
           }
 
-          if (!sameBusinessAsSession) {
+          if (userHasBusinessContext && !sameBusinessAsSession) {
             clearBranding();
           }
         }
@@ -152,6 +196,7 @@ export function BusinessBrandingBootstrap() {
     };
   }, [
     clearBranding,
+    findBrandingForBusiness,
     hydrated,
     isNeutralRoute,
     setBranding,
