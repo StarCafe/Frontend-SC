@@ -52,6 +52,9 @@ export function ProductsScreen() {
   const [form, setForm] = useState<CreateProductPayload>(initialForm);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [addonSelections, setAddonSelections] = useState<Record<number, string>>({});
+  const [searchName, setSearchName] = useState("");
+  const [searchCategoryId, setSearchCategoryId] = useState<string>("all");
+  const [selectedImageNames, setSelectedImageNames] = useState<Record<number, string>>({});
 
   async function loadData(token: string) {
     setLoading(true);
@@ -163,6 +166,7 @@ export function ProductsScreen() {
         ? await replaceProductImageUseCase(productsRepository, token, productId, file)
         : await uploadProductImageUseCase(productsRepository, token, productId, file);
       setProducts((items) => items.map((item) => (item.id === productId ? updated : item)));
+      setSelectedImageNames((currentNames) => ({ ...currentNames, [productId]: file.name }));
       toast.success("Imagen actualizada");
     } catch (error) {
       const message = error instanceof HttpError ? error.message : "No se pudo actualizar la imagen.";
@@ -187,6 +191,18 @@ export function ProductsScreen() {
       toast.error(message);
     }
   }
+
+  const normalizedSearchName = searchName.trim().toLocaleLowerCase();
+  const filteredProducts = products.filter((product) => {
+    const matchesName =
+      !normalizedSearchName ||
+      product.name.toLocaleLowerCase().includes(normalizedSearchName) ||
+      product.description.toLocaleLowerCase().includes(normalizedSearchName);
+    const matchesCategory =
+      searchCategoryId === "all" || product.categoryId === Number(searchCategoryId);
+
+    return matchesName && matchesCategory;
+  });
 
   return (
     <div className="section-grid gap-5">
@@ -234,14 +250,36 @@ export function ProductsScreen() {
         </form>
       </Card>
 
+      <Card className="rounded-[24px] bg-white p-5 shadow-[var(--shadow-card)]">
+        <div className="grid gap-3 md:grid-cols-[1.3fr_220px]">
+          <Input
+            placeholder="Buscar por nombre o descripción"
+            value={searchName}
+            onChange={(event) => setSearchName(event.target.value)}
+          />
+          <select
+            className={fieldClassName}
+            value={searchCategoryId}
+            onChange={(event) => setSearchCategoryId(event.target.value)}
+          >
+            <option value="all">Todas las categorías</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </Card>
+
       {loading ? (
         <Card className="flex items-center gap-3 rounded-[24px] bg-white p-5">
           <Spinner />
           <span>Cargando productos...</span>
         </Card>
-      ) : products.length ? (
+      ) : filteredProducts.length ? (
         <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
-          {products.map((product) => {
+          {filteredProducts.map((product) => {
             const categoryName = categories.find((category) => category.id === product.categoryId)?.name ?? `Categoría ${product.categoryId}`;
             const isEditing = editingId === product.id;
 
@@ -362,16 +400,29 @@ export function ProductsScreen() {
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Input
+                    <input
+                      id={`product-image-${product.id}`}
+                      className="sr-only"
                       type="file"
+                      accept="image/*"
                       onChange={(event) => {
                         const file = event.target.files?.[0];
 
                         if (file) {
+                          setSelectedImageNames((current) => ({ ...current, [product.id]: file.name }));
                           void handleImage(product.id, file);
                         }
                       }}
                     />
+                    <label
+                      htmlFor={`product-image-${product.id}`}
+                      className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm font-medium text-[var(--color-ink)] transition-[background-color,filter,transform,box-shadow] duration-150 ease-out hover:bg-black/5 active:scale-[0.97] active:bg-black/10"
+                    >
+                      {product.image ? "Cambiar imagen" : "Subir imagen"}
+                    </label>
+                    <p className="flex min-h-11 items-center text-sm text-[var(--color-muted)]">
+                      {selectedImageNames[product.id] ?? "Ningún archivo seleccionado"}
+                    </p>
                     {product.image ? (
                       <Button
                         variant="danger"
