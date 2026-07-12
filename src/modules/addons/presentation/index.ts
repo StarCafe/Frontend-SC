@@ -1,1 +1,0 @@
-export const addonsPresentationReady = true;
